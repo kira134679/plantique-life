@@ -1,0 +1,229 @@
+// *******************************
+// * Bootstrap References
+// *******************************
+
+// gray-color-variables
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+// color-variables
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$cyan: #0dcaf0 !default;
+
+// theme-color-variables
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$light: $gray-100 !default;
+$dark: $gray-900 !default;
+
+// font-variables
+$font-weight-medium: 500 !default;
+
+$font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
+
+// font-weight
+$font-weight-bold: 700 !default;
+
+// spacer-variables-maps
+$spacer: 1rem !default;
+
+// *******************************
+// * Custom Variables
+// *******************************
+
+// color-variables
+$red-500: #ff583d !default;
+
+// primary-color-variables
+$primary-900: #39401d !default;
+$primary-800: #515a30 !default;
+$primary-700: #6a7442 !default;
+$primary-600: #8c9761 !default;
+$primary-500: #a2ab80 !default;
+$primary-400: #b3b89f !default;
+$primary-300: #cccfbf !default;
+$primary-200: #dfe1d6 !default;
+$primary-100: #ebede3 !default;
+$primary-50: #f6f8ed !default;
+$primarys: (
+  '900': $primary-900,
+  '800': $primary-800,
+  '700': $primary-700,
+  '600': $primary-600,
+  '500': $primary-500,
+  '400': $primary-400,
+  '300': $primary-300,
+  '200': $primary-200,
+  '100': $primary-100,
+  '50': $primary-50,
+) !default;
+
+// secondary-color-variables
+$secondary-600: #847c55 !default;
+$secondary-100: #f5f1e0 !default;
+$secondarys: (
+  '600': $secondary-600,
+  '100': $secondary-100,
+) !default;
+
+// neutral-color-variables
+$neutral-700: #404040 !default;
+$neutral-600: #525252 !default;
+$neutral-500: #737373 !default;
+$neutral-400: #a3a3a3 !default;
+$neutral-300: #d4d4d4 !default;
+$neutral-200: #e5e5e5 !default;
+$neutral-100: #f5f5f5 !default;
+$neutral-50: #fafafa !default;
+$neutrals: (
+  '700': $neutral-700,
+  '600': $neutral-600,
+  '500': $neutral-500,
+  '400': $neutral-400,
+  '300': $neutral-300,
+  '200': $neutral-200,
+  '100': $neutral-100,
+  '50': $neutral-50,
+) !default;
+
+// font-variables
+$h7-font-size: $font-size-base * 1.125 !default;
+$h8-font-size: $font-size-base !default;
+
+// *******************************
+// * Bootstrap Overrides
+// *******************************
+
+// theme-color-variables
+$primary: $primary-600 !default;
+$secondary: $secondary-600 !default;
+$danger: $red-500 !default;
+
+// theme-colors-map
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
+  'white': $white,
+  'black': $black,
+  // primary
+  'primary-900': $primary-900,
+  'primary-800': $primary-800,
+  'primary-700': $primary-700,
+  'primary-500': $primary-500,
+  'primary-400': $primary-400,
+  'primary-300': $primary-300,
+  'primary-200': $primary-200,
+  'primary-100': $primary-100,
+  'primary-50': $primary-50,
+  // secondary
+  'secondary-100': $secondary-100,
+  // neutral
+  'neutral-700': $neutral-700,
+  'neutral-600': $neutral-600,
+  'neutral-500': $neutral-500,
+  'neutral-400': $neutral-400,
+  'neutral-300': $neutral-300,
+  'neutral-200': $neutral-200,
+  'neutral-100': $neutral-100,
+  'neutral-50': $neutral-50,
+) !default;
+
+// spacer-variables-maps
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer * 0.75,
+  4: $spacer,
+  5: $spacer * 1.25,
+  6: $spacer * 1.5,
+  7: $spacer * 1.75,
+  8: $spacer * 2,
+  10: $spacer * 2.5,
+  12: $spacer * 3,
+  15: $spacer * 5,
+) !default;
+
+// font-variables
+$font-weight-base: $font-weight-medium !default;
+
+$font-size-sm: $font-size-base * 0.875 !default;
+$font-size-xs: $font-size-base * 0.8125 !default;
+$font-size-xxs: $font-size-base * 0.75 !default;
+
+$h1-font-size: $font-size-base * 3 !default;
+$h2-font-size: $font-size-base * 2.5 !default;
+$h3-font-size: $font-size-base * 2 !default;
+$h4-font-size: $font-size-base * 1.75 !default;
+$h5-font-size: $font-size-base * 1.5 !default;
+$h6-font-size: $font-size-base * 1.25 !default;
+
+// font-sizes
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+  7: $h7-font-size,
+  8: $h8-font-size,
+) !default;
+
+// font-family
+$font-family-sans-serif:
+  'Noto Sans TC',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  'Noto Sans',
+  'Liberation Sans',
+  Arial,
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji' !default;
+
+// Paragraphs
+$paragraph-margin-bottom: 0 !default;
+
+// headings-variables
+$headings-margin-bottom: 0 !default;
+$headings-font-family:
+  'Noto Serif TC',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  'Noto Sans',
+  'Liberation Sans',
+  Arial,
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji' !default;
+$headings-font-weight: $font-weight-bold !default;
+
+// rfs
+$enable-rfs: false !default;
+
+// Links
+$link-decoration: none !default;
+
+// line-height
+$line-height-sm: 1.2 !default;

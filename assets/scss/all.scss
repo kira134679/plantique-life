@@ -1,6 +1,7 @@
-@import 'bootstrap/scss/functions';
-@import './utils/variables';
-@import 'bootstrap';
+@import './utils/custom-bs';
+
+@import './base/base';
+@import './utils/custom-utilities';
 
 @import './layout/header.scss';
 @import './layout/footer.scss';
