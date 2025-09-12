@@ -1,5 +1,9 @@
 # PLANTIQUE LIFE
 
+![Static Badge](https://img.shields.io/badge/node-%5E20.19.4-gray?label=node&labelColor=green)
+[![ci](https://github.com/kira134679/plantique-life/actions/workflows/ci.yml/badge.svg)](https://github.com/kira134679/plantique-life/actions/workflows/ci.yml)
+[![deploy to GitHub Pages](https://github.com/kira134679/plantique-life/actions/workflows/deploy.yml/badge.svg)](https://github.com/kira134679/plantique-life/actions/workflows/deploy.yml)
+
 ## Node.js 版本
 
 - 專案的 Node.js 版本需為 v20.19.4 以上
