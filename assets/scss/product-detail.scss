@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+
+@import './utils/custom-bs';
+
+@import './base/base';
+@import './utils/custom-utilities';
+
+// layout
+
+@import './layout/header';
+@import './layout/footer';
+
+// components
+
+// pages
+@import './pages/product-detail';
