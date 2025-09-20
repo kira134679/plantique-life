@@ -1,0 +1,74 @@
+.index-title {
+  font-size: 100px;
+}
+.py-80 {
+  padding-top: 80px;
+  padding-bottom: 82px;
+}
+
+.p-bn {
+  padding-top: 184.5px;
+  padding-bottom: 184.5px;
+}
+
+.vertical-lr {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
+
+.btn {
+  display: flex;
+  font-size: 18px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 28px;
+  padding-right: 28px;
+  border-radius: fill;
+}
+
+.hero {
+  max-height: 800px;
+  background-image: url(/assets/images/img_banner_bg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 185px;
+  padding-bottom: 185px;
+}
+@media (max-width: 375px) {
+  .hero {
+    padding-top: 146px;
+    padding-bottom: 146px;
+  }
+}
+
+.hero-title {
+  max-width: 196px;
+  // padding-left: 18px;
+  // padding-right: 18px;
+}
+
+.vertical-title {
+  writing-mode: vertical-lr; //垂直從左到右
+}
+
+@media (max-width: 375px) {
+  .vertical-title {
+    writing-mode: horizontal-tb; //* 水平書寫 */
+    white-space: nowrap;
+  }
+}
+
+.point {
+  width: 8px;
+  height: 4px;
+  border-radius: 1000px;
+  background-color: $primary-600;
+  opacity: 40%;
+  margin-right: 12px;
+}
+
+.point-active {
+  width: 72px;
+  opacity: 1000%;
+}
