@@ -26,7 +26,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 // thumbnail
 const swiper = new Swiper('.mySwiper', {
   loop: true,
-  spaceBetween: 10,
+  spaceBetween: 16,
   slidesPerView: 4,
   pagination: {
     el: '.swiper-pagination',
@@ -41,7 +41,7 @@ const swiper = new Swiper('.mySwiper', {
 // main
 const swiper2 = new Swiper('.mySwiper2', {
   loop: true,
-  spaceBetween: 10,
+  spaceBetween: 16,
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',

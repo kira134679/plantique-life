@@ -35,6 +35,17 @@ $utilities: map-merge(
     //===============================
     // 覆蓋 bootstrap 原有設定
     //===============================
+    'width': map-merge(
+        map-get($utilities, 'width'),
+        (
+          responsive: true,
+          // values: map-merge(
+          //     map-get(map-get($utilities, 'width'), 'values'),
+          //     (
+          //     )
+           //   ),
+        )
+      ),
     //===============================
     // 新增 utilities 設定
      //===============================

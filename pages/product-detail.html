@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,128 +8,215 @@
   <body>
     <%- include('./layout/header'); -%>
 
-    <section class="py-8">
+    <section class="py-8 py-lg-13">
       <!-- breadcrumb -->
 
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-6 bg-warning">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="#">Library</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Data</li>
-        </ol>
-      </nav>
+      <div class="container">
+        <nav style="--bs-breadcrumb-divider: ''" aria-label="breadcrumb ">
+          <ol class="breadcrumb mb-6 mb-lg-12">
+            <li class="breadcrumb-item"><a href="#">首頁</a></li>
+            <li class="breadcrumb-item"><a href="#">植感精選</a></li>
+            <li class="breadcrumb-item"><a href="#">療癒組盆</a></li>
+            <li class="breadcrumb-item active" aria-current="page">荒原綠影</li>
+          </ol>
+        </nav>
+      </div>
 
       <!-- swiper start -->
 
-      <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <img src="/assets/images/img_product_13.png" alt="img_product_13" />
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7">
+            <div>
+              <div class="swiper mySwiper2">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="/assets/images/img_product_13.png" alt="img_product_13" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_01.png" alt="product_thumb_01" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_02.png" alt="product_thumb_02" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_03.png" alt="product_thumb_03" />
+                  </div>
+                </div>
+                <div class="swiper-pagination d-lg-none"></div>
+              </div>
+              <div thumbsSlider="" class="swiper mySwiper d-none d-lg-flex">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="/assets/images/img_product_13.png" alt="img_product_13" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_01.png" alt="product_thumb_01" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_02.png" alt="product_thumb_02" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/assets/images/product_thumb_03.png" alt="product_thumb_03" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_01.png" alt="product_thumb_01" />
-          </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_02.png" alt="product_thumb_02" />
-          </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_03.png" alt="product_thumb_03" />
+          <div class="col-lg-5">
+            <div class="d-flex flex-column gap-8 gap-lg-10">
+              <!-- head -->
+
+              <div class="d-flex flex-column gap-1 gap-lg-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span>
+                  <button type="button" class="btn bg-transparent border-0 p-0">
+                    <span
+                      class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle"
+                    >
+                      favorite
+                    </span>
+                  </button>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="fs-5 fs-lg-4 text-neutral-700">荒原綠影</h2>
+                  <span class="fs-sm fs-lg-8 text-danger">剩餘 5 件</span>
+                </div>
+
+                <p class="noto-serif-tc fw-bold fs-5 fs-lg-4 lh-sm text-primary-700">NT$2,400</p>
+              </div>
+
+              <!-- payment -->
+
+              <div class="fs-sm fs-lg-8 text-neutral-400">
+                <div class="d-flex justify-content-start gap-lg-6">
+                  <span>付款方式</span>
+                  <ul class="d-flex flex-column gap-1">
+                    <li>全館滿 5,000 免運</li>
+                    <li>仙人掌系列買五送一</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- add-on -->
+
+              <div>
+                <span class="d-block fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-6">加購商品</span>
+                <ul class="list-unstyled d-flex flex-column gap-3 gap-lg-4">
+                  <li class="d-flex justify-content-between align-items-center gap-3">
+                    <div class="add-on-display add-on-img-container">
+                      <img
+                        src="/assets/images/img_product_add_01.png"
+                        alt="img_product_add_01"
+                        class="object-fit-cover"
+                      />
+                    </div>
+                    <div
+                      class="add-on-display d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 gap-lg-4"
+                    >
+                      <div class="d-flex flex-column gap-1 gap-lg-2">
+                        <h4 class="fs-7 text-neutral-700">噴霧器</h4>
+                        <p class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
+                          NT$129<s class="fs-sm fs-lg-8 text-neutral-400 ms-2">$249</s>
+                        </p>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+                        <button
+                          type="button"
+                          class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
+                        >
+                          <span class="material-symbols-rounded align-bottom"> remove </span>
+                        </button>
+                        <span class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center counter-sm">0</span>
+                        <button
+                          type="button"
+                          class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
+                        >
+                          <span class="material-symbols-rounded align-bottom"> add_2 </span>
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center gap-3">
+                    <div class="add-on-display add-on-img-container">
+                      <img
+                        src="/assets/images/img_product_add_02.png"
+                        alt="img_product_add_02"
+                        class="object-fit-cover"
+                      />
+                    </div>
+                    <div
+                      class="add-on-display d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 gap-lg-4"
+                    >
+                      <div class="d-flex flex-column gap-1 gap-lg-2">
+                        <h4 class="fs-7 text-neutral-700">日本赤玉土</h4>
+                        <p class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
+                          NT$300<s class="fs-sm fs-lg-8 text-neutral-400 ms-2"></s>
+                        </p>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+                        <button
+                          type="button"
+                          class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
+                        >
+                          <span class="material-symbols-rounded align-bottom"> remove </span>
+                        </button>
+                        <span class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center counter-sm">0</span>
+                        <button
+                          type="button"
+                          class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
+                        >
+                          <span class="material-symbols-rounded align-bottom"> add_2 </span>
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- add to cart -->
+
+              <div class="d-lg-flex justify-content-lg-between align-items-center gap-lg-4">
+                <div class="d-flex justify-content-lg-between align-items-center gap-3 mb-4 mb-lg-0">
+                  <div class="w-50 w-lg-auto d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+                    <button
+                      type="button"
+                      class="btn p-4 rounded-circle border border-2 flex-shrink-0 flex-grow-0 btn-circle-lg"
+                    >
+                      <span class="material-symbols-rounded align-bottom"> remove </span>
+                    </button>
+                    <span class="noto-serif-tc fw-bold fs-6 lh-sm text-center counter">1</span>
+                    <button type="button" class="btn p-4 rounded-circle border border-2 flex-lg-shrink-0 btn-circle-lg">
+                      <span class="material-symbols-rounded align-bottom"> add_2 </span>
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    class="w-50 w-lg-auto btn fs-lg-7 border border-2 border-neutral-200 rounded-pill d-flex align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                  >
+                    <span class="material-symbols-rounded me-2"> shopping_cart </span>
+                    加入購物車
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn border-0 fs-lg-7 text-white bg-primary rounded-pill px-6 px-lg-7 py-3 py-lg-4 w-100 w-lg-auto"
+                >
+                  立即購買
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="swiper-pagination"></div>
       </div>
-      <div thumbsSlider="" class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <img src="/assets/images/img_product_13.png" alt="img_product_13" />
-          </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_01.png" alt="product_thumb_01" />
-          </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_02.png" alt="product_thumb_02" />
-          </div>
-          <div class="swiper-slide">
-            <img src="/assets/images/product_thumb_03.png" alt="product_thumb_03" />
-          </div>
-        </div>
-      </div>
+
+      <!-- <%- include('./components/swiper'); %> -->
 
       <!-- swiper end -->
 
       <!-- content start -->
-
-      <div class="container">
-        <div class="d-flex flex-column gap-1">
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span>
-            <button type="button" class="btn bg-transparent border-0 p-0">
-              <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
-                favorite
-              </span>
-            </button>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <h2 class="fs-5 text-neutral-700">荒原綠影</h2>
-            <span class="fs-sm text-danger">剩餘 5 件</span>
-          </div>
-
-          <p class="noto-serif-tc fw-bold fs-5 lh-sm text-primary-700">NT$2,400</p>
-        </div>
-
-        <div class="py-8">
-          <div class="fs-sm text-neutral-400">
-            <div class="d-flex justify-content-start">
-              <span>付款方式</span>
-              <ul class="d-flex flex-column gap-1">
-                <li>全館滿 5,000 免運</li>
-                <li>仙人掌系列買五送一</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <span class="d-block fs-sm text-neutral-400 mb-3">加購商品</span>
-          <ul class="list-unstyled">
-            <li class="d-flex justify-content-between gap-3">
-              <!-- 手機板佔一半 -->
-              <div class="add-on-img-container">
-                <img
-                  src="/assets/images/img_product_add_01.png"
-                  alt="img_product_add_01"
-                  class="add-on-img object-fit-contain"
-                />
-              </div>
-              <!-- 中間間隔 12px -->
-              <!-- 手機板佔一半 -->
-              <div class="w-50 d-flex flex-column justify-content-around gap-3">
-                <div class="d-flex flex-column gap-1">
-                  <h4 class="fs-7 text-neutral-700">噴霧器</h4>
-                  <p class="noto-serif-tc fw-bold lh-sm text-primary-700">
-                    NT$129<s class="fs-sm text-neutral-400">$249</s>
-                  </p>
-                </div>
-                <div class="d-flex justify-content-between align-items-center gap-1">
-                  <button type="button" class="btn p-2 rounded-circle border border-2 flex-shrink-0 flex-grow-0">
-                    <span class="material-symbols-rounded align-bottom"> remove </span>
-                  </button>
-                  <span class="noto-serif-tc fw-bold lh-sm">0</span>
-                  <button type="button" class="btn p-2 rounded-circle border border-2">
-                    <span class="material-symbols-rounded align-bottom"> add_2 </span>
-                  </button>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div>
-                <img src="/assets/images/img_product_add_02.png" alt="img_product_add_02" />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
 
       <!-- content end -->
     </section>
