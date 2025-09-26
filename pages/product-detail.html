@@ -64,10 +64,10 @@
             </div>
           </div>
           <div class="col-lg-5">
-            <div class="d-flex flex-column gap-8 gap-lg-10">
+            <div class="d-flex flex-column gap-8 gap-xl-10">
               <!-- head -->
 
-              <div class="d-flex flex-column gap-1 gap-lg-3">
+              <div class="d-flex flex-column gap-1 gap-xl-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span>
                   <button type="button" class="btn bg-transparent border-0 p-0">
@@ -92,7 +92,7 @@
               <div class="fs-sm fs-lg-8 text-neutral-400">
                 <div class="d-flex justify-content-start gap-lg-6">
                   <span>付款方式</span>
-                  <ul class="d-flex flex-column gap-1">
+                  <ul class="d-flex flex-column">
                     <li>全館滿 5,000 免運</li>
                     <li>仙人掌系列買五送一</li>
                   </ul>
@@ -102,9 +102,9 @@
               <!-- add-on -->
 
               <div>
-                <span class="d-block fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-6">加購商品</span>
+                <span class="d-block fs-sm fs-lg-8 text-neutral-400 mb-3 mb-xl-6">加購商品</span>
                 <ul class="list-unstyled d-flex flex-column gap-3 gap-lg-4">
-                  <li class="d-flex justify-content-between align-items-center gap-3">
+                  <li class="d-flex justify-content-between align-items-center gap-3 gap-lg-4">
                     <!-- prettier-ignore -->
                     <%- include('./components/add-on', {
                       imgPath: '/assets/images/test.png',
@@ -129,23 +129,29 @@
 
               <!-- add to cart -->
 
-              <div class="d-lg-flex justify-content-lg-between align-items-center gap-lg-4">
+              <div
+                class="d-lg-flex flex-lg-column flex-xl-row flex-lg-wrap justify-content-lg-between align-items-center gap-lg-4"
+              >
                 <div class="d-flex justify-content-lg-between align-items-center gap-3 mb-4 mb-lg-0">
                   <div class="w-50 w-lg-auto d-flex justify-content-between align-items-center gap-1 gap-lg-2">
                     <button
                       type="button"
-                      class="btn p-4 rounded-circle border border-2 flex-shrink-0 flex-grow-0 btn-circle-lg"
+                      class="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-shrink-0 flex-grow-0 btn-circle-lg"
                     >
                       <span class="material-symbols-rounded align-bottom"> remove </span>
                     </button>
                     <span class="noto-serif-tc fw-bold fs-6 lh-sm text-center counter">1</span>
-                    <button type="button" class="btn p-4 rounded-circle border border-2 flex-lg-shrink-0 btn-circle-lg">
+                    <button
+                      type="button"
+                      class="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-lg-shrink-0 btn-circle-lg"
+                    >
                       <span class="material-symbols-rounded align-bottom"> add_2 </span>
                     </button>
                   </div>
+
                   <button
                     type="button"
-                    class="w-50 w-lg-auto btn fs-lg-7 border border-2 border-neutral-200 rounded-pill d-flex align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                    class="w-50 w-lg-auto btn fs-lg-7 border border-2 border-neutral-200 rounded-pill d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
                   >
                     <span class="material-symbols-rounded me-2"> shopping_cart </span>
                     加入購物車
@@ -154,7 +160,7 @@
 
                 <button
                   type="button"
-                  class="btn border-0 fs-lg-7 text-white bg-primary rounded-pill px-6 px-lg-7 py-3 py-lg-4 w-100 w-lg-auto"
+                  class="btn border-0 fs-lg-7 text-white bg-primary rounded-pill px-6 px-lg-7 py-3 py-lg-4 w-100 w-xl-auto"
                 >
                   立即購買
                 </button>

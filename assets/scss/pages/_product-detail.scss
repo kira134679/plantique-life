@@ -113,6 +113,11 @@
 }
 
 .btn-circle-lg {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
+
+  @include media-breakpoint-up(lg) {
+    width: 56px;
+    height: 56px;
+  }
 }
