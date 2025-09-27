@@ -1,0 +1,24 @@
+<button id="custom-btn-backtotop" class="btn custom-btn-backtotop" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_upward_alt </span>
+</button>
+<script>
+  let backToTopBtn = document.getElementById('custom-btn-backtotop');
+  window.onscroll = function () {
+    scrollFunction();
+  };
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      backToTopBtn.style.display = 'block';
+    } else {
+      backToTopBtn.style.display = 'none';
+    }
+  }
+  backToTopBtn.addEventListener('click', backToTop);
+
+  function backToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+</script>

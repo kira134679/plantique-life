@@ -1,0 +1,10 @@
+<button
+  class="btn custom-btn-<%= type %>-<%= color %> custom-btn-<%= shape %>-<%= size %> <%= rightIcon?'custom-btn-icon-end':'' %> <%= leftIcon? 'custom-btn-icon-start': ''%>"
+  type="button"
+>
+  <%if (leftIcon) { %>
+  <span class="custom-btn-icon material-symbols-rounded"> <%= iconName %> </span>
+  <% } %> <%= btnText %> <% if (rightIcon) { %>
+  <span class="custom-btn-icon material-symbols-rounded"> <%= iconName%> </span>
+  <% } %>
+</button>
