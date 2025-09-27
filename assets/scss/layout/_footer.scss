@@ -1,4 +1,72 @@
+// note: 目前 footer 的 RWD 斷點除了 container 以外，皆設置在 lg
+@use 'sass:map';
+
 .footer {
-  background: #fefae0;
-  font-size: 32px;
+  font-size: $font-size-sm;
+}
+@include media-breakpoint-up(lg) {
+  .footer {
+    font-size: $font-size-base;
+  }
+}
+
+.site-map {
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+  ul {
+    // flex: 1 0 0;
+    list-style: none;
+    text-align: center;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+  li {
+    margin-bottom: map.get($spacers, 1);
+  }
+  li:first-child {
+    color: $primary-200;
+    margin-bottom: map.get($spacers, 4);
+  }
+  li:last-child {
+    margin-bottom: 0;
+  }
+  a {
+    padding: map.get($spacers, 1) 0.656rem; //note: 連結的padding目前皆採用設計稿上的四個字連結padding
+  }
+}
+@include media-breakpoint-up(lg) {
+  .site-map {
+    & > div {
+      gap: map.get($spacers, 6);
+      justify-content: flex-start;
+    }
+    ul {
+      flex: initial;
+    }
+    li {
+      margin-bottom: map.get($spacers, 2);
+    }
+    li:first-child {
+      margin-bottom: map.get($spacers, 6);
+    }
+    a {
+      padding: map.get($spacers, 1) 0.656rem;
+    }
+  }
+}
+
+.social-link {
+  padding: map.get($spacers, 2);
+  background-color: rgba($light, 0.2);
+  border-radius: 50%;
+  img {
+    display: block;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .social-link {
+    padding: map.get($spacers, 3);
+  }
 }
