@@ -11,11 +11,10 @@
 @import './layout/footer';
 
 // components
-@import './components/product-card';
+
+@import './components/breadcrumb';
 
 // section
 
-@import './pages/index/category';
-@import './pages/index/column';
-@import './pages/index/hero';
-@import './pages/index/about';
+@import './pages/product-detail/product-swiper';
+@import './pages/product-detail/upper-section';

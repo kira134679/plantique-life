@@ -27,7 +27,7 @@ export default defineConfig({
   // base: '/Repository 的名稱/'
   base: '/plantique-life/',
   plugins: [
-    liveReload(['./layout/**/*.ejs', './pages/**/*.ejs', './pages/**/*.html']),
+    liveReload(['./layout/**/*.ejs', './components/**/*.ejs', './pages/**/*.html']),
     ViteEjsPlugin(),
     moveOutputPlugin(),
   ],
