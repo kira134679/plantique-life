@@ -1,0 +1,126 @@
+@use 'sass:map';
+
+.noto-sans-tc {
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+.mx-minus-3 {
+  margin-right: - map.get($spacers, 3);
+  margin-left: - map.get($spacers, 3);
+}
+
+.max-w-100-plus-6 {
+  max-width: calc(100% + map.get($spacers, 6));
+}
+
+.custom-tab-btn.active {
+  color: $primary-600 !important;
+  border-bottom: 2px solid $primary-600 !important;
+}
+
+// 客製化 container-lg: 當<lg時，內容滿版，左右不留12px的padding
+.custom-container-lg {
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+}
+@include media-breakpoint-up(lg) {
+  .custom-container-lg {
+    padding-right: $container-padding-x;
+    padding-left: $container-padding-x;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: map.get($container-max-widths, lg);
+  }
+}
+@include media-breakpoint-up(xl) {
+  .custom-container-lg {
+    padding-right: $container-padding-x;
+    padding-left: $container-padding-x;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: map.get($container-max-widths, xl);
+  }
+}
+@include media-breakpoint-up(xxl) {
+  .custom-container-lg {
+    padding-right: $container-padding-x;
+    padding-left: $container-padding-x;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: map.get($container-max-widths, xxl);
+  }
+}
+
+.px-6px {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
+.fit-the-pic {
+  // .favorite-btn {
+  //   right: 8px !important;
+  //   top: 8px !important;
+  // }
+  // img {
+  //   height: 230px !important;
+  // }
+  // &:hover {
+  //   img {
+  //     transform: scale(1.1);
+  //     transition: transform 0.5s ease;
+  //   }
+  // }
+}
+@include media-breakpoint-up(lg) {
+  // .fit-the-pic {
+  //   .favorite-btn {
+  //     right: 12px !important;
+  //     top: 12px !important;
+  //   }
+  //   img {
+  //     height: 420px !important;
+  //   }
+  // }
+}
+
+.section-decoration-line-right {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc($font-size-base * 4 + 0.02em * 3 + map.get($spacers, 6));
+    width: 100%;
+    height: 1px;
+    background-color: $primary-200;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .section-decoration-line-right::after {
+    left: calc($font-size-base * 4 + 0.02em * 3 + map.get($spacers, 6) * 2);
+  }
+}
+
+.section-decoration-line-both {
+  position: relative;
+  text-align: center;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: calc(50% - $h7-font-size * 2 - 0.02em * 3 - map.get($spacers, 6));
+    height: 1px;
+    background-color: $primary-200;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: calc(50% - $h7-font-size * 2 - 0.02em * 3 - map.get($spacers, 6));
+    height: 1px;
+    background-color: $primary-200;
+  }
+}

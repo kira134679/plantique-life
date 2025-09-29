@@ -191,6 +191,163 @@
 
     <!-- bottom-part-start -->
 
+    <!-- 約略完成，TODO：修各項 html 標籤以符合語意化，整理class命名，把寫在自己頁面的scss檔裡面，可以用bootstap utilities的拿出去寫utilities，整理各個RWD斷點 -->
+    <!-- 產品細節 Tab 區塊 -->
+    <section class="py-8 py-lg-13">
+      <!-- Tab 按鈕 -->
+      <div class="custom-container-lg">
+        <ul class="nav row gx-3 gx-lg-6 text-center border-bottom mb-6 mb-lg-12" id="productDetailTab" role="tablist">
+          <li class="col-4" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn active"
+              id="introduction-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#introduction-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="introduction-tab-pane"
+              aria-selected="true"
+            >
+              介紹
+            </button>
+          </li>
+          <li class="col-4" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+              id="care-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#care-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="care-tab-pane"
+              aria-selected="false"
+            >
+              照顧方式
+            </button>
+          </li>
+          <li class="col-4" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+              id="notice-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#notice-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="notice-tab-pane"
+              aria-selected="false"
+            >
+              注意事項
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!-- Tab 內容 -->
+      <div class="tab-content" id="productDetailTabContent">
+        <!-- 介紹 Tab 的內容 -->
+        <div
+          class="tab-pane fade show active"
+          id="introduction-tab-pane"
+          role="tabpanel"
+          aria-labelledby="introduction-tab"
+          tabindex="0"
+        >
+          <!-- 當前商品字卡 -->
+          <div class="container mb-lg-10">
+            <div class="row align-items-center">
+              <div class="card border-0 col-lg-6">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">荒野綠影</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Opuntia microdasys var. albispina
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    以三款仙人掌組成的荒漠組盆。我們精心挑選各式仙人掌，它們身形各異，有的高聳挺拔，有的嬌小圓潤，有的則滿佈刺毛，每一株都是荒野中的獨立角色。
+                  </p>
+                </div>
+              </div>
+              <img class="d-lg-block d-none col-lg-6" src="/assets/images/img_product_13-3.png" alt="product_13-3" />
+            </div>
+          </div>
+          <img class="d-block d-lg-none mb-6 w-100" src="/assets/images/img_product_13-3.png" alt="product_13-3" />
+          <!-- 組盆內容 -->
+          <div class="container">
+            <p class="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
+          </div>
+          <div class="container">
+            <div class="row align-items-center py-6 py-lg-40">
+              <div class="card border-0 col-xl-4 mb-3 mb-lg-0">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">白烏​帽子</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Opuntia microdasys var. albispina
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    掌狀莖覆滿​白色​細緻絨毛狀​刺座，​外觀柔​和​卻兼​具仙​人掌​的​堅韌​特性，​是​造型​獨特且​充滿​可​愛感​的​品種。
+                  </p>
+                </div>
+              </div>
+              <div class="card border-0 col-xl-4 mb-3 mb-lg-0">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">緋牡丹錦​</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Gymnocalycium mihanovichii var. friedrichii
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    以​鮮紅、​橙黃、​粉紫​等​錦斑色​澤​聞名，​宛如​一​朵​小小​的​彩色​牡丹，​鮮豔​奪目，​是​觀賞​價值​極​高​的​仙人​掌​種類。
+                  </p>
+                </div>
+              </div>
+              <div class="card border-0 col-xl-4">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">熊童子</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Cotyledon tomentosa
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    圓潤​厚實​的​葉片​覆​有​細絨毛，​葉尖​呈​爪狀，​宛如​小熊​的​掌心，​造型​療癒，​深受​多​肉愛好者​喜愛。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-lg">
+            <img
+              class="d-block mx-minus-3 max-w-100-plus-6"
+              src="/assets/images/img_product_13-2.png"
+              alt="product_13-2"
+            />
+          </div>
+        </div>
+        <!-- 照顧方式 Tab 的內容 -->
+        <div class="tab-pane fade" id="care-tab-pane" role="tabpanel" aria-labelledby="care-tab" tabindex="0">
+          <!-- 照顧方式的內容 -->
+        </div>
+        <!-- 注意事項 Tab 的內容 -->
+        <div class="tab-pane fade" id="notice-tab-pane" role="tabpanel" aria-labelledby="notice-tab" tabindex="0">
+          <!-- 注意事項的內容 -->
+        </div>
+      </div>
+    </section>
+    <!-- 相關商品區塊 -->
+    <section class="container py-12 py-lg-15">
+      <p class="text-neutral-400 fs-7 mb-8 mb-lg-10 section-decoration-line-both overflow-hidden">相關商品</p>
+      <!-- 相關商品卡片 -->
+      <div class="row px-6px px-lg-0">
+        <!-- prettier-ignore -->
+        <% const relativeCards = [
+        {picSrc: '/assets/images/img_product_07.png', picAlt: 'product_07', productTag: '質感精選', productName: '雪夜之森', productPrice: '2,400'},
+        {picSrc: '/assets/images/img_product_08.png', picAlt: 'product_08', productTag: '質感精選', productName: '植語時光', productPrice: '3,000'},
+        {picSrc: '/assets/images/img_product_13.png', picAlt: 'product_13', productTag: '質感精選', productName: '荒野綠影', productPrice: '2,400'},
+        {picSrc: '/assets/images/img_product_09.png', picAlt: 'product_09', productTag: '質感精選', productName: '森語花信', productPrice: '3,500'},
+        ] %>
+        <% for (const relativeCard of relativeCards){ %>
+        <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 fit-the-pic">
+          <%- include('./components/product-card', relativeCard) -%>
+        </div>
+        <% } %>
+      </div>
+    </section>
+
     <!-- bottom-part-end -->
 
     <%- include('./layout/footer'); -%>

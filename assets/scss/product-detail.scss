@@ -11,10 +11,10 @@
 @import './layout/footer';
 
 // components
-
 @import './components/breadcrumb';
+@import './components/product-card';
 
 // section
-
 @import './pages/product-detail/product-swiper';
 @import './pages/product-detail/upper-section';
+@import './pages/product-detail/product-detail-end';
