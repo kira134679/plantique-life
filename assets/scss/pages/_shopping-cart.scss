@@ -8,6 +8,7 @@
   .cart-step {
     width: var(--cart-step);
     height: var(--cart-step);
+    position: relative;
   }
   .nav-link {
     text-align: start;
@@ -16,24 +17,31 @@
     position: relative;
     .cart-step {
       transition:
+        font-size 0.6s,
         color 0.6s,
         background-color 0.6s,
         border-color 0.6s;
     }
+    .cart-step::before {
+      content: '\e5ca';
+      font-family: 'Material Symbols Rounded';
+      font-size: map-get($font-sizes, 4);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.8s;
+      @include media-breakpoint-up(lg) {
+        font-size: map-get($font-sizes, 2);
+      }
+    }
     .cart-progress {
-      content: '';
       position: absolute;
       top: calc(var(--cart-step) / 2 - var(--cart-progress-height) / 2);
       height: var(--cart-progress-height);
       background-color: $border-color;
-      &-start {
-        left: 0;
-        right: calc(50% + var(--cart-step) / 2);
-      }
-      &-end {
-        left: calc(50% + var(--cart-step) / 2);
-        right: 0;
-      }
+      width: calc(100% - var(--cart-step));
+      left: calc(50% + var(--cart-step) / 2);
     }
     .cart-progress::before {
       content: '';
@@ -46,27 +54,29 @@
       transition: width 0.6s linear;
     }
   }
-  .nav-link.active,
-  .nav-link.step-completed {
+  .nav-link.active {
     background: none;
     color: initial;
+  }
+  .nav-link.step-completed {
+    .cart-progress::before {
+      width: 100%;
+    }
+  }
+  .nav-link.step-active,
+  .nav-link.step-completed {
     .cart-step {
       background-color: $primary !important;
       border-color: $primary !important;
       color: $white !important;
     }
-    .cart-progress-start::before {
-      width: 100%;
-    }
-  }
-  .nav-link:not(.active):not(.step-undo) {
-    .cart-progress-start::before {
-      width: 100%;
-    }
   }
   .nav-link.step-completed {
-    .cart-progress-end::before {
-      width: 100%;
+    .cart-step {
+      font-size: 0 !important;
+    }
+    .cart-step::before {
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 }
@@ -162,4 +172,100 @@
     color: $neutral-400;
     background-color: $neutral-100;
   }
+}
+
+.checkout-dropdown {
+  .dropdown-toggle {
+    position: relative;
+  }
+  // 檢核 icon，預設是錯誤 icon
+  .dropdown-toggle::before {
+    content: '\f22f';
+    font-family: 'Material Symbols Rounded';
+    font-size: map-get($font-sizes, 8);
+    border: 1.5px solid $danger;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    color: $danger;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    visibility: hidden;
+  }
+  // 下拉 icon
+  .dropdown-toggle::after {
+    content: '\e313';
+    font-family: 'Material Symbols Rounded';
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    transition: transform 0.4s;
+  }
+  .dropdown-toggle.show::after {
+    transform: translateY(-50%) rotateX(180deg);
+  }
+  .dropdown-item:hover {
+    background-color: $primary-100;
+  }
+  .dropdown-invalid-feedback {
+    display: none;
+    color: $danger;
+    font-size: $font-size-sm;
+    margin-top: map-get($spacers, 1);
+  }
+  &.was-validated {
+    .dropdown-toggle {
+      border-color: $danger !important;
+    }
+    .dropdown-toggle::before {
+      visibility: visible;
+    }
+    .dropdown-toggle::after {
+      transform: translate(-24px, -50%);
+    }
+    .dropdown-toggle.show::after {
+      transform: translate(-24px, -50%) rotateX(180deg);
+    }
+    .dropdown-invalid-feedback {
+      display: block;
+    }
+  }
+  &.was-validated.valid {
+    .dropdown-toggle {
+      border-color: $success !important;
+    }
+    .dropdown-toggle::before {
+      content: '\f88b';
+      color: $success;
+      border: none;
+      font-size: map-get($font-sizes, 3);
+      width: 24px;
+      height: 24px;
+      right: 8px;
+    }
+    .dropdown-invalid-feedback {
+      display: none;
+    }
+  }
+}
+
+input.form-control[data-card-number-group] {
+  width: 100px;
+}
+input.form-control[data-card-exp-group] {
+  width: 80px;
+}
+input.form-control[data-card-cvc] {
+  width: 90px;
+}
+
+.product-add1-position {
+  object-position: 50% 20%;
 }

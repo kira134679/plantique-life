@@ -10,9 +10,9 @@
 
     <div class="container-fluid container-lg">
       <ol class="cart-nav nav nav-pills flex-nowrap py-8 py-lg-13" id="pills-cart-nav" role="tablist">
-        <li class="nav-item flex-grow-1" role="presentation">
+        <li class="nav-item col-4" role="presentation">
           <button
-            class="nav-link w-100 d-flex flex-column align-items-center active"
+            class="nav-link w-100 d-flex flex-column align-items-center active step-active"
             id="pills-cart-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-cart"
@@ -27,12 +27,12 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary mt-2">Cart List</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
-            <div class="cart-progress cart-progress-end"></div>
+            <div class="cart-progress"></div>
           </button>
         </li>
-        <li class="nav-item flex-grow-1" role="presentation">
+        <li class="nav-item col-4" role="presentation">
           <button
-            class="nav-link w-100 d-flex flex-column align-items-center step-undo"
+            class="nav-link w-100 d-flex flex-column align-items-center"
             id="pills-checkout-info-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-checkout-info"
@@ -47,13 +47,12 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary text-nowrap mt-2">Checkout Info</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
-            <div class="cart-progress cart-progress-start"></div>
-            <div class="cart-progress cart-progress-end"></div>
+            <div class="cart-progress"></div>
           </button>
         </li>
-        <li class="nav-item flex-grow-1" role="presentation">
+        <li class="nav-item col-4" role="presentation">
           <button
-            class="nav-link w-100 text-center step-undo"
+            class="nav-link w-100 text-center"
             id="pills-confirmation-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-confirmation"
@@ -68,7 +67,6 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary mt-2">Confirmation</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">訂單確認</h2>
-            <div class="cart-progress cart-progress-start"></div>
           </button>
         </li>
       </ol>
@@ -117,13 +115,13 @@
                 <div class="d-flex align-items-center">
                   <span class="fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3">選擇優惠</span>
                   <span
-                    class="coupon-selected-name fs-xs fs-lg-sm text-neutral-400 bg-neutral-100 py-1 px-2 px-lg-3"
+                    class="coupon-selected-name fs-xs fs-lg-sm text-truncate text-neutral-400 bg-neutral-100 py-1 px-2 px-lg-3 me-2"
                     id="coupon-selected-name"
                     >未選擇優惠</span
                   >
                   <button
                     type="button"
-                    class="btn text-primary ms-auto py-1 px-0"
+                    class="btn text-primary ms-auto text-nowrap py-1 px-0"
                     id="coupon-choose-btn"
                     data-bs-toggle="modal"
                     data-bs-target="#couponModal"
@@ -162,20 +160,20 @@
                 <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
                 <div class="d-flex justify-content-between mb-3 mb-lg-4">
                   <span class="fs-sm fs-lg-8 text-neutral-400">商品小計</span>
-                  <span class="fs-sm fs-lg-8 text-neutral-400" id="subtotal"></span>
+                  <span class="fs-sm fs-lg-8 text-neutral-400" id="cart-subtotal"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-3 mb-lg-4">
                   <span class="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
-                  <span class="fs-sm fs-lg-8 text-secondary" id="discount"></span>
+                  <span class="fs-sm fs-lg-8 text-secondary" id="cart-discount"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-4 mb-lg-8">
                   <span class="fs-lg-7 text-neutral-700">總金額</span>
-                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="total"></span>
+                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="cart-total"></span>
                 </div>
                 <button
                   type="button"
                   class="btn btn-primary fs-lg-7 text-white w-100 rounded-pill py-3"
-                  id="btn-checkout"
+                  id="btn-next-checkout"
                 >
                   前往結帳
                 </button>
@@ -311,7 +309,317 @@
           aria-labelledby="pills-checkout-info-tab"
           tabindex="0"
         >
-          付款資料
+          <div class="row">
+            <div class="col-lg-8">
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">
+                  選擇運送及付款方式 <span class="text-danger">*</span>
+                </h6>
+                <p class="fs-lg-7 text-neutral-700 mb-2">運送方式</p>
+                <div class="dropdown checkout-dropdown" id="delivery-dropdown">
+                  <button
+                    class="btn dropdown-toggle border w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    id="delivery-toggle"
+                    data-initial-text="請選擇運送方式"
+                  >
+                    請選擇運送方式
+                  </button>
+                  <ul class="dropdown-menu w-100">
+                    <li><a class="dropdown-item" href="#">黑貓宅配</a></li>
+                  </ul>
+                  <div class="dropdown-invalid-feedback">未選擇運送方式</div>
+                </div>
+                <p class="fs-sm text-neutral-400 mt-1">* 宅配貨到付款會產生額外手續費</p>
+                <p class="fs-sm text-neutral-400 mb-3">* 宅配週日不配送</p>
+                <p class="fs-lg-7 text-neutral-700 mb-2">付款方式</p>
+                <div class="dropdown checkout-dropdown" id="payment-dropdown">
+                  <button
+                    class="btn dropdown-toggle border w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    id="payment-toggle"
+                    data-initial-text="請選擇付款方式"
+                  >
+                    請選擇付款方式
+                  </button>
+                  <ul class="dropdown-menu w-100">
+                    <li><a class="dropdown-item" href="#">貨到付款</a></li>
+                    <li><a class="dropdown-item" href="#">信用卡一次付清</a></li>
+                    <li><a class="dropdown-item" href="#">轉帳</a></li>
+                  </ul>
+                  <div class="dropdown-invalid-feedback">未選擇付款方式</div>
+                </div>
+                <form id="creditcard-form" class="needs-validation mt-4" novalidate>
+                  <div>
+                    <label for="card-number-1" class="form-label fs-lg-7 text-neutral-700">信用卡卡號</label>
+                    <div class="d-flex flex-wrap align-items-center gap-1 mb-2">
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        id="card-number-1"
+                        pattern="\d{4}"
+                        maxlength="4"
+                        data-card-number-group="1"
+                        required
+                      />
+                      <span class="text-neutral-400">-</span>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        id="card-number-2"
+                        pattern="\d{4}"
+                        maxlength="4"
+                        data-card-number-group="2"
+                        required
+                      />
+                      <span class="text-neutral-400">-</span>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        id="card-number-3"
+                        pattern="\d{4}"
+                        maxlength="4"
+                        data-card-number-group="3"
+                        required
+                      />
+                      <span class="text-neutral-400">-</span>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        id="card-number-4"
+                        pattern="\d{4}"
+                        maxlength="4"
+                        data-card-number-group="4"
+                        required
+                      />
+                      <div class="invalid-feedback w-100 mt-0">卡號輸入錯誤</div>
+                    </div>
+                  </div>
+                  <div class="d-flex gap-4 gap-lg-6">
+                    <div>
+                      <label for="card-exp-month" class="form-label fs-lg-7 text-neutral-700">卡片有效期限</label>
+                      <div class="d-flex flex-wrap align-items-center gap-1">
+                        <input
+                          type="text"
+                          class="form-control text-center"
+                          id="card-exp-month"
+                          placeholder="MM"
+                          maxlength="2"
+                          data-card-exp-group="1"
+                          required
+                        />
+                        <span class="text-neutral-400">/</span>
+                        <input
+                          type="text"
+                          class="form-control text-center"
+                          id="card-exp-year"
+                          placeholder="YY"
+                          maxlength="2"
+                          data-card-exp-group="2"
+                          required
+                        />
+                        <div class="invalid-feedback w-100 mt-0">有效期限輸入錯誤</div>
+                      </div>
+                    </div>
+                    <div>
+                      <label for="card-cvc" class="form-label fs-lg-7 text-neutral-700">背面末三碼</label>
+                      <input
+                        type="text"
+                        class="form-control text-center"
+                        id="card-cvc"
+                        pattern="\d{3}"
+                        placeholder="CVC"
+                        data-card-cvc="1"
+                        required
+                      />
+                      <div class="invalid-feedback text-nowrap">末三碼輸入錯誤</div>
+                    </div>
+                  </div>
+                </form>
+              </section>
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂購人資料 <span class="text-danger">*</span></h6>
+                <form id="purchaser-form" class="needs-validation" novalidate>
+                  <div class="d-flex gap-4 gap-lg-6">
+                    <div class="flex-grow-1 mb-3">
+                      <label for="purchaser-name" class="form-label fs-lg-7 text-neutral-700">姓名</label>
+                      <input type="text" class="form-control" id="purchaser-name" placeholder="請輸入姓名" required />
+                      <div class="invalid-feedback">未輸入姓名</div>
+                    </div>
+                    <div class="flex-grow-1 mb-3">
+                      <label for="purchaser-phone" class="form-label fs-lg-7 text-neutral-700">電話號碼</label>
+                      <input
+                        type="tel"
+                        class="form-control"
+                        id="purchaser-phone"
+                        placeholder="請輸入電話"
+                        pattern="^(09\d{8}|0\d{1,2}-?\d{6,8})$"
+                        required
+                      />
+                      <div class="invalid-feedback">電話號碼輸入錯誤</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="purchaser-email" class="form-label fs-lg-7 text-neutral-700">電子郵件</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="purchaser-email"
+                      placeholder="請輸入 E-mail"
+                      required
+                    />
+                    <div class="invalid-feedback">電子郵件輸入有誤</div>
+                  </div>
+                </form>
+              </section>
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <div class="d-flex">
+                  <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">
+                    收貨人資料 <span class="text-danger">*</span>
+                  </h6>
+                  <div class="form-check ms-auto">
+                    <input class="form-check-input" type="checkbox" value="" id="recipient-checked" />
+                    <label class="form-check-label" for="recipient-checked">同訂購人資料</label>
+                  </div>
+                </div>
+                <form id="recipient-form" class="needs-validation" novalidate>
+                  <div class="d-flex gap-4 gap-lg-6">
+                    <div class="flex-grow-1 mb-3">
+                      <label for="recipient-name" class="form-label fs-lg-7 text-neutral-700">姓名</label>
+                      <input type="text" class="form-control" id="recipient-name" placeholder="請輸入姓名" required />
+                      <div class="invalid-feedback">未輸入姓名</div>
+                    </div>
+                    <div class="flex-grow-1 mb-3">
+                      <label for="recipient-phone" class="form-label fs-lg-7 text-neutral-700">電話號碼</label>
+                      <input
+                        type="tel"
+                        class="form-control"
+                        id="recipient-phone"
+                        placeholder="請輸入電話"
+                        pattern="^(09\d{8}|0\d{1,2}-?\d{6,8})$"
+                        required
+                      />
+                      <div class="invalid-feedback">電話號碼輸入錯誤</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipient-email" class="form-label fs-lg-7 text-neutral-700">電子郵件</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="recipient-email"
+                      placeholder="請輸入 E-mail"
+                      required
+                    />
+                    <div class="invalid-feedback">電子郵件輸入有誤</div>
+                  </div>
+                  <div class="flex-grow-1 mb-3">
+                    <label for="recipient-address" class="form-label fs-lg-7 text-neutral-700">收件地址</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recipient-address"
+                      placeholder="請輸入收件地址"
+                      required
+                    />
+                    <div class="invalid-feedback">未輸入收件地址</div>
+                  </div>
+                </form>
+              </section>
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">發票類型 <span class="text-danger">*</span></h6>
+                <form id="invoice-form" class="needs-validation" novalidate>
+                  <p class="fs-lg-7 text-neutral-700 mb-2">選擇發票類型</p>
+                  <div class="dropdown checkout-dropdown" id="invoice-dropdown">
+                    <button
+                      class="btn dropdown-toggle border w-100 text-start"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      id="invoice-toggle"
+                      data-initial-text="選擇發票類型"
+                    >
+                      選擇發票類型
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                      <li><a class="dropdown-item" href="#">電子發票</a></li>
+                      <li><a class="dropdown-item" href="#" id="mobile-barcode-item">雲端載具</a></li>
+                      <li><a class="dropdown-item" href="#" id="ubn-item">統一編號</a></li>
+                    </ul>
+                    <div class="dropdown-invalid-feedback">未選擇發票類型</div>
+                  </div>
+                  <div class="mt-3" id="cloud-invoice-carrier">
+                    <label for="mobile-barcode" class="form-label fs-lg-7">手機條碼</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="mobile-barcode"
+                      placeholder="請輸入手機條碼"
+                      pattern="^\/[0-9A-Z.\-\+]{7}$"
+                      required
+                    />
+                    <div class="invalid-feedback">手機條碼輸入錯誤</div>
+                  </div>
+                  <div class="mt-3" id="ubn-wrapper">
+                    <label for="ubn" class="form-label fs-lg-7">統一編號</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ubn"
+                      placeholder="請輸入統一編號"
+                      pattern="\d{8}"
+                      required
+                    />
+                    <div class="invalid-feedback">統一編號輸入錯誤</div>
+                  </div>
+                </form>
+              </section>
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">備註</h6>
+                <div class="mb-2">
+                  <label for="checkout-notes" class="form-label visually-hidden">備註</label>
+                  <textarea class="form-control" id="checkout-notes" rows="3" placeholder="請輸入備註"></textarea>
+                </div>
+              </section>
+            </div>
+            <div class="col-lg-4">
+              <section class="border border-2 p-4 p-lg-6">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
+                <div class="d-flex justify-content-between mb-3 mb-lg-4">
+                  <span class="fs-sm fs-lg-8 text-neutral-400">商品小計</span>
+                  <span class="fs-sm fs-lg-8 text-neutral-400" id="checkout-subtotal"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 mb-lg-4">
+                  <span class="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
+                  <span class="fs-sm fs-lg-8 text-secondary" id="checkout-discount"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4 mb-lg-8">
+                  <span class="fs-lg-7 text-neutral-700">總金額</span>
+                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="checkout-total"></span>
+                </div>
+                <div class="d-flex gap-4">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary fs-lg-7 w-100 rounded-pill py-3"
+                    id="btn-back-cart"
+                  >
+                    回購物車
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary fs-lg-7 text-white w-100 rounded-pill py-3"
+                    id="btn-next-confirmation"
+                  >
+                    下一步
+                  </button>
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
         <div
           class="tab-pane fade"
