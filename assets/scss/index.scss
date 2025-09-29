@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@0..1'); //增加可調整的FILL
 
 @import './utils/custom-bs';
 
@@ -11,7 +11,18 @@
 @import './layout/footer';
 
 // components
+@import './components/product-card';
+
+@import './components/buttons/btn-backtotop';
+@import './components/buttons/btn-tag';
+@import './components/buttons/btn-link';
+@import './components/buttons/btn-fav';
+@import './components/buttons/btn-social';
+@import './components/buttons/btn-filled-or-outline';
 
 // section
 
 @import './pages/index/category';
+@import './pages/index/column';
+@import './pages/index/hero';
+@import './pages/index/about';

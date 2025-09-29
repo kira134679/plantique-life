@@ -1,0 +1,39 @@
+@use 'sass:map';
+
+//社群媒體按鈕（灰底白字）
+.custom-btn-social {
+  @include button-variant(
+    $background: rgba($white, 0.2),
+    $border: transparent,
+    $color: $white,
+    $hover-background: rgba($white, 0.6),
+    $hover-border: transparent,
+    $hover-color: $white,
+    $active-background: rgba($white, 0.6),
+    $active-border: transparent,
+    $active-color: $white,
+    $disabled-background: rgba($white, 0.2),
+    $disabled-border: transparent,
+    $disabled-color: $white
+  );
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 2),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+  border-width: 0;
+  & > .custom-btn-icon {
+    display: block;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-social {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 3),
+      $font-size: $font-size-base,
+      $border-radius: 50%
+    );
+  }
+}

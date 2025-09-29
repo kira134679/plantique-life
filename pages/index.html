@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>植感生活 | PLANTIQUE LIFE</title>
   </head>
 
@@ -10,11 +11,108 @@
     <%- include('./layout/header'); -%>
 
     <!-- hero section start -->
-
+    <header class="hero hero-py">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+            <div class="">
+              <img src="/assets/images/img_title_lg.svg" alt="Slogan" class="mb-10" />
+              <button
+                type="button"
+                class="btn-1 text-white bg-primary rounded-pill border-0 py-4 d-flex align-items-center"
+              >
+                <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+              </button>
+            </div>
+          </div>
+          <div class="d-none d-sm-block col-md-10">
+            <img src="../assets/images/img_banner_text02_lg.svg" alt="Slogan" />
+          </div>
+        </div>
+      </div>
+    </header>
     <!-- hero section end -->
 
     <!-- news section start -->
+    <section class="py-12 py-md-15">
+      <div class="container">
+        <div class="row">
+          <!-- 標題 -->
+          <div class="col-md-2">
+            <div class="d-flex flex-sm-column justify-content-center align-items-center gap-6 gap-sm-0">
+              <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
+              <div class="text-center d-flex flex-column justify-content-center align-items-center">
+                <h6 class="fs-7 text-primary mb-1 mb-lg-4">News</h6>
+                <h2 class="fs-3 fs-lg-2 m-0 text-neutral-700 news-title mb-8 mb-lg-3">最 新 消 息</h2>
+              </div>
+              <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+              <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+            </div>
+          </div>
 
+          <!-- 資訊 -->
+          <div class="col-md-10">
+            <div class="swiper newsSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                        <p class="fs-sm fs-lg-8 m-0 mb-4 text-neutral-400">
+                          結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
+                        </p>
+
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_02.png" alt="活動開跑" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">
+                          本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
+                        </h3>
+                        <p class="fs-sm fs-lg-8 fw-medium m-0 mb-4 text-neutral-400">
+                          迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
+                        </p>
+
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-md-flex flex-start swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- news section end -->
 
     <!-- category section start -->
@@ -185,19 +283,330 @@
     <!-- category section end -->
 
     <!-- recommend section start -->
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-center justify-content-md-between align-items-center align-items-md-end">
+          <hgroup class="d-flex justify-content-start align-items-end align-items-lg-center gap-6 gap-lg-10">
+            <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+            <div class="text-center">
+              <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
+                Recommend
+              </small>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700">植感精選</h2>
+            </div>
+            <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+          </hgroup>
+          <button class="btn border-neutral-200 rounded-pill d-none d-md-block">
+            <a href="#" class="text-center text-neutral-700 rounded-pill"
+              ><span class="fs-7 me-1">查看更多</span>
+              <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+            </a>
+          </button>
+        </div>
+      </div>
 
+      <!-- 產品卡片 -->
+      <div class="container mb-8">
+        <div class="position-relative">
+          <div class="swiper swiperProduct">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"植感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"植感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_02.png', 
+                       productTag:"植感精選",
+                       productName:"向陽而生",
+                       productPrice :"NT$ 7,280"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_03.png', 
+                       productTag:"植感精選",
+                       productName:"暮光角落",
+                       productPrice :"NT$ 7,500"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_04.png', 
+                       productTag:"植感精選",
+                       productName:"雲深處靜",
+                       productPrice :"NT$ 6,600"
+                      }); -%>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 導航按鈕 -->
+          <div class="swiper-button-prev">
+            <span class="material-symbols-rounded">arrow_left_alt </span>
+          </div>
+          <div class="swiper-button-next">
+            <span class="material-symbols-rounded"> arrow_right_alt </span>
+          </div>
+        </div>
+      </div>
+      <div class="d-md-none d-flex justify-content-center">
+        <button class="btn border-neutral-200 rounded-pill">
+          <a href="#" class="text-center text-neutral-700 rounded-pill d-block d-md-none"
+            ><span class="fs-7 me-1">查看更多</span>
+            <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+          </a>
+        </button>
+      </div>
+    </section>
     <!-- recommend section end -->
 
     <!-- column section start -->
-
+    <section class="column-section py-12" aria-labelledby="column-title">
+      <div class="container-fluid container-lg">
+        <div class="d-flex flex-column align-items-center flex-lg-row justify-content-lg-between mb-lg-12">
+          <div class="d-flex justify-content-center">
+            <picture class="align-self-end me-6">
+              <source srcset="../assets/images/heading-decoration.svg" media="(min-width: 768px)" />
+              <img src="../assets/images/heading-decoration-sm.svg" class="img-fluid" alt="heading-decoration" />
+            </picture>
+            <div class="d-flex flex-column align-items-center">
+              <h3 class="text-primary fs-8 fs-lg-7 mb-1 mb-lg-2">Column</h3>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700" id="column-title">植感專欄</h2>
+            </div>
+            <picture class="align-self-end ms-6">
+              <source srcset="../assets/images/heading-decoration.svg" media="(min-width: 768px)" />
+              <img src="../assets/images/heading-decoration-sm.svg" class="img-fluid" alt="heading-decoration" />
+            </picture>
+          </div>
+          <div class="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0" id="column-filter">
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3 active"
+              data-filter="all"
+            >
+              全部
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="guide"
+            >
+              #養護指南
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="illustrated-book"
+            >
+              #多肉圖鑑
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="proposal"
+            >
+              #生活提案
+            </button>
+          </div>
+        </div>
+        <ul class="list-unstyled row g-6" id="">
+          <li class="col-lg-6 column-item" data-category="guide">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_01.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_01"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">新手必看：五種不易失敗的多肉推薦</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 養護指南</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  第一次養多肉就上手！精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="illustrated-book">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_02.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_02"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">圓滾滾的療癒系：綠之鈴</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 多肉圖鑑</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  鑑在多肉植物的世界裡，若要選出一款最具垂墜美感、造境最討喜的代表，綠之鈴無疑名列前茅。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="proposal">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_03.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_03"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">為你的空間選一種氣質：多肉的氛圍搭配提案</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 生活提案</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  多肉植物們擁有多樣的顏色、形狀與質地，也乘載著一種「氛圍感」。你會發現，當一盆多肉出現在書桌上，氛圍感立刻不一樣。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="proposal">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_04.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_04"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">療癒系小宇宙：用多肉打造居家綠意角落</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 生活提案</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  在都市的繁忙節奏中，我們總渴望一處能讓心靈喘息的綠洲。多肉植物以其獨特的圓潤身形與豐富的姿態，正為我們的生活注入這股療癒能量。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <button type="button" class="btn btn-white border-2 border-neutral-200 mt-8 mt-lg-12 d-block mx-auto">
+          查看更多
+        </button>
+      </div>
+    </section>
     <!-- column section end -->
 
     <!-- about section start -->
-
+    <section class="about-section">
+      <div class="container-fluid container-lg h-100">
+        <div class="d-flex flex-column flex-lg-row h-100">
+          <div class="about-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-3 my-lg-auto">
+            <h3 class="fs-2 fs-lg-1 text-primary-900">植感生活<br />Plantique Life</h3>
+            <p class="fs-sm fs-lg-8 mt-4 mt-lg-6">
+              在繁忙的節奏裡，植感始終相信綠意能為生活帶來片刻的寧靜與療癒。<br />從多肉出發，讓植物成為你的日常風景，讓療癒成為一種生活態度。
+            </p>
+            <a href="#" class="btn btn-primary text-white rounded-pill fs-8 fs-lg-7 px-6 py-3 mt-4 mt-lg-6">關於品牌</a>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- about section end -->
 
     <%- include('./layout/footer'); -%>
 
     <script type="module" src="/assets/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script>
+      const swiperSingle = new Swiper('.newsSwiper', {
+        direction: 'horizontal',
+        loop: true,
+        slidesPerView: 1, // 預設單張
+        spaceBetween: 12,
+
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+
+      const swiper = new Swiper('.swiperProduct', {
+        direction: 'horizontal',
+        loop: false,
+
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+
+        watchOverflow: false, // 當滑塊不足以滾動時自動隱藏導航
+
+        breakpoints: {
+          // RWD 響應式
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
+
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 12,
+            navigation: false, // 關閉箭頭
+          },
+        },
+      });
+    </script>
   </body>
 </html>
