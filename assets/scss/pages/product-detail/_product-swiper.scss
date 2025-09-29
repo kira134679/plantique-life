@@ -1,0 +1,41 @@
+.product-swiper-container .swiper-slide {
+  height: 380px;
+
+  @include media-breakpoint-up(lg) {
+    height: 468px;
+  }
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.thumb-swiper .swiper-slide {
+  height: 140px;
+  opacity: 0.4;
+}
+
+.thumb-swiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.swiper-pagination {
+  --swiper-pagination-bottom: 12px;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 4px;
+  background: $primary-600;
+  opacity: 0.4;
+  border-radius: 100px;
+}
+
+.swiper-pagination-bullet-active {
+  width: 48px;
+  opacity: 1;
+}
