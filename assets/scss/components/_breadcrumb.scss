@@ -1,0 +1,33 @@
+.breadcrumb {
+  a {
+    color: rgba($neutral-400, var(--bs-link-opacity, 1));
+  }
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  color: $neutral-400;
+  vertical-align: bottom;
+  width: 20px;
+  height: 20px;
+  padding-right: 0;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  text-transform: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
