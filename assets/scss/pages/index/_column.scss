@@ -1,0 +1,21 @@
+.column-section {
+  .column-tag {
+    border-width: 0.8px;
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+    &.active {
+      background-color: $primary;
+      color: $white !important;
+    }
+  }
+}
+.column-section .card {
+  .card-img-top {
+    max-height: 150px;
+    @include media-breakpoint-up(lg) {
+      max-width: 164px;
+      max-height: none;
+    }
+  }
+}

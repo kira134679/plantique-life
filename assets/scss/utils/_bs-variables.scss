@@ -161,6 +161,7 @@ $spacers: (
   8: $spacer * 2,
   10: $spacer * 2.5,
   12: $spacer * 3,
+  13: $spacer * 3.5,
   15: $spacer * 5,
 ) !default;
 
@@ -243,3 +244,6 @@ $btn-font-weight: $font-weight-medium !default;
 
 // border-color
 $border-color: $neutral-200 !default;
+
+// input
+$input-placeholder-color: $neutral-300 !default;
