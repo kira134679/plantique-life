@@ -1,0 +1,48 @@
+@use 'sass:map';
+
+//願望清單按鈕（灰底黑字）
+.custom-btn-fav {
+  @include button-variant(
+    $background: rgba($white, 0.4),
+    $border: transparent,
+    $color: $neutral-700,
+    $hover-background: rgba($white, 0.8),
+    $hover-border: transparent,
+    $hover-color: $neutral-700,
+    $active-background: rgba($white, 0.8),
+    $active-border: transparent,
+    $active-color: $neutral-700,
+    $disabled-background: rgba($white, 0.4),
+    $disabled-border: transparent,
+    $disabled-color: $neutral-700
+  );
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 2),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+  border-width: 0;
+  &.active {
+    background-color: rgba($white, 0.4);
+    color: $primary-700;
+    font-variation-settings: 'FILL' 1;
+    &:hover {
+      background-color: rgba($white, 0.8);
+    }
+  }
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-fav {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 3),
+      $font-size: $font-size-base,
+      $border-radius: 50%
+    );
+  }
+}

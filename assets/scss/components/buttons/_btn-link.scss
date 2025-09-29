@@ -1,0 +1,54 @@
+@use 'sass:map';
+
+//以下決定按鈕顏色與外框
+//無框按鈕
+.custom-btn-link-primary {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $primary-600,
+    $hover-background: transparent,
+    $hover-border: $primary-600,
+    $hover-color: $primary-600,
+    $active-background: transparent,
+    $active-border: $primary-600,
+    $active-color: $primary-600,
+    $disabled-background: transparent,
+    $disabled-border: transparent,
+    $disabled-color: rgba($neutral-600, 0.4)
+  );
+  border-width: 0px 0px 1px 0px;
+}
+.custom-btn-link-neutral {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $neutral-700,
+    $hover-background: transparent0,
+    $hover-border: $neutral-700,
+    $hover-color: $neutral-700,
+    $active-background: transparent,
+    $active-border: $neutral-700,
+    $active-color: $neutral-700,
+    $disabled-background: $white,
+    $disabled-border: transparent,
+    $disabled-color: rgba($neutral-700, 0.4)
+  );
+  border-width: 0px 0px 1px 0px;
+}
+
+//以下決定按鈕圓角與大小
+//無框按鈕
+.custom-btn-link-sm {
+  @include button-size($padding-y: map.get($spacers, 1), $padding-x: 0, $font-size: $font-size-sm, $border-radius: 0);
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-link-sm {
+    @include button-size(
+      $padding-y: map.get($spacers, 1),
+      $padding-x: 0,
+      $font-size: $font-size-base,
+      $border-radius: 0
+    );
+  }
+}
