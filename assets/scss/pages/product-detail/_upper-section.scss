@@ -1,0 +1,49 @@
+.add-on-product {
+  display: flex;
+  width: 170px;
+  height: 100px;
+  overflow: hidden;
+
+  @include media-breakpoint-up(lg) {
+    max-width: 160px;
+  }
+}
+
+.add-on-product img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.add-on-counter {
+  @include media-breakpoint-up(lg) {
+    width: 44px;
+  }
+}
+
+.product-counter {
+  @include media-breakpoint-up(lg) {
+    width: 48px;
+  }
+}
+
+.btn-circle-sm {
+  width: 36px;
+  height: 36px;
+
+  @include media-breakpoint-up(xl) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.btn-circle-lg {
+  width: 48px;
+  height: 48px;
+
+  @include media-breakpoint-up(xl) {
+    width: 56px;
+    height: 56px;
+  }
+}
