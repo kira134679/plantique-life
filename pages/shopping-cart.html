@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>植感生活 | PLANTIQUE LIFE</title>
+  </head>
+
+  <body>
+    <%- include('./layout/header'); -%>
+
+    <!-- hero section start -->
+    <!-- hero section end -->
+
+    <!-- news section start -->
+    <!-- news section end -->
+
+    <!-- category section start -->
+
+    <!-- category section end -->
+
+    <!-- add cart section start -->
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+          <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
+          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+        </div>
+      </div>
+
+      <!-- 產品卡片 -->
+      <div class="container position-relative">
+        <div class="row gap-6 gap-lg-0">
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_01.png', 
+                   productTag:"加購價",
+                   productName:"天使環生長燈",
+                   productPrice :"NT$ 6,200"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_02.png', 
+                   productTag:"加購價",
+                   productName:"陶瓷盆器",
+                   productPrice :"NT$ 7,280"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_03.png', 
+                   productTag:"加購價",
+                   productName:"園藝工具組",
+                   productPrice :"NT$ 7,500"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_04.png', 
+                   productTag:"加購價",
+                   productName:"日本赤玉土",
+                   productPrice :"NT$ 3,500"
+                  }); -%>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- add cart section end -->
+
+    <!-- recommend section start -->
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+          <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
+          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+        </div>
+      </div>
+
+      <!-- 產品卡片 -->
+      <div class="container position-relative">
+        <div class="row gap-6 gap-lg-0">
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_01.png', 
+                   productTag:"質感精選",
+                   productName:"雪夜之森",
+                   productPrice :"NT$ 2,400"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_02.png', 
+                   productTag:"質感精選",
+                   productName:"植語時光",
+                   productPrice :"NT$ 3,000"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_03.png', 
+                   productTag:"質感精選",
+                   productName:"荒野綠影",
+                   productPrice :"NT$ 2,400"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_04.png', 
+                   productTag:"質感精選",
+                   productName:"森語花信",
+                   productPrice :"NT$ 3,500"
+                  }); -%>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- recommend section end -->
+
+    <!-- about section start -->
+
+    <!-- about section end -->
+
+    <%- include('./layout/footer'); -%>
+
+    <script type="module" src="/assets/js/index.js"></script>
+  </body>
+</html>
