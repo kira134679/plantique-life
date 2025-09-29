@@ -182,6 +182,127 @@
               </section>
             </div>
           </div>
+          <!-- add cart section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
+
+            <!-- 產品卡片 -->
+            <div class="container">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_01.png', 
+                   productTag:"加購價",
+                   productName:"天使環生長燈",
+                   productPrice :"NT$ 799",
+                   productOlPrice :"NT$ 1,000"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_02.png', 
+                   productTag:"加購價",
+                   productName:"陶瓷盆器",
+                   productPrice :"NT$ 300",
+                   productOlPrice :"NT$ 350"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_03.png', 
+                   productTag:"加購價",
+                   productName:"園藝工具組",
+                   productPrice :"NT$ 500",
+                    productOlPrice :"NT$ 650"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_04.png', 
+                   productTag:"加購價",
+                   productName:"日本赤玉土",
+                   productPrice :"NT$ 3,500",
+                    productOlPrice :"NT$ 5,900"
+                  }); -%>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- add cart section end -->
+
+          <!-- recommend section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
+
+            <!-- 產品卡片 -->
+            <div class="container position-relative">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_07.png', 
+                   productTag:"質感精選",
+                   productName:"雪夜之森",
+                   productPrice :"NT$ 2,400"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_08.png', 
+                   productTag:"質感精選",
+                   productName:"植語時光",
+                   productPrice :"NT$ 3,000"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_09.png', 
+                   productTag:"質感精選",
+                   productName:"荒野綠影",
+                   productPrice :"NT$ 2,400"
+                  }); -%>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_10.png', 
+                   productTag:"質感精選",
+                   productName:"森語花信",
+                   productPrice :"NT$ 3,500"
+                  }); -%>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- recommend section end -->
         </div>
         <div
           class="tab-pane fade"
@@ -203,128 +324,6 @@
         </div>
       </div>
     </div>
-
-    <!-- add cart section start -->
-    <section class="py-12 py-lg-15">
-      <!-- 標題 -->
-      <div class="container mb-12">
-        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-          <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-        </div>
-      </div>
-
-      <!-- 產品卡片 -->
-      <div class="container">
-        <div class="row gap-6 gap-lg-0">
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_01.png', 
-                   productTag:"加購價",
-                   productName:"天使環生長燈",
-                   productPrice :"NT$ 799",
-                   productOlPrice :"NT$ 1,000"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_02.png', 
-                   productTag:"加購價",
-                   productName:"陶瓷盆器",
-                   productPrice :"NT$ 300",
-                   productOlPrice :"NT$ 350"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_03.png', 
-                   productTag:"加購價",
-                   productName:"園藝工具組",
-                   productPrice :"NT$ 500",
-                    productOlPrice :"NT$ 650"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_04.png', 
-                   productTag:"加購價",
-                   productName:"日本赤玉土",
-                   productPrice :"NT$ 3,500",
-                    productOlPrice :"NT$ 5,900"
-                  }); -%>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- add cart section end -->
-
-    <!-- recommend section start -->
-    <section class="py-12 py-lg-15">
-      <!-- 標題 -->
-      <div class="container mb-12">
-        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-          <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-        </div>
-      </div>
-
-      <!-- 產品卡片 -->
-      <div class="container position-relative">
-        <div class="row gap-6 gap-lg-0">
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_07.png', 
-                   productTag:"質感精選",
-                   productName:"雪夜之森",
-                   productPrice :"NT$ 2,400"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_08.png', 
-                   productTag:"質感精選",
-                   productName:"植語時光",
-                   productPrice :"NT$ 3,000"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_09.png', 
-                   productTag:"質感精選",
-                   productName:"荒野綠影",
-                   productPrice :"NT$ 2,400"
-                  }); -%>
-          </div>
-          <div class="col-6 col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
-                   picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_10.png', 
-                   productTag:"質感精選",
-                   productName:"森語花信",
-                   productPrice :"NT$ 3,500"
-                  }); -%>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- recommend section end -->
 
     <%- include('./layout/footer'); -%>
     <script type="module" src="../assets/js/shopping-cart.js"></script>
