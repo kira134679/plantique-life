@@ -8,13 +8,31 @@
     </button>
   </div>
   <div class="card-body p-0 pt-3 pt-lg-5">
-    <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1"><%= productTag %></span>
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1"><%= productTag %></span> -->
+    <span>
+      <% if (productTag === '質感精選') { %>
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100">質感精選</span>
+      <% } else { %>
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-secondary bg-secondary-100">加購價</span>
+      <% } %>
+    </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
-      <div>
+      <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
           <a href="#" class="stretched-link text-decoration-none text-neutral-700"> <%= productName %> </a>
         </h5>
-        <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm"><%= productPrice %></p>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm"><%= productPrice %></p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            <%= productPrice %>
+          </p>
+          <% if (typeof productOlPrice !== 'undefined' && productOlPrice) { %>
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-0 ms-lg-2">
+            <%= productOlPrice %>
+          </p>
+          <% } %>
+        </div>
       </div>
       <button type="button" class="btn bg-transparent border-0 p-0">
         <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>

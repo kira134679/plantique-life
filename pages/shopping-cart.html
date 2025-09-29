@@ -3,146 +3,329 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>植感生活 | PLANTIQUE LIFE</title>
+    <title>購物車清單</title>
   </head>
-
   <body>
     <%- include('./layout/header'); -%>
 
-    <!-- hero section start -->
-    <!-- hero section end -->
+    <div class="container-fluid container-lg">
+      <ol class="cart-nav nav nav-pills flex-nowrap py-8 py-lg-13" id="pills-cart-nav" role="tablist">
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link w-100 d-flex flex-column align-items-center active"
+            id="pills-cart-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-cart"
+            role="tab"
+            aria-controls="pills-cart"
+            aria-selected="true"
+          >
+            <p
+              class="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto"
+            >
+              1
+            </p>
+            <h3 class="fs-sm fs-lg-8 text-primary mt-2">Cart List</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
+            <div class="cart-progress cart-progress-end"></div>
+          </button>
+        </li>
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link w-100 d-flex flex-column align-items-center step-undo"
+            id="pills-checkout-info-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-checkout-info"
+            role="tab"
+            aria-controls="pills-checkout-info"
+            aria-selected="false"
+          >
+            <p
+              class="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto"
+            >
+              2
+            </p>
+            <h3 class="fs-sm fs-lg-8 text-primary text-nowrap mt-2">Checkout Info</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
+            <div class="cart-progress cart-progress-start"></div>
+            <div class="cart-progress cart-progress-end"></div>
+          </button>
+        </li>
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link w-100 text-center step-undo"
+            id="pills-confirmation-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-confirmation"
+            role="tab"
+            aria-controls="pills-confirmation"
+            aria-selected="false"
+          >
+            <p
+              class="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto"
+            >
+              3
+            </p>
+            <h3 class="fs-sm fs-lg-8 text-primary mt-2">Confirmation</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">訂單確認</h2>
+            <div class="cart-progress cart-progress-start"></div>
+          </button>
+        </li>
+      </ol>
+      <div class="tab-content py-12 py-lg-15" id="pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="pills-cart"
+          role="tabpanel"
+          aria-labelledby="pills-cart-tab"
+          tabindex="0"
+        >
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="cart-list-header row gx-lg-6 text-neutral-400 py-2 py-lg-4">
+                <div class="col-lg-3">
+                  <p>商品名稱</p>
+                </div>
+                <div class="d-none d-lg-block col-lg-9">
+                  <div class="row gx-0">
+                    <span class="col-lg-4 pe-lg-6"></span>
+                    <p class="col-lg-4 pe-lg-6">商品小計</p>
+                    <p class="col-lg-4 pe-lg-6">數量</p>
+                  </div>
+                </div>
+              </div>
+              <ul class="cart-list list-unstyled mt-6 pb-8" id="cart-list"></ul>
+            </div>
+            <div class="summary-wrapper col-lg-4 pb-12">
+              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">使用優惠券</h6>
+                <div class="d-flex align-items-center mb-6">
+                  <label for="coupon-code" class="col-form-label fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3"
+                    >輸入代碼</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control border-2 rounded-0 py-3 px-4"
+                    id="coupon-code"
+                    placeholder="輸入優惠代碼"
+                    autocomplete="off"
+                  />
+                  <button type="button" class="btn btn-primary text-nowrap text-white rounded-0 py-3 px-6 ms-4">
+                    確認
+                  </button>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3">選擇優惠</span>
+                  <span
+                    class="coupon-selected-name fs-xs fs-lg-sm text-neutral-400 bg-neutral-100 py-1 px-2 px-lg-3"
+                    id="coupon-selected-name"
+                    >未選擇優惠</span
+                  >
+                  <button
+                    type="button"
+                    class="btn text-primary ms-auto py-1 px-0"
+                    id="coupon-choose-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#couponModal"
+                  >
+                    選擇
+                  </button>
+                  <div
+                    class="modal fade coupon-modal bg-opacity-40"
+                    id="couponModal"
+                    tabindex="-1"
+                    aria-labelledby="couponModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                      <div class="modal-content rounded-0 border-0">
+                        <div class="modal-header border-bottom-0 p-lg-6">
+                          <h1 class="modal-title h6 fs-lg-5 text-primary-700 lh-sm" id="couponModalLabel">選擇優惠</h1>
+                          <button type="button" class="btn p-2 ms-auto" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="material-symbols-rounded d-block border-0 text-neutral-700">close</span>
+                          </button>
+                        </div>
+                        <div class="modal-body pt-0 p-lg-6 pt-lg-0">
+                          <div class="coupon-select unselected" id="couponModalSelected"></div>
+                          <div class="d-flex align-items-center py-4 py-lg-6">
+                            <p class="fs-sm text-primary me-6">其他優惠券</p>
+                            <span class="flex-grow-1 border-bottom"></span>
+                          </div>
+                          <ul class="list-unstyled coupon-modal-list" id="couponModalList"></ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="border border-2 p-4 p-lg-6">
+                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
+                <div class="d-flex justify-content-between mb-3 mb-lg-4">
+                  <span class="fs-sm fs-lg-8 text-neutral-400">商品小計</span>
+                  <span class="fs-sm fs-lg-8 text-neutral-400" id="subtotal"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 mb-lg-4">
+                  <span class="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
+                  <span class="fs-sm fs-lg-8 text-secondary" id="discount"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4 mb-lg-8">
+                  <span class="fs-lg-7 text-neutral-700">總金額</span>
+                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="total"></span>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary fs-lg-7 text-white w-100 rounded-pill py-3"
+                  id="btn-checkout"
+                >
+                  前往結帳
+                </button>
+              </section>
+            </div>
+          </div>
+          <!-- add cart section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
 
-    <!-- news section start -->
-    <!-- news section end -->
-
-    <!-- category section start -->
-
-    <!-- category section end -->
-
-    <!-- add cart section start -->
-    <section class="py-12 py-lg-15">
-      <!-- 標題 -->
-      <div class="container mb-12">
-        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-          <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-        </div>
-      </div>
-
-      <!-- 產品卡片 -->
-      <div class="container position-relative">
-        <div class="row gap-6 gap-lg-0">
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+            <!-- 產品卡片 -->
+            <div class="container">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
                    picSrc:'/assets/images/img_product_01.png', 
                    productTag:"加購價",
                    productName:"天使環生長燈",
-                   productPrice :"NT$ 6,200"
+                   productPrice :"NT$ 799",
+                   productOlPrice :"NT$ 1,000"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
                    picSrc:'/assets/images/img_product_02.png', 
                    productTag:"加購價",
                    productName:"陶瓷盆器",
-                   productPrice :"NT$ 7,280"
+                   productPrice :"NT$ 300",
+                   productOlPrice :"NT$ 350"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
                    picSrc:'/assets/images/img_product_03.png', 
                    productTag:"加購價",
                    productName:"園藝工具組",
-                   productPrice :"NT$ 7,500"
+                   productPrice :"NT$ 500",
+                    productOlPrice :"NT$ 650"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
                    picSrc:'/assets/images/img_product_04.png', 
                    productTag:"加購價",
                    productName:"日本赤玉土",
-                   productPrice :"NT$ 3,500"
+                   productPrice :"NT$ 3,500",
+                    productOlPrice :"NT$ 5,900"
                   }); -%>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- add cart section end -->
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- add cart section end -->
 
-    <!-- recommend section start -->
-    <section class="py-12 py-lg-15">
-      <!-- 標題 -->
-      <div class="container mb-12">
-        <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-          <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
-          <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
-        </div>
-      </div>
+          <!-- recommend section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
 
-      <!-- 產品卡片 -->
-      <div class="container position-relative">
-        <div class="row gap-6 gap-lg-0">
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+            <!-- 產品卡片 -->
+            <div class="container position-relative">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_01.png', 
+                   picSrc:'/assets/images/img_product_07.png', 
                    productTag:"質感精選",
                    productName:"雪夜之森",
                    productPrice :"NT$ 2,400"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_02.png', 
+                   picSrc:'/assets/images/img_product_08.png', 
                    productTag:"質感精選",
                    productName:"植語時光",
                    productPrice :"NT$ 3,000"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_03.png', 
+                   picSrc:'/assets/images/img_product_09.png', 
                    productTag:"質感精選",
                    productName:"荒野綠影",
                    productPrice :"NT$ 2,400"
                   }); -%>
-          </div>
-          <div class="col-lg-3">
-            <!-- prettier-ignore -->
-            <%- include('./components/product-card',{ 
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
                    picAlt:"多肉植物組合盆栽",
-                   picSrc:'/assets/images/img_product_04.png', 
+                   picSrc:'/assets/images/img_product_10.png', 
                    productTag:"質感精選",
                    productName:"森語花信",
                    productPrice :"NT$ 3,500"
                   }); -%>
-          </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- recommend section end -->
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-checkout-info"
+          role="tabpanel"
+          aria-labelledby="pills-checkout-info-tab"
+          tabindex="0"
+        >
+          付款資料
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-confirmation"
+          role="tabpanel"
+          aria-labelledby="pills-confirmation-tab"
+          tabindex="0"
+        >
+          訂單確認
         </div>
       </div>
-    </section>
-    <!-- recommend section end -->
-
-    <!-- about section start -->
-
-    <!-- about section end -->
+    </div>
 
     <%- include('./layout/footer'); -%>
-
-    <script type="module" src="/assets/js/index.js"></script>
+    <script type="module" src="../assets/js/shopping-cart.js"></script>
   </body>
 </html>
