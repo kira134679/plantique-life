@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>植感生活 | PLANTIQUE LIFE</title>
   </head>
 
@@ -10,182 +11,225 @@
     <%- include('./layout/header'); -%>
 
     <!-- hero section start -->
-
+    <header class="hero hero-py">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+            <div class="">
+              <img src="/assets/images/img_title_lg.svg" alt="Slogan" class="mb-10" />
+              <button
+                type="button"
+                class="btn-1 text-white bg-primary rounded-pill border-0 py-4 d-flex align-items-center"
+              >
+                <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+              </button>
+            </div>
+          </div>
+          <div class="d-none d-sm-block col-md-10">
+            <img src="../assets/images/img_banner_text02_lg.svg" alt="Slogan" />
+          </div>
+        </div>
+      </div>
+    </header>
     <!-- hero section end -->
 
     <!-- news section start -->
-
-    <!-- news section end -->
-
-    <!-- category section start -->
-
-    <section class="py-12 py-lg-15">
-      <div class="container mb-8 mb-lg-12">
-        <hgroup class="d-flex justify-content-center align-items-end align-items-lg-center gap-6 gap-lg-10">
-          <img src="/assets/images/heading-decoration.svg" alt="heading-decoration" class="heading-decoration" />
-          <div class="text-center">
-            <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
-              Category
-            </small>
-            <h2 class="fs-3 fs-lg-2 text-neutral-700">主題挑選</h2>
+    <section class="py-12 py-md-15">
+      <div class="container">
+        <div class="row">
+          <!-- 標題 -->
+          <div class="col-md-2">
+            <div class="d-flex flex-sm-column justify-content-center align-items-center gap-6 gap-sm-0">
+              <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
+              <div class="text-center d-flex flex-column justify-content-center align-items-center">
+                <h6 class="fs-7 text-primary mb-1 mb-lg-4">News</h6>
+                <h2 class="fs-3 fs-lg-2 m-0 text-neutral-700 news-title mb-8 mb-lg-3">最 新 消 息</h2>
+              </div>
+              <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+              <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+            </div>
           </div>
-          <img src="/assets/images/heading-decoration.svg" alt="decorate" class="heading-decoration" />
-        </hgroup>
-      </div>
-      <div class="px-0 px-lg-15">
-        <div class="container-fluid">
-          <div class="row gap-6 gap-lg-0">
-            <div class="col-lg-3">
-              <div class="pt-lg-10">
-                <div class="d-flex flex-column gap-4 gap-lg-6 position-relative category-card">
-                  <div class="category-row">
-                    <div class="category-col-9 col-lg">
-                      <div class="overflow-hidden">
-                        <img
-                          src="/assets/images/img_category_01.png"
-                          alt="category-1"
-                          class="category-card-img object-fit-cover"
-                        />
+
+          <!-- 資訊 -->
+          <div class="col-md-10">
+            <div class="swiper newsSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                        <p class="fs-sm fs-lg-8 m-0 mb-4 text-neutral-400">
+                          結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
+                        </p>
+
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
                       </div>
                     </div>
-                    <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 text-primary mx-0">植 栽 單 品</h3>
-                      </a>
-                    </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">植 栽 單 品</h3>
-                      </a>
-                    </div>
-                    <div class="col-lg-9 mt-lg-auto">
-                      <h4 class="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">獨株盆栽，生活的慢光景</h4>
-                      <p class="fw-medium fs-sm fs-lg-8 text-neutral-400">
-                        每一株植物都擁有獨特姿態，不需繁複裝飾，就能為你的空間帶來療癒氣息，讓生活充滿生機。
-                      </p>
+                </div>
+                <div class="swiper-slide">
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_02.png" alt="活動開跑" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">
+                          本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
+                        </h3>
+                        <p class="fs-sm fs-lg-8 fw-medium m-0 mb-4 text-neutral-400">
+                          迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
+                        </p>
+
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="pt-lg-30">
-                <div class="d-flex flex-column gap-4 gap-lg-6 position-relative category-card">
-                  <div class="category-row">
-                    <div class="category-col-9 col-lg">
-                      <div class="overflow-hidden">
-                        <img
-                          src="/assets/images/img_category_02.png"
-                          alt="category-2"
-                          class="category-card-img object-fit-cover"
-                        />
-                      </div>
-                    </div>
-                    <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 text-primary mx-0">療 癒 組 盆</h3>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <a href="#" class="stretched-link">
-                          <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">療 癒 組 盆</h3>
-                        </a>
-                      </a>
-                    </div>
-                    <div class="col-lg-9 mt-lg-auto">
-                      <h4 class="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">綠色風景，妝點專屬角落</h4>
-                      <p class="fw-medium fs-sm fs-lg-8 text-neutral-400">
-                        精心搭配的多肉組合，如同微型生態，讓你一次擁有豐富的綠意層次，創造屬於自己的心靈小天地。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="pt-lg-10">
-                <div class="d-flex flex-column gap-4 gap-lg-6 position-relative category-card">
-                  <div class="category-row">
-                    <div class="category-col-9 col-lg">
-                      <div class="overflow-hidden">
-                        <img
-                          src="/assets/images/img_category_03.png"
-                          alt="category-3"
-                          class="category-card-img object-fit-cover"
-                        />
-                      </div>
-                    </div>
-                    <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 text-primary mx-0">客 製 禮 盒</h3>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">客 製 禮 盒</h3>
-                      </a>
-                    </div>
-                    <div class="col-lg-9 mt-lg-auto">
-                      <h4 class="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">綠意心意，植感而生</h4>
-                      <p class="fw-medium fs-sm fs-lg-8 text-neutral-400">
-                        將這份溫柔的植感心意化作禮物，為重要的人客製專屬組合，傳達獨特而真摯的祝福。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="pt-lg-30">
-                <div class="d-flex flex-column gap-4 gap-lg-6 position-relative category-card">
-                  <div class="category-row">
-                    <div class="category-col-9 col-lg">
-                      <div class="overflow-hidden">
-                        <img
-                          src="/assets/images/img_category_04.png"
-                          alt="category-4"
-                          class="category-card-img object-fit-cover"
-                        />
-                      </div>
-                    </div>
-                    <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 text-primary mx-0">配 件 商 品</h3>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
-                        <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">配 件 商 品</h3>
-                      </a>
-                    </div>
-                    <div class="col-lg-9 mt-lg-auto">
-                      <h4 class="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">質感選物，植栽的日常絮語</h4>
-                      <p class="fw-medium fs-sm fs-lg-8 text-neutral-400">
-                        嚴選美觀又實用的質感配件，從花器到工具，讓你在照護植物的過程中，也能享受質感生活。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="d-md-flex flex-start swiper-pagination"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <!-- news section end -->
+
+    <!-- category section start -->
 
     <!-- category section end -->
 
     <!-- recommend section start -->
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-center justify-content-md-between align-items-center align-items-md-end">
+          <hgroup class="d-flex justify-content-start align-items-end align-items-lg-center gap-6 gap-lg-10">
+            <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+            <div class="text-center">
+              <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
+                Recommend
+              </small>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700">植感精選</h2>
+            </div>
+            <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
+          </hgroup>
+          <button class="btn border-neutral-200 rounded-pill d-none d-md-block">
+            <a href="#" class="text-center text-neutral-700 rounded-pill"
+              ><span class="fs-7 me-1">查看更多</span>
+              <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+            </a>
+          </button>
+        </div>
+      </div>
 
+      <!-- 產品卡片 -->
+      <div class="container mb-8">
+        <div class="position-relative">
+          <div class="swiper swiperProduct">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"植感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"植感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_02.png', 
+                       productTag:"植感精選",
+                       productName:"向陽而生",
+                       productPrice :"NT$ 7,280"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_03.png', 
+                       productTag:"植感精選",
+                       productName:"暮光角落",
+                       productPrice :"NT$ 7,500"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div class="">
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_04.png', 
+                       productTag:"植感精選",
+                       productName:"雲深處靜",
+                       productPrice :"NT$ 6,600"
+                      }); -%>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 導航按鈕 -->
+          <div class="swiper-button-prev">
+            <span class="material-symbols-rounded">arrow_left_alt </span>
+          </div>
+          <div class="swiper-button-next">
+            <span class="material-symbols-rounded"> arrow_right_alt </span>
+          </div>
+        </div>
+      </div>
+      <div class="d-md-none d-flex justify-content-center">
+        <button class="btn border-neutral-200 rounded-pill">
+          <a href="#" class="text-center text-neutral-700 rounded-pill d-block d-md-none"
+            ><span class="fs-7 me-1">查看更多</span>
+            <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+          </a>
+        </button>
+      </div>
+    </section>
     <!-- recommend section end -->
 
     <!-- column section start -->
@@ -361,5 +405,45 @@
     <%- include('./layout/footer'); -%>
 
     <script type="module" src="/assets/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script>
+      const swiperSingle = new Swiper('.newsSwiper', {
+        direction: 'horizontal',
+        loop: true,
+        slidesPerView: 1, // 預設單張
+        spaceBetween: 12,
+
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+
+      const swiper = new Swiper('.swiperProduct', {
+        direction: 'horizontal',
+        loop: false,
+
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+
+        watchOverflow: false, // 當滑塊不足以滾動時自動隱藏導航
+
+        breakpoints: {
+          // RWD 響應式
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
+
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 12,
+            navigation: false, // 關閉箭頭
+          },
+        },
+      });
+    </script>
   </body>
 </html>
