@@ -2,8 +2,13 @@ import '/assets/scss/product-list.scss';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 const swiper = new Swiper('.swiper', {
-  spaceBetween: 24,
+  loop: true,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  },
   pagination: {
     el: '.swiper-pagination',
+    clickable: true,
   },
 });
