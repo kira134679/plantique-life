@@ -679,7 +679,8 @@ purchaserEmailEl.addEventListener('input', () => {
 });
 
 // 付款資料 → demo 按鈕事件：自動填入資料
-demoBtnEl.addEventListener('click', () => {
+demoBtnEl.addEventListener('click', e => {
+  e.stopPropagation();
   // 運送方式
   const deliveryToggleEl = document.getElementById('delivery-toggle');
   deliveryToggleEl.textContent = orderInfo.delivery.method;
