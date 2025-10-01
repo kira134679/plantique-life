@@ -82,8 +82,8 @@ const orderInfo = {
     method: '黑貓宅配',
   },
   payment: {
-    method: '',
-    creditCardInfo: { number: [], exp: [], cvc: '' },
+    method: '信用卡一次付清',
+    creditCardInfo: { number: ['4444', '4444', '4444', '4444'], exp: ['01', '12'], cvc: '123' },
   },
   purchaser: {
     name: '王小明',
@@ -94,11 +94,11 @@ const orderInfo = {
     name: '王小明',
     tel: '0912345678',
     email: 'plantique@test.com',
-    address: '台北市信義區',
+    address: '台北市信義區松仁路100號',
   },
   invoice: {
-    method: '',
-    mobileBarcode: '',
+    method: '雲端載具',
+    mobileBarcode: '/ABCD123',
     ubn: '',
   },
 };
@@ -141,6 +141,9 @@ const purchaserEmailEl = document.getElementById('purchaser-email');
 const recipientNameEl = document.getElementById('recipient-name');
 const recipientPhoneEl = document.getElementById('recipient-phone');
 const recipientEmailEl = document.getElementById('recipient-email');
+
+// demo 按鈕
+const demoBtnEl = document.getElementById('demo-btn');
 
 let subtotal = 0;
 let discount = 0;
@@ -673,4 +676,47 @@ purchaserEmailEl.addEventListener('input', () => {
   if (recipientCheckedEl.checked) {
     recipientEmailEl.value = purchaserEmailEl.value;
   }
+});
+
+// 付款資料 → demo 按鈕事件：自動填入資料
+demoBtnEl.addEventListener('click', () => {
+  // 運送方式
+  const deliveryToggleEl = document.getElementById('delivery-toggle');
+  deliveryToggleEl.textContent = orderInfo.delivery.method;
+  // 付款方式
+  const paymentToggleEl = document.getElementById('payment-toggle');
+  paymentToggleEl.textContent = orderInfo.payment.method;
+  creditcardFormEl.style.display = 'block';
+  creditcardInputEls.forEach(creditcardInputEl => (creditcardInputEl.disabled = false));
+  const cardNumberEls = document.querySelectorAll('[id^="card-number-"]');
+  cardNumberEls.forEach((cardNumberEl, idx) => {
+    cardNumberEl.value = orderInfo.payment.creditCardInfo.number[idx];
+  });
+  const cardExpEls = document.querySelectorAll('[id^="card-exp-"]');
+  cardExpEls.forEach((cardExpEl, idx) => {
+    cardExpEl.value = orderInfo.payment.creditCardInfo.exp[idx];
+  });
+  const cardCVCEl = document.getElementById('card-cvc');
+  cardCVCEl.value = orderInfo.payment.creditCardInfo.cvc;
+  // 訂購人資料
+  purchaserNameEl.value = orderInfo.purchaser.name;
+  purchaserPhoneEl.value = orderInfo.purchaser.tel;
+  purchaserEmailEl.value = orderInfo.purchaser.email;
+  // 收貨人資料
+  recipientCheckedEl.checked = true;
+  recipientNameEl.disabled = true;
+  recipientPhoneEl.disabled = true;
+  recipientEmailEl.disabled = true;
+  recipientNameEl.value = orderInfo.recipient.name;
+  recipientPhoneEl.value = orderInfo.recipient.tel;
+  recipientEmailEl.value = orderInfo.recipient.email;
+  const recipientAddressEl = document.getElementById('recipient-address');
+  recipientAddressEl.value = orderInfo.recipient.address;
+  // 發票類型
+  const invoiceToggleEl = document.getElementById('invoice-toggle');
+  invoiceToggleEl.textContent = orderInfo.invoice.method;
+  cloudInvoiceCarrierEl.style.display = 'block';
+  cloudInvoiceCarrierEl.querySelector('input').disabled = false;
+  const mobileBarcodeEl = document.getElementById('mobile-barcode');
+  mobileBarcodeEl.value = orderInfo.invoice.mobileBarcode;
 });

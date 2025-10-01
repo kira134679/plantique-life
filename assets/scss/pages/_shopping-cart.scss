@@ -269,3 +269,20 @@ input.form-control[data-card-cvc] {
 .product-add1-position {
   object-position: 50% 20%;
 }
+
+.demo-btn {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2000;
+  padding: 20px;
+  transition: background-color 0.6s;
+  border: 0;
+  &:hover {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.01) 0%, transparent 100%);
+    filter: blur(6px);
+  }
+}
+button[type='button'].demo-btn {
+  cursor: default;
+}
