@@ -1,0 +1,26 @@
+<button id="custom-btn-backtotop" class="btn custom-btn-backtotop" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> north </span>
+</button>
+<script type="module">
+  let backToTopBtn = document.getElementById('custom-btn-backtotop');
+  window.onscroll = function () {
+    scrollFunction();
+  };
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      backToTopBtn.style.visibility = 'visible';
+      backToTopBtn.style.opacity = '1';
+    } else {
+      backToTopBtn.style.visibility = 'hidden';
+      backToTopBtn.style.opacity = '0';
+    }
+  }
+  backToTopBtn.addEventListener('click', backToTop);
+
+  function backToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+</script>

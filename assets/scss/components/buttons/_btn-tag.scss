@@ -1,0 +1,39 @@
+@use 'sass:map';
+
+//標籤按鈕
+.custom-btn-tag {
+  @include button-variant(
+    $background: $white,
+    $border: $primary-600,
+    $color: $primary-600,
+    $hover-background: $primary-600,
+    $hover-border: transparent,
+    $hover-color: $white,
+    $active-background: $primary-600,
+    $active-border: transparent,
+    $active-color: $white,
+    $disabled-background: $white,
+    $disabled-border: $primary-600,
+    $disabled-color: $primary-600
+  );
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 3),
+    $font-size: $font-size-sm,
+    $border-radius: $border-radius-lg
+  );
+  &.active {
+    background: $primary-600;
+    color: $white;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-tag {
+    @include button-size(
+      $padding-y: map.get($spacers, 2),
+      $padding-x: map.get($spacers, 4),
+      $font-size: $font-size-base,
+      $border-radius: $border-radius-lg
+    );
+  }
+}

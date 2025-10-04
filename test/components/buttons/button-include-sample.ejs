@@ -1,0 +1,67 @@
+<!-- 備註： -->
+<!-- 目前因為設計師沒有特別指定，active(按下去瞬間)的樣式，目前皆設定與hover一致 -->
+<!-- 目前有文字 + icon 的按鈕為了對齊，display 皆設置為flex(區塊級元素)，如果覺得使用 inline-flex 較方便也可提出 -->
+<!-- 按鈕皆已寫好 RWD，斷點目前設置在 lg -->
+
+<!-- 按鈕引用範例如下： -->
+<!-- Back To Top 按鈕（含JS） -->
+<%- include('./components/buttons/btn-backtotop'); -%>
+
+<!-- 標籤按鈕 Tag Button -->
+<% const btnTag = { active: false, btnText: '按鈕內容' } %> <%- include('./components/buttons/btn-tag', btnTag); -%>
+
+<!-- 願望清單按鈕 Fav Button -->
+<div class="py-4 bg-primary-400"><%-include('./components/buttons/btn-fav'); -%></div>
+
+<!-- 社群媒體按鈕 Social Button -->
+<div class="py-4 bg-primary-400">
+  <% const btnFB = {svgPath:'../assets/images/facebook.svg' , alt:'facebook-link'} %>
+  <%-include('./components/buttons/btn-social', btnFB); -%> <% const btnLine = {svgPath:'../assets/images/line.svg' ,
+  alt:'facebook-link'} %> <%-include('./components/buttons/btn-social', btnLine); -%> <% const btnIG =
+  {svgPath:'../assets/images/ig.svg' , alt:'facebook-link'} %> <%-include('./components/buttons/btn-social', btnIG); -%>
+</div>
+
+<!-- 無框的連結按鈕 Link Button -->
+<% const btnLinkPrimary = { color:'primary', btnText:'按鈕內容', rightIcon: true } %>
+<%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = { color:'neutral',
+btnText:'按鈕內容', rightIcon: true } %> <%-include('./components/buttons/btn-link', btnLinkNeutral); -%>
+
+<!-- 填色或外框按鈕 Filled or Outline Button -->
+<!-- Filled Pill -->
+<!-- prettier-ignore -->
+<% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline',
+btnFilledPill); -%>
+<!-- Filled Square -->
+<!-- prettier-ignore -->
+<% const btnFilledSquare = { type: 'filled', color:'primary', shape: 'square', size: 'md', btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare); -%>
+<% const btnFilledSquare1 = { type:'filled', color:'primary', shape: 'square', size: 'sm', btnText:'按鈕內容', rightIcon: false, leftIcon: false, iconName:''} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare1); -%>
+<!-- Outline neutral -->
+<!-- prettier-ignore -->
+<% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %> <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
+<% const btnFilledOutline1 = { type: 'outline', color:'neutral', shape: 'pill', size: 'sm',btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline1); -%>
+
+<!-- 只有圖標的按鈕 Only Icon Button -->
+<!-- Filled -->
+<!-- prettier-ignore -->
+<% const btnIconFilled = { type:'filled', color:'primary', size: 'lg', shape: 'circle', iconName:'arrow_left_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconFilled); -%>
+<!-- Outline neutral-->
+<!-- prettier-ignore -->
+<% const btnIconOutlineNeutral = { type:'outline', color:'neutral', size: 'lg', shape: 'circle', iconName:'arrow_left_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineNeutral); -%>
+<% const btnIconOutlineNeutral1 = { type:'outline', color:'neutral', size: 'md', shape: 'circle', iconName:'arrow_right_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineNeutral1); -%>
+<% const btnIconOutlineNeutral2 = { type:'outline', color:'neutral', size: 'sm', shape: 'circle', iconName:'arrow_right_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineNeutral2); -%>
+<!-- Outline danger-->
+<!-- prettier-ignore -->
+<% const btnIconOutlineDanger = { type:'outline', color:'danger', size: 'lg', shape: 'circle', iconName:'arrow_left_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineDanger); -%>
+<% const btnIconOutlineDanger1 = { type:'outline', color:'danger', size: 'md', shape: 'circle', iconName:'arrow_left_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineDanger1); -%>
+<% const btnIconOutlineDanger2 = { type:'outline', color:'danger', size: 'sm', shape: 'circle', iconName:'arrow_left_alt' } %>
+<%-include('./components/buttons/btn-only-icon', btnIconOutlineDanger2); -%>

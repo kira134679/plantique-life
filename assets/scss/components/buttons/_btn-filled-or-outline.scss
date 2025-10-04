@@ -1,0 +1,241 @@
+@use 'sass:map';
+
+//以下決定按鈕顏色與外框
+//填色按鈕
+.custom-btn-filled-primary {
+  @include button-variant(
+    $background: $primary-600,
+    $border: transparent,
+    $color: $white,
+    $hover-background: $primary-700,
+    $hover-border: transparent,
+    $hover-color: $white,
+    $active-background: $primary-700,
+    $active-border: transparent,
+    $active-color: $white,
+    $disabled-background: rgba($primary-600, 0.4),
+    $disabled-border: transparent,
+    $disabled-color: $white
+  );
+  border-width: 0;
+}
+//外框按鈕
+.custom-btn-outline-neutral {
+  @include button-variant(
+    $background: $white,
+    $border: $neutral-200,
+    $color: $neutral-700,
+    $hover-background: $neutral-100,
+    $hover-border: $neutral-200,
+    $hover-color: $neutral-700,
+    $active-background: $neutral-100,
+    $active-border: $neutral-200,
+    $active-color: $neutral-700,
+    $disabled-background: $white,
+    $disabled-border: rgba($neutral-200, 0.4),
+    $disabled-color: rgba($neutral-700, 0.4)
+  );
+  border-width: 2px;
+}
+.custom-btn-outline-danger {
+  @include button-variant(
+    $background: $white,
+    $border: $danger-200,
+    $color: $danger-500,
+    $hover-background: $danger-100,
+    $hover-border: $danger-200,
+    $hover-color: $danger-500,
+    $active-background: $danger-100,
+    $active-border: $danger-200,
+    $active-color: $danger-500,
+    $disabled-background: $white,
+    $disabled-border: rgba($danger-200, 0.4),
+    $disabled-color: rgba($danger-500, 0.4)
+  );
+  border-width: 2px;
+}
+
+//以下決定按鈕圓角與大小
+//膠囊形按鈕
+.custom-btn-pill-lg {
+  @include button-size(
+    $padding-y: map.get($spacers, 3),
+    $padding-x: map.get($spacers, 6),
+    $font-size: $font-size-base,
+    $border-radius: $border-radius-pill
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-pill-lg {
+    @include button-size(
+      $padding-y: map.get($spacers, 4),
+      $padding-x: map.get($spacers, 7),
+      $font-size: map.get($font-sizes, 7),
+      $border-radius: $border-radius-pill
+    );
+  }
+}
+.custom-btn-pill-sm {
+  @include button-size(
+    $padding-y: map.get($spacers, 3),
+    $padding-x: map.get($spacers, 6),
+    $font-size: $font-size-sm,
+    $border-radius: $border-radius-pill
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 6);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-pill-sm {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 6),
+      $font-size: $font-size-base,
+      $border-radius: $border-radius-pill
+    );
+    & > .custom-btn-icon {
+      font-size: map.get($font-sizes, 5);
+    }
+  }
+}
+//矩形按鈕
+.custom-btn-square-md {
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 3),
+    $font-size: $font-size-base,
+    $border-radius: 0
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-square-md {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 6),
+      $font-size: $font-size-base,
+      $border-radius: 0
+    );
+  }
+}
+.custom-btn-square-sm {
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 3),
+    $font-size: $font-size-sm,
+    $border-radius: 0
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 6);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-square-sm {
+    @include button-size(
+      $padding-y: map.get($spacers, 2),
+      $padding-x: map.get($spacers, 3),
+      $font-size: $font-size-base,
+      $border-radius: 0
+    );
+    & > .custom-btn-icon {
+      font-size: map.get($font-sizes, 5);
+    }
+  }
+}
+//圓形按鈕
+.custom-btn-circle-xl {
+  @include button-size(
+    $padding-y: map.get($spacers, 4),
+    $padding-x: map.get($spacers, 4),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+}
+.custom-btn-circle-lg {
+  @include button-size(
+    $padding-y: map.get($spacers, 3),
+    $padding-x: map.get($spacers, 3),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+}
+.custom-btn-circle-md {
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 2),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-circle-md {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 3),
+      $font-size: $font-size-base,
+      $border-radius: 50%
+    );
+  }
+}
+.custom-btn-circle-sm {
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 2),
+    $font-size: $font-size-base,
+    $border-radius: 50%
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 6);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-circle-sm {
+    @include button-size(
+      $padding-y: map.get($spacers, 2),
+      $padding-x: map.get($spacers, 2),
+      $font-size: $font-size-base,
+      $border-radius: 50%
+    );
+    & > .custom-btn-icon {
+      font-size: map.get($font-sizes, 5);
+    }
+  }
+}
+
+// 以下調整按鈕內容的排版
+// 將按鈕的 icon 與文字垂直置中
+// icon 在文字左邊
+.custom-btn-icon-start {
+  display: flex;
+  align-items: center;
+  & > .custom-btn-icon {
+    margin-right: map.get($spacers, 2);
+  }
+}
+// icon 在文字右邊
+.custom-btn-icon-end {
+  display: flex;
+  align-items: center;
+  & > .custom-btn-icon {
+    margin-left: map.get($spacers, 2);
+  }
+}
