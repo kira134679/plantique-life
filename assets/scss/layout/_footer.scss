@@ -1,4 +1,28 @@
+// note: 目前 footer 的 RWD 斷點除了 container 以外，皆設置在 lg
+@use 'sass:map';
+
 .footer {
-  background: #fefae0;
-  font-size: 32px;
+  font-size: $font-size-sm;
+  @include media-breakpoint-up(lg) {
+    font-size: $font-size-base;
+  }
+}
+
+.site-map-link {
+  padding: 0.343rem 0.679rem; //note: 連結的padding目前皆採用設計稿上的四個字連結padding
+  @include media-breakpoint-up(lg) {
+    padding: map.get($spacers, 1) 0.656rem;
+  }
+}
+
+.social-link {
+  padding: map.get($spacers, 2);
+  background-color: rgba($light, 0.2);
+  border-radius: 50%;
+  img {
+    display: block;
+  }
+  @include media-breakpoint-up(lg) {
+    padding: map.get($spacers, 3);
+  }
 }

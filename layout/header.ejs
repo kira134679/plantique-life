@@ -1,3 +1,134 @@
-<h1 class="header">header</h1>
-<a href="index.html">index</a>
-<a href="about.html">about</a>
+<nav class="navbar navbar-expand-lg sticky-top bg-white py-2 py-lg-4">
+  <div class="container">
+    <!-- LOGO -->
+    <a class="d-none d-lg-block w-lg-30" href="index.html"
+      ><img src="/assets/images/logo-primary-en-zh-lg.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <a class="d-lg-none" href="index.html"
+      ><img src="/assets/images/logo-primary-en-sm.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <!-- 購物車、電腦版註冊登入、會員選單 -->
+    <div class="ms-auto order-lg-2 w-lg-30">
+      <ul class="d-flex list-unstyled align-items-center justify-content-end">
+        <li class="me-2 me-lg-4">
+          <button class="btn cart-toggle-btn" data-bs-toggle="button" type="button">
+            <div class="position-relative">
+              <span class="material-symbols-rounded d-block"> shopping_cart </span>
+              <span
+                class="badge rounded-pill text-bg-danger text-white lh-base py-0 px-1 position-absolute top-0 start-100 cart-badge"
+                >0</span
+              >
+            </div>
+          </button>
+        </li>
+        <!-- 未登入 -->
+        <!-- TODO: 待替換成 Button 元件 -->
+        <li class="d-none d-lg-block guest">
+          <button
+            class="btn btn-white text-neutral-700 rounded-pill border-2 border-neutral-200 py-3 px-6 me-4"
+            type="button"
+          >
+            登入
+          </button>
+        </li>
+        <li class="d-none d-lg-block guest">
+          <button class="btn btn-primary text-white rounded-pill border-0 py-3 px-6" type="button">註冊</button>
+        </li>
+        <!-- 登入後 -->
+        <!-- 會員選單 -->
+        <li class="d-none d-lg-block position-relative member">
+          <!-- 會員選單按鈕 -->
+          <button
+            class="btn member-menu-toggle-btn collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#memberMenu"
+            aria-controls="memberMenu"
+            aria-expanded="false"
+            aria-label="Toggle member menu"
+          >
+            <span class="material-symbols-rounded d-block"> person </span>
+          </button>
+          <!-- 會員選單內容 -->
+          <ul class="collapse position-absolute list-unstyled bg-white text-center p-6 member-menu" id="memberMenu">
+            <li class="mb-3"><a class="member-menu-link" href="#">會員中心</a></li>
+            <li class="pb-6">
+              <a class="member-menu-link" href="#">訂單查詢</a>
+            </li>
+            <li class="pt-6 separator-line-top">
+              <a class="member-menu-link py-1 d-flex justify-content-center align-items-center" href="#"
+                >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- 手機版漢堡選單按鈕 -->
+    <button
+      class="btn custom-nav-toggle-btn d-block d-lg-none collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="material-symbols-rounded d-block d-lg-none"> density_medium </span>
+    </button>
+    <!-- 導覽列連結  -->
+    <div
+      class="collapse navbar-collapse text-center p-6 p-lg-0 order-lg-1 justify-content-center w-lg-40"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav pb-6 pb-lg-0 gap-3 gap-lg-0">
+        <li>
+          <a class="custom-nav-link" aria-current="page" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+      <!-- 未登入 -->
+      <ul class="navbar-nav pt-6 d-lg-none separator-line-top guest">
+        <li>
+          <a class="custom-nav-link" href="#">會員登入</a>
+        </li>
+      </ul>
+      <!-- 登入後 -->
+      <ul class="navbar-nav pt-6 d-lg-none separator-line-top member">
+        <li>
+          <a class="custom-nav-link mb-3" href="#">會員中心</a>
+        </li>
+        <li class="pb-6">
+          <a class="custom-nav-link" href="#">訂單查詢</a>
+        </li>
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#"
+            >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- JS: 依登入狀態顯示/隱藏某些元素 -->
+<script>
+  let loggedIn = false;
+  const guestItems = document.querySelectorAll('.guest');
+  const memberItems = document.querySelectorAll('.member');
+  if (loggedIn) {
+    guestItems.forEach(item => item.classList.add('hidden'));
+    memberItems.forEach(item => item.classList.remove('hidden'));
+  } else {
+    guestItems.forEach(item => item.classList.remove('hidden'));
+    memberItems.forEach(item => item.classList.add('hidden'));
+  }
+</script>
