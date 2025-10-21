@@ -5,9 +5,15 @@
 @import './base/base';
 @import './utils/custom-utilities';
 
+// layouts
 @import './layout/header.scss';
 @import './layout/footer.scss';
 
 // components
 @import './components/product-card';
+@import './components/buttons/btn-backtotop';
+@import './components/buttons/btn-filled-or-outline';
+@import './components/buttons/btn-link';
+
+// pages
 @import './pages/shopping-cart';
