@@ -113,8 +113,6 @@ const orderInfo = {
 const stepTitle = ['購物車清單', '付款資料', '訂單確認'];
 // 運費
 const deliveryFee = 120;
-// 使用者是否確認購物車以及付款資訊
-let isConfirmed = false;
 
 // 紀錄輸入欄位 zod 檢核規則以及是否需要檢核 (needCheck)
 const userSchema = {
@@ -814,7 +812,7 @@ function confirmCheckoutData() {
     return;
   }
 
-  if (!isConfirmed) confirmModal.show();
+  confirmModal.show();
 }
 // 前往訂單完成
 async function goToCompleted() {
@@ -1174,7 +1172,6 @@ mobileBarcodeEl.addEventListener('input', e => checkSchema(e.target, 'mobileBarc
 ubnMask.on('accept', e => checkSchema(e.target, 'ubn'));
 // 付款資料 → 提醒 Modal 確認送出按鈕
 confirmModalCheckBtnEl.addEventListener('click', () => {
-  isConfirmed = true;
   confirmModal.hide();
   goToCompleted();
 });
