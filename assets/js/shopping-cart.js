@@ -293,6 +293,13 @@ const confirmModalCheckBtnEl = document.getElementById('confirmModalCheckBtn');
 
 /****** 付款資料畫面 結束 ******/
 
+/****** 訂單完成畫面 開始 ******/
+
+// 前往 產品詳細頁 按鈕
+const completedBtnEl = document.getElementById('completed-btn');
+
+/****** 訂單完成畫面 結束 ******/
+
 // 滾動至頂部
 function scrollToTop() {
   return new Promise(resolve => {
@@ -845,6 +852,23 @@ async function goToCompleted() {
   }
   orderInfo.notes = checkoutNotesTextEl.value;
 
+  // 更新完成畫面
+  // 訂單編號
+  const completedOrderNumberEl = document.getElementById('completed-order-number');
+  completedOrderNumberEl.textContent = '#B160423010304';
+  // 訂單電子郵件
+  const completedEmailEl = document.getElementById('completed-email');
+  completedEmailEl.textContent = orderInfo.recipient.email;
+  // 轉帳訊息
+  if (paymentToggleEl.textContent === '轉帳') {
+    const completedMessageDefaultEl = document.getElementById('completed-message-default');
+    const completedMessageTransferEl = document.getElementById('completed-message-transfer');
+    completedMessageTransferEl.classList.remove('d-none');
+    completedMessageDefaultEl.classList.add('d-none');
+  }
+  const pillsTabContentEl = document.getElementById('pills-tabContent');
+  pillsTabContentEl.classList.add('completed-tabContent');
+
   // 跳至訂單確認畫面
   await switchStep(1, 2);
 
@@ -1175,3 +1199,6 @@ confirmModalCheckBtnEl.addEventListener('click', () => {
   confirmModal.hide();
   goToCompleted();
 });
+
+// 訂單完成 → 繼續購物
+completedBtnEl.addEventListener('click', () => (window.location.href = './product-list.html'));

@@ -273,3 +273,120 @@ input.form-control {
     }
   }
 }
+
+.completed-tabContent {
+  padding-top: map-get($spacers, 8) !important;
+  padding-bottom: map-get($spacers, 8) !important;
+  @include media-breakpoint-up(lg) {
+    padding-top: map-get($spacers, 12) !important;
+    padding-bottom: map-get($spacers, 12) !important;
+  }
+}
+
+.completed-svg-wrapper {
+  width: 108px;
+  @include media-breakpoint-up(lg) {
+    width: 136px;
+  }
+  .completed-svg {
+    animation: completed-svg-scale-bounce 400ms ease 1100ms forwards;
+  }
+  .completed-svg-tick {
+    fill: none;
+    stroke-width: 1px;
+    stroke: $primary-700;
+    stroke-dasharray: 15px, 15px;
+    stroke-dashoffset: 15px;
+    animation: completed-svg-tick 400ms ease 1100ms forwards;
+    opacity: 0;
+  }
+  .completed-svg-circle-outline {
+    fill: none;
+    stroke-width: 1px;
+    stroke: $primary-100;
+    stroke-dasharray: 72px, 72px;
+    stroke-dashoffset: 72px;
+    animation: completed-svg-circle-outline 400ms ease-in-out 400ms forwards;
+    opacity: 0;
+  }
+  .completed-svg-circle-fill {
+    fill: $primary-100;
+    stroke: none;
+    opacity: 0;
+    animation: completed-svg-circle-fill 300ms ease-out 800ms forwards;
+  }
+  .completed-svg-circle-fill-center {
+    fill: $white;
+    stroke: none;
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: completed-svg-scale-out 300ms ease-out 800ms forwards;
+  }
+
+  @keyframes completed-svg-circle-outline {
+    0% {
+      stroke-dashoffset: 72px;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0px;
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-circle-fill {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-scale-bounce {
+    0%,
+    100% {
+      transform: none;
+    }
+    50% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+  }
+  @keyframes completed-svg-tick {
+    0% {
+      stroke-dashoffset: 15px;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0px;
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-scale-out {
+    0% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 1;
+    }
+  }
+}
+.completed-message-wrapper {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: completed-message-fadeIn 500ms ease-out 1600ms forwards;
+}
+@keyframes completed-message-fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
