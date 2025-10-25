@@ -28,11 +28,18 @@
     <div class="ms-auto w-lg-30">
       <ul class="d-flex list-unstyled align-items-center justify-content-end">
         <li class="me-2 me-lg-4">
-          <button class="btn cart-toggle-btn" data-bs-toggle="button" type="button">
+          <button
+            class="btn cart-toggle-btn"
+            data-bs-toggle="offcanvas"
+            type="button"
+            data-bs-target="#headerOffcanvas"
+            aria-controls="headerOffcanvas"
+          >
             <div class="position-relative">
               <span class="material-symbols-rounded d-block"> shopping_cart </span>
               <span
                 class="badge rounded-pill text-bg-danger text-white lh-base py-0 px-1 position-absolute top-0 start-100 cart-badge"
+                id="header-offcanvas-text"
                 >0</span
               >
             </div>
@@ -137,9 +144,34 @@
 </nav>
 <!-- 手機版導覽列遮罩 -->
 <div id="custom-nav-overlay" class="custom-nav-overlay z-index-1034 d-none d-lg-none"></div>
+<!-- 購物車內容 -->
+<div
+  class="offcanvas offcanvas-end header-offcanvas border-start-0"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="headerOffcanvas"
+  aria-labelledby="headerOffcanvasLabel"
+>
+  <div class="offcanvas-header position-relative">
+    <p class="h5 text-primary-700 offcanvas-title" id="headerOffcanvasLabel">購物車</p>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <ul class="header-offcanvas-cart list-unstyled d-flex flex-column gap-4 mb-8" id="header-offcanvas-cart"></ul>
+    <div class="mt-auto">
+      <!-- prettier-ignore -->
+      <%- include('./components/buttons/btn-filled-or-outline', {
+        type: 'filled', color: 'primary', shape: 'pill', size: 'sm',
+        rightIcon: true, leftIcon: false, iconName: 'arrow_right_alt', 
+        dataId: 'headerGoCartBtn', btnClass: 'justify-content-center w-100',
+        btnText: '去結帳'
+      }); -%>
+    </div>
+  </div>
+</div>
 
 <!-- JS: 依登入狀態顯示/隱藏某些元素 -->
-<script>
+<script type="module">
   let loggedIn = false;
   const guestItems = document.querySelectorAll('.guest');
   const memberItems = document.querySelectorAll('.member');
@@ -153,7 +185,7 @@
 </script>
 
 <!-- JS: 手機版導覽列遮罩 -->
-<script>
+<script type="module">
   const navbarNav = document.getElementById('navbarNav');
   const navOverlay = document.getElementById('custom-nav-overlay');
   const navToggleBtn = document.getElementById('custom-nav-toggle-btn');
@@ -172,3 +204,6 @@
     navToggleBtn.click();
   });
 </script>
+
+<!-- 購物車 -->
+<script type="module" src="../assets/js/layout/header.js"></script>

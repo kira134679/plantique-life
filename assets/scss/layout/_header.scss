@@ -118,3 +118,21 @@
 .guest.hidden {
   display: none !important;
 }
+
+.header-offcanvas {
+  .offcanvas-header::before {
+    // 高度為1px的底線，但左右間隔16px
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background-color: $primary-200;
+  }
+}
+.header-offcanvas-cart {
+  .card-img-top {
+    height: 130px;
+  }
+}
