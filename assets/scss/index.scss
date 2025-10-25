@@ -11,6 +11,7 @@
 @import './layout/footer';
 
 // components
+@import './components/product-card';
 
 @import './components/buttons/btn-backtotop';
 @import './components/buttons/btn-tag';
@@ -22,5 +23,7 @@
 // section
 
 @import './pages/index/category';
+@import './pages/index/hero';
+@import './pages/index/recommend';
 @import './pages/index/column';
 @import './pages/index/about';
