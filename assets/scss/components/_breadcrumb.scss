@@ -12,7 +12,13 @@
   padding-left: 0;
 }
 
+/* 取消預設的 before 樣式 */
 .breadcrumb-item + .breadcrumb-item::before {
+  content: none;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+  content: var(--bs-breadcrumb-divider, '/');
   font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
