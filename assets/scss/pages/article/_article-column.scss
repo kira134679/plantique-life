@@ -1,0 +1,8 @@
+.column-section .card {
+  .articaleCard-img-top {
+    max-height: 180px;
+    @include media-breakpoint-up(lg) {
+      max-height: 180px;
+    }
+  }
+}
