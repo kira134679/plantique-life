@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>植感生活 | PLANTIQUE LIFE</title>
   </head>
 
@@ -10,11 +12,134 @@
     <%- include('./layout/header'); -%>
 
     <!-- hero section start -->
-
+    <header class="hero hero-py">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+            <div class="d-flex flex-column justify-content-center">
+              <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
+              <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'立即選購',
+              rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+              <%-include('./components/buttons/btn-filled-or-outline', btnFilledPill); -%>
+            </div>
+          </div>
+          <div class="d-none d-sm-block col-md-10">
+            <img src="/assets/images/img_banner_text02_lg.svg" alt="text02" />
+          </div>
+        </div>
+      </div>
+    </header>
     <!-- hero section end -->
 
     <!-- news section start -->
+    <section class="py-12 py-md-15">
+      <div class="container">
+        <div class="row">
+          <!-- 標題 -->
+          <div class="col-md-2">
+            <div class="d-flex flex-sm-column justify-content-center align-items-center gap-6 gap-sm-0">
+              <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
+              <div class="text-center d-flex flex-column justify-content-center align-items-center">
+                <h6 class="fs-8 fs-md-7 text-primary mb-1 mb-md-4">News</h6>
+                <h2 class="fs-3 fs-md-2 m-0 text-neutral-700 news-title mb-8 mb-lg-4">
+                  <span>最</span><span>新</span><span>消</span><span>息</span>
+                </h2>
+              </div>
+              <img src="/assets/images/heading-decoration.svg" alt="decoration-lg" class="d-sm-block d-none" />
+              <img src="/assets/images/heading-decoration-sm.svg" alt="decoration-sm" class="d-sm-none d-block" />
+            </div>
+          </div>
 
+          <!-- 資訊 -->
+          <div class="col-md-10">
+            <div class="swiper newsSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+
+                  <div class="d-flex flex-column">
+                    <div class="d-md-flex">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
+                      </div>
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                        <div>
+                          <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                        </div>
+                        <p class="fs-sm fs-lg-8 text-neutral-400">
+                          結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
+                        </p>
+
+                        <a href="#" class="d-flex justify-content-end">
+                          <% const btnLinkPrimary = { color:'primary', btnText:'活動詳情', rightIcon: true } %>
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = {
+                          color:'neutral', btnText:'活動詳情', rightIcon: true } %>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+
+                  <div class="d-flex flex-column">
+                    <div class="d-md-flex">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_02.png" alt="抽盆器好禮" />
+                      </div>
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                        <div>
+                          <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">
+                            本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
+                          </h3>
+                        </div>
+                        <p class="fs-sm fs-lg-8 text-neutral-400">
+                          迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
+                        </p>
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+
+                  <div class="d-flex flex-column">
+                    <div class="d-md-flex">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_03.png" alt="會員募集" />
+                      </div>
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                        <div>
+                          <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.07.01 ~ 2025.12.31</p>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">新會員募集中！<br />加入即享首購金 250 元</h3>
+                        </div>
+                        <p class="fs-sm fs-lg-8 text-neutral-400">
+                          成為我們的會員，把療癒的多肉帶進生活裡。<br />註冊加入即享首購金 250 元，無折抵門檻！
+                        </p>
+
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-content-center justify-content-md-start position-static mt-8 mt-md-10 swiper-pagination"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- news section end -->
 
     <!-- category section start -->

@@ -1,5 +1,7 @@
-import '/assets/scss/index.scss';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import Swiper from 'swiper';
+import { Pagination, Autoplay } from 'swiper/modules';
+import '/assets/scss/index.scss';
 
 const columnFilterEl = document.querySelector('#column-filter');
 const columnItems = document.querySelectorAll('.column-item');
@@ -21,4 +23,19 @@ columnFilterEl.addEventListener('click', e => {
       }
     });
   }
+});
+
+const newsSwiper = new Swiper('.newsSwiper', {
+  modules: [Pagination, Autoplay],
+  direction: 'horizontal',
+  loop: true,
+  autoHeight: true,
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+  },
 });
