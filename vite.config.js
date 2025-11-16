@@ -5,6 +5,7 @@ import path from 'node:path';
 import { glob } from 'glob';
 
 import liveReload from 'vite-plugin-live-reload';
+import react from '@vitejs/plugin-react';
 
 function moveOutputPlugin() {
   return {
@@ -30,6 +31,7 @@ export default defineConfig({
     liveReload(['./layout/**/*.ejs', './components/**/*.ejs', './pages/**/*.html']),
     ViteEjsPlugin(),
     moveOutputPlugin(),
+    react(),
   ],
   server: {
     // 啟動 server 時預設開啟的頁面
