@@ -6,7 +6,7 @@
     <title>購物車清單</title>
   </head>
   <body>
-    <%- include('./layout/header'); -%>
+    <%- include('src/layout/header'); -%>
 
     <div class="container-fluid container-lg">
       <ol class="cart-nav nav nav-pills flex-nowrap py-8 py-lg-13" id="pills-cart-nav" role="tablist">
@@ -736,7 +736,7 @@
     <!-- prettier-ignore -->
     <%- include('./components/buttons/btn-backtotop'); -%>
 
-    <%- include('./layout/footer'); -%>
-    <script type="module" src="../assets/js/shopping-cart.js"></script>
+    <%- include('src/layout/footer'); -%>
+    <script type="module" src="/src/views/Cart.jsx"></script>
   </body>
 </html>

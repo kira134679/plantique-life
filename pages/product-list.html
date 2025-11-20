@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/assets/scss/product-list.scss" />
     <title>植感生活 | PLANTIQUE LIFE</title>
   </head>
 
   <body>
-    <%- include('./layout/header'); -%>
+    <%- include('src/layout/header'); -%>
 
     <div class="news">
       <!-- Slider main container -->
@@ -444,8 +443,8 @@
     <!-- prettier-ignore -->
     <%- include('./components/buttons/btn-backtotop'); -%>
 
-    <%- include('./layout/footer'); -%>
+    <%- include('src/layout/footer'); -%>
 
-    <script type="module" src="/assets/js/product-list.js"></script>
+    <script type="module" src="/src/views/ProductList.jsx"></script>
   </body>
 </html>
