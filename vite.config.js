@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { ViteEjsPlugin } from 'vite-plugin-ejs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 import path from 'node:path';
 import { glob } from 'glob';
 
@@ -33,6 +33,12 @@ export default defineConfig({
     moveOutputPlugin(),
     react(),
   ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      assets: fileURLToPath(new URL('./src/assets', import.meta.url)),
+    },
+  },
   server: {
     // 啟動 server 時預設開啟的頁面
     open: 'pages/index.html',
