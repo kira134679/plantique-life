@@ -5,8 +5,10 @@
   "endOfLine": "lf",
   "overrides": [
     {
-      "files": "*.ejs",
-      "options": { "parser": "html" }
+      "files": "eslint.config.js",
+      "options": {
+        "singleQuote": false
+      }
     }
   ]
 }
