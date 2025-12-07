@@ -27,8 +27,6 @@
     font-size: map.get($font-sizes, 5);
   }
   border-width: 0;
-  visibility: hidden;
-  opacity: 0;
   position: fixed;
   z-index: 1030;
   right: map.get($spacers, 3);
