@@ -1,5 +1,3 @@
-import 'assets/scss/index.scss';
-import 'bootstrap/dist/js/bootstrap.min.js';
 import { Outlet } from 'react-router';
 import BackToTopBtn from './components/BackToTopBtn';
 import Footer from './layout/Footer';
