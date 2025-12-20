@@ -105,7 +105,7 @@
 }
 .coupon-modal {
   .modal-dialog {
-    --bs-modal-margin: calc(var(--bs-gutter-x) * 0.5);
+    --bs-modal-margin: calc(1.5rem * 0.5);
     --bs-modal-width: 416px;
   }
   .modal-content {

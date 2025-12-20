@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
 import ProductCard from '../../components/ProductCard';
 
 function FirstStep({ orderInfo, couponMenu, productImages }) {
@@ -11,6 +13,11 @@ function FirstStep({ orderInfo, couponMenu, productImages }) {
     productImg09,
     productImg13,
   } = productImages;
+
+  const [showCouponModal, setShowCouponModal] = useState(false);
+
+  const handleCloseCouponModal = () => setShowCouponModal(false);
+  const handleShowCouponModal = () => setShowCouponModal(true);
 
   return (
     <>
@@ -125,68 +132,61 @@ function FirstStep({ orderInfo, couponMenu, productImages }) {
                 type="button"
                 className="btn custom-btn-link-primary custom-btn-link-sm text-nowrap ms-auto"
                 id="coupon-choose-btn"
-                data-bs-toggle="modal"
-                data-bs-target="#couponModal"
+                onClick={handleShowCouponModal}
               >
                 選擇
               </button>
-              <div
-                className="modal fade coupon-modal"
-                id="couponModal"
-                tabIndex="-1"
-                aria-labelledby="couponModalLabel"
-                aria-hidden="true"
+              <Modal
+                show={showCouponModal}
+                onHide={handleCloseCouponModal}
+                className="coupon-modal"
+                centered
+                scrollable
               >
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  <div className="modal-content rounded-0 border-0">
-                    <div className="modal-header border-bottom-0 p-lg-6">
-                      <h1 className="modal-title h6 fs-lg-5 text-primary-700 lh-sm" id="couponModalLabel">
-                        選擇優惠
-                      </h1>
-                      <button type="button" className="btn p-2 ms-auto" data-bs-dismiss="modal" aria-label="Close">
-                        <span className="material-symbols-rounded d-block border-0 text-neutral-700">close</span>
-                      </button>
-                    </div>
-                    <div className="modal-body pt-0 p-lg-6 pt-lg-0">
-                      <div className="coupon-select unselected" id="couponModalSelected"></div>
-                      <div className="d-flex align-items-center py-4 py-lg-6">
-                        <p className="fs-sm text-primary me-6">其他優惠券</p>
-                        <span className="flex-grow-1 border-bottom"></span>
-                      </div>
-                      <ul className="list-unstyled coupon-modal-list" id="couponModalList">
-                        {couponMenu.map(coupon => (
-                          <li key={coupon.name}>
-                            <div className="coupon-layout d-flex">
-                              <div className="bg-primary d-flex justify-content-center align-items-center">
-                                <div className="bg-primary d-flex justify-content-center align-items-center">
-                                  <div className="d-flex flex-column align-items-start">
-                                    <span className="fs-sm text-white mb-1">NT$</span>
-                                    <span className="h3 text-white">{coupon.discount}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex-grow-1 d-flex justify-content-between align-items-center border border-start-0 px-3">
-                                <div className="me-3">
-                                  <p className="fs-8 lh-sm fw-bold noto-serif-tc text-neutral-700 mb-2">
-                                    {coupon.name}
-                                  </p>
-                                  <p className="fs-xs fs-lg-sm text-primary-500">{coupon.date}</p>
-                                </div>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary rounded-0 fs-sm fs-lg-8 text-white text-nowrap px-3 py-2"
-                                >
-                                  選擇
-                                </button>
+                <Modal.Header className="flex-column align-items-stretch border-bottom-0 p-lg-6">
+                  <div className="d-flex justify-content-between align-items-center pb-4 pb-lg-6">
+                    <Modal.Title className="h6 fs-lg-5 text-primary-700 lh-sm">選擇優惠</Modal.Title>
+                    <button type="button" className="btn p-2 ms-auto" onClick={handleCloseCouponModal}>
+                      <span className="material-symbols-rounded d-block border-0 text-neutral-700">close</span>
+                    </button>
+                  </div>
+                  <div className="coupon-select text-nowrap unselected" id="couponModalSelected"></div>
+                  <div className="d-flex align-items-center pt-4 pt-lg-6">
+                    <p className="fs-sm text-primary me-6">其他優惠券</p>
+                    <span className="flex-grow-1 border-bottom"></span>
+                  </div>
+                </Modal.Header>
+                <Modal.Body className="pt-0 p-lg-6 pt-lg-0">
+                  <ul className="list-unstyled coupon-modal-list" id="couponModalList">
+                    {couponMenu.map(coupon => (
+                      <li key={coupon.name}>
+                        <div className="coupon-layout d-flex">
+                          <div className="bg-primary d-flex justify-content-center align-items-center">
+                            <div className="bg-primary d-flex justify-content-center align-items-center">
+                              <div className="d-flex flex-column align-items-start">
+                                <span className="fs-sm text-white mb-1">NT$</span>
+                                <span className="h3 text-white">{coupon.discount}</span>
                               </div>
                             </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                          </div>
+                          <div className="flex-grow-1 d-flex justify-content-between align-items-center border border-start-0 px-3">
+                            <div className="me-3">
+                              <p className="fs-8 lh-sm fw-bold noto-serif-tc text-neutral-700 mb-2">{coupon.name}</p>
+                              <p className="fs-xs fs-lg-sm text-primary-500">{coupon.date}</p>
+                            </div>
+                            <button
+                              type="button"
+                              className="btn btn-primary rounded-0 fs-sm fs-lg-8 text-white text-nowrap px-3 py-2"
+                            >
+                              選擇
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </Modal.Body>
+              </Modal>
             </div>
           </section>
           <section className="border border-2 p-4 p-lg-6">
