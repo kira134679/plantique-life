@@ -1,3 +1,5 @@
+import Dropdown from 'react-bootstrap/Dropdown';
+
 function SecondStep({ orderInfo }) {
   return (
     <>
@@ -8,7 +10,7 @@ function SecondStep({ orderInfo }) {
               選擇運送及付款方式 <span className="text-danger">*</span>
             </h6>
             <p className="fs-lg-7 text-neutral-700 mb-2">運送方式</p>
-            <div className="dropdown checkout-dropdown" id="delivery-dropdown">
+            {/* <div className="dropdown checkout-dropdown" id="delivery-dropdown">
               <button
                 className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
                 type="button"
@@ -27,11 +29,26 @@ function SecondStep({ orderInfo }) {
                 </li>
               </ul>
               <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-            </div>
+            </div> */}
+            <Dropdown className="checkout-dropdown" id="delivery-dropdown">
+              <Dropdown.Toggle
+                variant=""
+                id="delivery-toggle"
+                className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
+              >
+                請選擇運送方式
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="w-100">
+                <Dropdown.Item href="#" className="fs-sm fs-lg-8">
+                  黑貓宅配
+                </Dropdown.Item>
+              </Dropdown.Menu>
+              <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+            </Dropdown>
             <p className="fs-sm text-neutral-400 mt-1">* 宅配貨到付款會產生額外手續費</p>
             <p className="fs-sm text-neutral-400 mb-3">* 宅配週日不配送</p>
             <p className="fs-lg-7 text-neutral-700 mb-2">付款方式</p>
-            <div className="dropdown checkout-dropdown" id="payment-dropdown">
+            {/* <div className="dropdown checkout-dropdown" id="payment-dropdown">
               <button
                 className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
                 type="button"
@@ -60,7 +77,28 @@ function SecondStep({ orderInfo }) {
                 </li>
               </ul>
               <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-            </div>
+            </div> */}
+            <Dropdown className="checkout-dropdown" id="payment-dropdown">
+              <Dropdown.Toggle
+                variant=""
+                id="payment-toggle"
+                className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
+              >
+                請選擇付款方式
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="w-100">
+                <Dropdown.Item href="#" className="fs-sm fs-lg-8">
+                  貨到付款
+                </Dropdown.Item>
+                <Dropdown.Item href="#" className="fs-sm fs-lg-8">
+                  信用卡一次付清
+                </Dropdown.Item>
+                <Dropdown.Item href="#" className="fs-sm fs-lg-8">
+                  轉帳
+                </Dropdown.Item>
+              </Dropdown.Menu>
+              <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+            </Dropdown>
             <form id="creditcard-form" className="mt-4" noValidate>
               <div className="mb-2">
                 <label htmlFor="card-number-1" className="form-label fs-lg-7 text-neutral-700">
@@ -232,7 +270,7 @@ function SecondStep({ orderInfo }) {
             </h6>
             <form id="invoice-form" noValidate>
               <p className="fs-lg-7 text-neutral-700 mb-2">選擇發票類型</p>
-              <div className="dropdown checkout-dropdown" id="invoice-dropdown">
+              {/* <div className="dropdown checkout-dropdown" id="invoice-dropdown">
                 <button
                   className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
                   type="button"
@@ -261,7 +299,28 @@ function SecondStep({ orderInfo }) {
                   </li>
                 </ul>
                 <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-              </div>
+              </div> */}
+              <Dropdown className="checkout-dropdown" id="invoice-dropdown">
+                <Dropdown.Toggle
+                  variant=""
+                  id="invoice-toggle"
+                  className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
+                >
+                  請選擇發票類型
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="w-100">
+                  <Dropdown.Item href="#" className="fs-sm fs-lg-8">
+                    電子發票
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#" className="fs-sm fs-lg-8" id="mobile-barcode-item">
+                    雲端載具
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#" className="fs-sm fs-lg-8" id="ubn-item">
+                    統一編號
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+                <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+              </Dropdown>
               <div className="mt-3" id="cloud-invoice-carrier">
                 <label htmlFor="mobile-barcode" className="form-label fs-lg-7">
                   手機條碼
