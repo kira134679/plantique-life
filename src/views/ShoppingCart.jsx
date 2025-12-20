@@ -1,14 +1,120 @@
 import ProductCard from '../components/ProductCard';
-
 // 之後由資料庫資料取得
 import productImg07 from 'assets/images/products/img_product_07.png';
 import productImg08 from 'assets/images/products/img_product_08.png';
 import productImg09 from 'assets/images/products/img_product_09.png';
+import productImg11 from 'assets/images/products/img_product_11.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
+import productAddImg01 from 'assets/images/products/img_product_add_01.png';
 import productAddImg02 from 'assets/images/products/img_product_add_02.png';
 import productAddImg03 from 'assets/images/products/img_product_add_03.png';
 import productAddImg04 from 'assets/images/products/img_product_add_04.png';
 import productAddImg05 from 'assets/images/products/img_product_add_05.png';
+// 優惠券資料
+const couponMenu = [
+  {
+    type: 'amount',
+    name: '入會首購金 250 元',
+    discount: 250,
+    minimumSpend: 250,
+    date: '2025.07.01 ~ 2025.12.31',
+    code: 'aaaaaa',
+    state: '',
+  },
+  {
+    type: 'amount',
+    name: '好友分享禮 150 元',
+    discount: 150,
+    minimumSpend: 150,
+    date: '2025.07.01 ~ 2025.12.31',
+    code: 'A7X9Q2',
+    state: '',
+  },
+  {
+    type: 'amount',
+    name: '官方好友禮 50 元',
+    discount: 50,
+    minimumSpend: 50,
+    date: '2025.07.01 ~ 2025.12.31',
+    code: 'M3T8kz',
+    state: '',
+  },
+  {
+    type: 'amount',
+    name: '滿 5000 折 500',
+    discount: 500,
+    minimumSpend: 5000,
+    date: '2025.07.01 ~ 2025.12.31',
+    code: 'bbbbbb',
+    state: '',
+  },
+];
+// 付款資料
+const orderInfo = {
+  cart: [
+    {
+      type: 'product',
+      name: '荒原綠影',
+      originalPrice: 2400,
+      salePrice: 2400,
+      count: 1,
+      image: {
+        src: productImg13,
+        position: '',
+      },
+    },
+    {
+      type: 'product',
+      name: '垂綠星河',
+      originalPrice: 3600,
+      salePrice: 3600,
+      count: 1,
+      image: {
+        src: productImg11,
+        position: '',
+      },
+    },
+    {
+      type: 'add-on',
+      name: '噴霧器',
+      originalPrice: 249,
+      salePrice: 129,
+      count: 1,
+      image: {
+        src: productAddImg01,
+        position: 'product-add1-position',
+      },
+    },
+  ],
+  subtotal: 0,
+  deliveryFee: 0,
+  discount: 0,
+  total: 0,
+  delivery: {
+    method: '黑貓宅配',
+  },
+  payment: {
+    method: '信用卡一次付清',
+    creditCardInfo: { number: ['1111', '2222', '3333', '4444'], exp: ['01', '28'], cvc: '123' },
+  },
+  purchaser: {
+    name: '王小明',
+    tel: '0912-345-678',
+    email: 'plantique@test.com',
+  },
+  recipient: {
+    name: '王小明',
+    tel: '0912-345-678',
+    email: 'plantique@test.com',
+    address: '台北市信義區松仁路100號',
+  },
+  invoice: {
+    method: '雲端載具',
+    mobileBarcode: '/ABC1234',
+    ubn: '12345678',
+  },
+  notes: '',
+};
 
 function ShoppingCart() {
   return (
@@ -91,7 +197,74 @@ function ShoppingCart() {
                     </div>
                   </div>
                 </div>
-                <ul className="cart-list list-unstyled border-top pt-6 pb-8" id="cart-list"></ul>
+                <ul className="cart-list list-unstyled border-top pt-6 pb-8" id="cart-list">
+                  {orderInfo.cart.map((order, index) => (
+                    <li data-index={index} key={order.name}>
+                      <div className="row gx-3 gx-lg-6">
+                        <div className="col-6 col-lg-3">
+                          <img
+                            className="cart-product-img w-100 object-fit-cover"
+                            src={order.image.src}
+                            alt={order.name}
+                          />
+                        </div>
+                        <div className="col-6 col-lg-9">
+                          <div className="d-flex flex-column flex-lg-row align-items-lg-center h-100">
+                            <div className="col-lg-4 pe-lg-6">
+                              <h4 className="h6 fs-lg-5 text-neutral-700 text-nowrap mb-1 mb-lg-2">{order.name}</h4>
+                              <div className="d-flex mb-3 mb-lg-0 align-items-end">
+                                <p className="fs-8 fs-lg-7 fw-bold lh-sm noto-serif-tc text-primary-700">
+                                  {`NT$${order.salePrice.toLocaleString()}`}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="d-flex justify-content-between col-lg-4 pe-lg-6 mb-3 mb-md-0">
+                              <p className="d-lg-none fs-sm text-neutral-400">小計</p>
+                              <p
+                                data-action="subtotal"
+                                className="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700"
+                              >
+                                {`NT$${order.salePrice.toLocaleString()}`}
+                              </p>
+                            </div>
+                            <div className="d-flex align-items-center col-lg-4 pe-lg-6 mt-auto mt-lg-0">
+                              <button
+                                type="button"
+                                data-action="minus"
+                                className="btn custom-btn-outline-neutral custom-btn-circle-sm me-1"
+                                disabled={false}
+                              >
+                                <span className="material-symbols-rounded fs-6 fs-lg-5 d-block">remove</span>
+                              </button>
+                              <span
+                                data-action="quantity"
+                                className="cart-product-quantity fs-lg-7 fw-bold lh-sm noto-serif-tc text-black text-center me-1"
+                              >
+                                1
+                              </span>
+                              <button
+                                type="button"
+                                data-action="add"
+                                className="btn custom-btn-outline-neutral custom-btn-circle-sm me-1"
+                              >
+                                <span className="material-symbols-rounded fs-6 fs-lg-5 d-block">add_2</span>
+                              </button>
+                              <button
+                                type="button"
+                                data-action="delete"
+                                className="btn custom-btn-outline-danger custom-btn-circle-sm ms-auto"
+                              >
+                                <span className="material-symbols-rounded fs-6 fs-lg-5 d-block text-danger">
+                                  delete
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="col-lg-4 pb-12 pt-8 pt-lg-13">
                 <section className="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
@@ -166,7 +339,36 @@ function ShoppingCart() {
                               <p className="fs-sm text-primary me-6">其他優惠券</p>
                               <span className="flex-grow-1 border-bottom"></span>
                             </div>
-                            <ul className="list-unstyled coupon-modal-list" id="couponModalList"></ul>
+                            <ul className="list-unstyled coupon-modal-list" id="couponModalList">
+                              {couponMenu.map(coupon => (
+                                <li key={coupon.name}>
+                                  <div className="coupon-layout d-flex">
+                                    <div className="bg-primary d-flex justify-content-center align-items-center">
+                                      <div className="bg-primary d-flex justify-content-center align-items-center">
+                                        <div className="d-flex flex-column align-items-start">
+                                          <span className="fs-sm text-white mb-1">NT$</span>
+                                          <span className="h3 text-white">{coupon.discount}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex-grow-1 d-flex justify-content-between align-items-center border border-start-0 px-3">
+                                      <div className="me-3">
+                                        <p className="fs-8 lh-sm fw-bold noto-serif-tc text-neutral-700 mb-2">
+                                          {coupon.name}
+                                        </p>
+                                        <p className="fs-xs fs-lg-sm text-primary-500">{coupon.date}</p>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        className="btn btn-primary rounded-0 fs-sm fs-lg-8 text-white text-nowrap px-3 py-2"
+                                      >
+                                        選擇
+                                      </button>
+                                    </div>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
                       </div>
