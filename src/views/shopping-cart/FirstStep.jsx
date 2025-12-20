@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ProductCard from '../../components/ProductCard';
 
-function FirstStep({ orderInfo, couponMenu, productImages }) {
+function FirstStep({ orderInfo, couponMenu, productImages, handleTabSelect }) {
   const {
     productAddImg02,
     productAddImg03,
@@ -207,6 +207,7 @@ function FirstStep({ orderInfo, couponMenu, productImages }) {
               type="button"
               className="btn custom-btn-filled-primary custom-btn-pill-lg w-100"
               id="btn-next-checkout"
+              onClick={() => handleTabSelect(1)}
             >
               前往結帳
             </button>

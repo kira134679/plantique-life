@@ -1,3 +1,7 @@
+import clsx from 'clsx';
+import { useState } from 'react';
+import Nav from 'react-bootstrap/Nav';
+import Tab from 'react-bootstrap/Tab';
 import FirstStep from './shopping-cart/FirstStep';
 import SecondStep from './shopping-cart/SecondStep';
 import ThirdStep from './shopping-cart/ThirdStep';
@@ -119,20 +123,27 @@ const orderInfo = {
   notes: '',
 };
 
+const activeTabKey = ['first', 'second', 'third'];
+
 function ShoppingCart() {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabSelect = k => setActiveTab(k);
+
   return (
-    <>
-      <div className="container-fluid container-lg">
-        <ol className="cart-nav nav nav-pills flex-nowrap py-8 py-lg-13" id="pills-cart-nav" role="tablist">
-          <li className="nav-item col-4" role="presentation">
-            <button
-              className="nav-link w-100 d-flex flex-column align-items-center active step-active"
-              id="pills-cart-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#pills-cart"
-              role="tab"
-              aria-controls="pills-cart"
-              aria-selected="true"
+    <div className="container-fluid container-lg">
+      <Tab.Container activeKey={activeTabKey[activeTab]} onSelect={handleTabSelect}>
+        <Nav variant="pills" className="cart-nav flex-nowrap py-8 py-lg-13 w-100">
+          <Nav.Item className="col-4">
+            <Nav.Link
+              eventKey={activeTabKey[0]}
+              className={clsx(
+                'w-100',
+                'd-flex',
+                'flex-column',
+                'align-items-center',
+                activeTab === 0 ? 'step-active' : activeTab > 0 ? 'step-completed' : '',
+              )}
             >
               <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
                 1
@@ -140,17 +151,18 @@ function ShoppingCart() {
               <h3 className="fs-sm fs-lg-8 text-primary mt-2">Cart List</h3>
               <h2 className="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
               <div className="cart-progress"></div>
-            </button>
-          </li>
-          <li className="nav-item col-4" role="presentation">
-            <button
-              className="nav-link w-100 d-flex flex-column align-items-center"
-              id="pills-checkout-info-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#pills-checkout-info"
-              role="tab"
-              aria-controls="pills-checkout-info"
-              aria-selected="false"
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="col-4">
+            <Nav.Link
+              eventKey={activeTabKey[1]}
+              className={clsx(
+                'w-100',
+                'd-flex',
+                'flex-column',
+                'align-items-center',
+                activeTab === 1 ? 'step-active' : activeTab > 1 ? 'step-completed' : '',
+              )}
             >
               <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
                 2
@@ -158,34 +170,23 @@ function ShoppingCart() {
               <h3 className="fs-sm fs-lg-8 text-primary text-nowrap mt-2">Checkout Info</h3>
               <h2 className="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
               <div className="cart-progress"></div>
-            </button>
-          </li>
-          <li className="nav-item col-4" role="presentation">
-            <button
-              className="nav-link w-100 text-center"
-              id="pills-completed-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#pills-completed"
-              role="tab"
-              aria-controls="pills-completed"
-              aria-selected="false"
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="col-4">
+            <Nav.Link
+              eventKey={activeTabKey[2]}
+              className={clsx('w-100', 'text-center', activeTab === 2 ? 'step-active' : '')}
             >
               <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
                 3
               </p>
               <h3 className="fs-sm fs-lg-8 text-primary mt-2">Completed</h3>
               <h2 className="h6 fs-lg-3 text-neutral-700 mt-2">訂單完成</h2>
-            </button>
-          </li>
-        </ol>
-        <div className="tab-content py-12 py-lg-15" id="pills-tabContent">
-          <div
-            className="tab-pane fade show active"
-            id="pills-cart"
-            role="tabpanel"
-            aria-labelledby="pills-cart-tab"
-            tabIndex="0"
-          >
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <Tab.Content className="py-12 py-lg-15">
+          <Tab.Pane eventKey={activeTabKey[0]}>
             <FirstStep
               couponMenu={couponMenu}
               orderInfo={orderInfo}
@@ -199,29 +200,18 @@ function ShoppingCart() {
                 productImg09,
                 productImg13,
               }}
+              handleTabSelect={handleTabSelect}
             />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="pills-checkout-info"
-            role="tabpanel"
-            aria-labelledby="pills-checkout-info-tab"
-            tabIndex="0"
-          >
-            <SecondStep orderInfo={orderInfo} />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="pills-completed"
-            role="tabpanel"
-            aria-labelledby="pills-completed-tab"
-            tabIndex="0"
-          >
+          </Tab.Pane>
+          <Tab.Pane eventKey={activeTabKey[1]}>
+            <SecondStep orderInfo={orderInfo} handleTabSelect={handleTabSelect} />
+          </Tab.Pane>
+          <Tab.Pane eventKey={activeTabKey[2]}>
             <ThirdStep />
-          </div>
-        </div>
-      </div>
-    </>
+          </Tab.Pane>
+        </Tab.Content>
+      </Tab.Container>
+    </div>
   );
 }
 
