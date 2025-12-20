@@ -1,6 +1,13 @@
+import { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from 'react-bootstrap/Modal';
 
 function SecondStep({ orderInfo }) {
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handleCloseConfirmModal = () => setShowConfirmModal(false);
+  const handleShowConfirmModal = () => setShowConfirmModal(true);
+
   return (
     <>
       <div className="row flex-column-reverse flex-lg-row">
@@ -422,6 +429,7 @@ function SecondStep({ orderInfo }) {
                 type="button"
                 className="btn custom-btn-filled-primary custom-btn-pill-lg text-nowrap flex-lg-grow-1 checkout-btn-basis"
                 id="btn-next-completed-desktop"
+                onClick={handleShowConfirmModal}
               >
                 確認送出
               </button>
@@ -434,6 +442,7 @@ function SecondStep({ orderInfo }) {
           type="button"
           className="btn custom-btn-filled-primary custom-btn-pill-lg w-100 text-nowrap"
           id="btn-next-completed-mobile"
+          onClick={handleShowConfirmModal}
         >
           確認送出
         </button>
@@ -446,55 +455,51 @@ function SecondStep({ orderInfo }) {
         </button>
       </div>
       <button type="button" className="btn demo-btn" id="demo-btn"></button>
-      <div
-        className="modal fade confirm-modal"
-        id="confirmModal"
-        tabIndex="-1"
+      <Modal
+        show={showConfirmModal}
+        onHide={handleCloseConfirmModal}
+        className="confirm-modal"
         aria-labelledby="confirmModalLabel"
-        aria-hidden="true"
+        centered
       >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content rounded-0">
-            <div className="modal-header justify-content-center border-bottom-0 px-0 pt-8 pt-lg-12 pb-0">
-              <p className="modal-title h4 fs-lg-3 text-primary-700" id="confirmModalLabel">
-                貼心提醒
-              </p>
-            </div>
-            <div className="modal-body text-center px-0 pt-4 pb-6 py-lg-8">
-              <p className="fs-6 noto-serif-tc text-neutral-700 mb-1">訂單送出後，將無法修改！</p>
-              <p className="fs-6 noto-serif-tc text-neutral-700 mb-3">請再次確認您的收件資訊</p>
-              <p className="fs-8 text-neutral-400 mb-1">收件資訊</p>
-              <div className="d-flex justify-content-center mb-1 mb-lg-2">
-                <p className="h5 fs-lg-4 text-danger me-3" id="confirmModalName">
-                  王小明
-                </p>
-                <p className="h5 fs-lg-4 text-danger" id="confirmModalPhone">
-                  0923-123-123
-                </p>
-              </div>
-              <p className="h5 fs-lg-4 text-danger" id="confirmModalAddress">
-                台北市信義區101
-              </p>
-            </div>
-            <div className="modal-footer flex-column flex-lg-row-reverse align-items-stretch border-top-0 border-top-lg gap-3 gap-lg-4 pb-8 pb-lg-12 pt-0 pt-lg-8 px-0">
-              <button
-                type="button"
-                className="btn custom-btn-filled-primary custom-btn-pill-lg flex-grow-1 m-0"
-                id="confirmModalCheckBtn"
-              >
-                確認送出
-              </button>
-              <button
-                type="button"
-                className="btn custom-btn-outline-neutral custom-btn-pill-lg flex-grow-1 m-0"
-                data-bs-dismiss="modal"
-              >
-                繼續編輯
-              </button>
-            </div>
+        <Modal.Header className="justify-content-center border-bottom-0 px-0 pt-8 pt-lg-12 pb-0">
+          <Modal.Title className="h4 fs-lg-3 text-primary-700" id="confirmModalLabel">
+            貼心提醒
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center px-0 pt-4 pb-6 py-lg-8">
+          <p className="fs-6 noto-serif-tc text-neutral-700 mb-1">訂單送出後，將無法修改！</p>
+          <p className="fs-6 noto-serif-tc text-neutral-700 mb-3">請再次確認您的收件資訊</p>
+          <p className="fs-8 text-neutral-400 mb-1">收件資訊</p>
+          <div className="d-flex justify-content-center mb-1 mb-lg-2">
+            <p className="h5 fs-lg-4 text-danger me-3" id="confirmModalName">
+              王小明
+            </p>
+            <p className="h5 fs-lg-4 text-danger" id="confirmModalPhone">
+              0923-123-123
+            </p>
           </div>
-        </div>
-      </div>
+          <p className="h5 fs-lg-4 text-danger" id="confirmModalAddress">
+            台北市信義區101
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="flex-column flex-lg-row-reverse align-items-stretch border-top-0 border-top-lg gap-3 gap-lg-4 pb-8 pb-lg-12 pt-0 pt-lg-8 px-0">
+          <button
+            type="button"
+            className="btn custom-btn-filled-primary custom-btn-pill-lg flex-grow-1 m-0"
+            id="confirmModalCheckBtn"
+          >
+            確認送出
+          </button>
+          <button
+            type="button"
+            className="btn custom-btn-outline-neutral custom-btn-pill-lg flex-grow-1 m-0"
+            onClick={handleCloseConfirmModal}
+          >
+            繼續編輯
+          </button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
