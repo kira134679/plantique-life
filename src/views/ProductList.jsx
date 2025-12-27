@@ -14,6 +14,7 @@ import productImg11 from 'assets/images/products/img_product_11.png';
 import productImg12 from 'assets/images/products/img_product_12.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
 import { Fragment } from 'react';
+import { Accordion } from 'react-bootstrap';
 import { NavLink } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
@@ -133,11 +134,18 @@ const products = [
 ];
 
 const menuItem = [
-  { name: '全部', to: '/products' },
-  { name: '植栽單品', to: '/products?category=item' },
-  { name: '療癒組盆', to: '/products?category=bundle' },
-  { name: '客製禮盒', to: '/products?category=giftbox' },
-  { name: '配件商品', to: '/products?category=merchandise' },
+  { label: '全部', path: '/products' },
+  { label: '植栽單品', path: '/products?category=item' },
+  { label: '療癒組盆', path: '/products?category=bundle' },
+  { label: '客製禮盒', path: '/products?category=giftbox' },
+  {
+    label: '配件商品',
+    children: [
+      { label: '土壤', path: '/products?category=merchandise&product_type=soil' },
+      { label: '盆器', path: '/products?category=merchandise&product_type=pots' },
+      { label: '裝飾物', path: '/products?category=merchandise&product_type=accessories' },
+    ],
+  },
 ];
 
 export default function ProductList() {
@@ -327,59 +335,42 @@ export default function ProductList() {
             <div className="row">
               <div className="col-3">
                 <ul className="w-100 rounded-0 list-unstyled sticky-top product-list-lg-menu">
-                  {menuItem.map((item, idx) => (
-                    <li className="border-bottom" key={idx}>
-                      <NavLink to={item.to} className={`d-block fs-6 fw-medium p-6 text-neutral-700`}>
-                        {item.name}
-                      </NavLink>
-                    </li>
-                  ))}
-
-                  <li className="border-bottom p-6 accordion-item">
-                    <button
-                      type="button"
-                      className="list-group-item list-group-item-action text-neutral-700 fs-6 fw-medium d-flex accordion-header"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseAccessories"
-                      aria-expanded="false"
-                    >
-                      配件商品
-                      <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
-                        keyboard_arrow_down
-                      </span>
-                    </button>
-
-                    <div className="collapse" id="collapseAccessories">
-                      <ul className="list-group list-unstyled">
-                        <li>
-                          <a
-                            href="#"
-                            className="accessories-item list-group-item border-0 pt-5 pb-0 px-0 fs-8 text-neutral-400"
-                          >
-                            土壤
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="#"
-                            className="accessories-item list-group-item border-0 pt-5 pb-0 px-0 fs-8 text-neutral-400"
-                          >
-                            盆器
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="#"
-                            className="accessories-item list-group-item border-0 pt-5 pb-0 px-0 fs-8 text-neutral-400"
-                          >
-                            裝飾物
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
+                  {menuItem.map((item, idx) => {
+                    return item.children ? (
+                      <li key={idx}>
+                        <Accordion defaultActiveKey={['0']} bsPrefix="border-bottom p-6 accordion-item" alwaysOpen>
+                          <Accordion.Item eventKey="0">
+                            <Accordion.Button className="text-neutral-700 fs-6 fw-medium d-flex accordion-header">
+                              配件商品
+                              <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
+                                keyboard_arrow_down
+                              </span>
+                            </Accordion.Button>
+                            <Accordion.Body>
+                              <ul className="list-unstyled">
+                                {item.children.map(item => (
+                                  <li key={item.path}>
+                                    <NavLink
+                                      to={item.path}
+                                      className="d-block border-0 pt-5 pb-0 px-0 fs-8 text-neutral-400 accessories-item"
+                                    >
+                                      {item.label}
+                                    </NavLink>
+                                  </li>
+                                ))}
+                              </ul>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+                      </li>
+                    ) : (
+                      <li className="border-bottom" key={idx}>
+                        <NavLink to={item.path} className={`d-block fs-6 fw-medium p-6 text-neutral-700`}>
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
               <div className="col-9">
