@@ -14,7 +14,7 @@ import productImg11 from 'assets/images/products/img_product_11.png';
 import productImg12 from 'assets/images/products/img_product_12.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
 import { Fragment } from 'react';
-import { Accordion } from 'react-bootstrap';
+import { Accordion, Dropdown } from 'react-bootstrap';
 import { NavLink } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
@@ -211,92 +211,53 @@ export default function ProductList() {
           {/* <!-- 手機版category --> */}
           <div className="row align-items-center mb-6 d-lg-none">
             <div className="col-6">
-              <div className="dropdown">
-                <button
-                  className="form-select text-start py-4 rounded-0 border-0 border-bottom"
-                  type="button"
-                  id="catalog"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="outside"
-                  aria-expanded="false"
-                >
+              <Dropdown autoClose="outside">
+                <Dropdown.Toggle variant={null} bsPrefix="form-select text-start py-4 rounded-0 border-0 border-bottom">
                   全部
-                </button>
-                <ul
-                  className="dropdown-menu w-100 mt-3 rounded-0 p-3 border-0 dropdown-menu-shadow"
-                  aria-labelledby="catalog"
-                >
-                  <li className="border-bottom">
-                    <a className="dropdown-item fw-medium py-5 px-3 text-neutral-700" href="#">
-                      全部
-                    </a>
-                  </li>
-
-                  <li className="border-bottom">
-                    <a className="dropdown-item fw-medium py-5 px-3 text-neutral-700" href="#">
-                      植栽單品
-                    </a>
-                  </li>
-
-                  <li className="border-bottom">
-                    <a className="dropdown-item fw-medium py-5 px-3 text-neutral-700" href="#">
-                      療癒組盆
-                    </a>
-                  </li>
-
-                  <li className="border-bottom">
-                    <a className="dropdown-item fw-medium py-5 px-3 text-neutral-700" href="#">
-                      客製禮盒
-                    </a>
-                  </li>
-
-                  <li className="border-bottom py-5 px-3 accordion-item">
-                    <button
-                      type="button"
-                      className="list-group-item list-group-item-action text-neutral-700 fw-medium d-flex accordion-header"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseAccessories"
-                      aria-expanded="false"
-                    >
-                      配件商品
-                      <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
-                        keyboard_arrow_down
-                      </span>
-                    </button>
-
-                    <div className="collapse" id="collapseAccessories">
-                      <ul className="list-group list-unstyled">
-                        <li>
-                          <a
-                            href="#"
-                            className="list-group-item accessories-item border-0 pt-5 pb-0 px-0 fs-sm text-neutral-400"
-                          >
-                            土壤
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="#"
-                            className="list-group-item accessories-item border-0 pt-5 pb-0 px-0 fs-sm text-neutral-400"
-                          >
-                            盆器
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="#"
-                            className="list-group-item accessories-item border-0 pt-5 pb-0 px-0 fs-sm text-neutral-400"
-                          >
-                            裝飾物
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                </Dropdown.Toggle>
+                <Dropdown.Menu as="ul" className="dropdown-menu w-100 mt-3 rounded-0 p-3 border-0 dropdown-menu-shadow">
+                  {menuItem.map((item, idx) => {
+                    return item.children ? (
+                      <li className="border-bottom" key={idx}>
+                        <Accordion
+                          defaultActiveKey={['0']}
+                          bsPrefix={`dropdown-item fw-medium py-5 px-3 text-neutral-700`}
+                          alwaysOpen
+                        >
+                          <Accordion.Item eventKey="0">
+                            <Accordion.Button className={`text-neutral-700 fw-medium d-flex accordion-header`}>
+                              配件商品
+                              <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
+                                keyboard_arrow_down
+                              </span>
+                            </Accordion.Button>
+                            <Accordion.Body>
+                              <ul className="list-unstyled">
+                                {item.children.map(item => (
+                                  <li key={item.path}>
+                                    <NavLink
+                                      to={item.path}
+                                      className={`d-block border-0 pt-5 pb-0 px-0 fs-sm text-neutral-400`}
+                                    >
+                                      {item.label}
+                                    </NavLink>
+                                  </li>
+                                ))}
+                              </ul>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+                      </li>
+                    ) : (
+                      <li className="border-bottom" key={item.path}>
+                        <NavLink to={item.path} className="dropdown-item fw-medium py-5 px-3 text-neutral-700">
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    );
+                  })}
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             {/* <!-- 手機版toggle --> */}
