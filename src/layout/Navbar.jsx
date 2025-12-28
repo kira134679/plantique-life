@@ -12,9 +12,6 @@ export default function Navbar() {
           <Link className="d-none d-lg-block w-lg-30" to="/">
             <img src={logoLg} alt="Plantique Life 植感生活" />
           </Link>
-          <a className="d-lg-none" href="index.html">
-            <img src={logoSm} alt="Plantique Life 植感生活" />
-          </a>
           <Link className="d-lg-none" to="/">
             <img src={logoSm} alt="Plantique Life 植感生活" />
           </Link>
