@@ -12,7 +12,7 @@ import column10 from '../assets/images/articles/img_column_10.png';
 import animSm from '../assets/images/articles/btn_anim_sm.svg';
 import animLg from '../assets/images/articles/btn_anim_lg.svg';
 
-import BtnLink from '../components/BtnLink';
+import Button from '../components/Button';
 
 function Articles() {
   return (
@@ -105,7 +105,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -127,7 +129,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -149,7 +153,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
                         <a href="./column-detail.html" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -189,7 +195,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -211,7 +219,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -233,7 +243,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -273,7 +285,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -295,7 +309,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
@@ -317,7 +333,9 @@ function Articles() {
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
                         <a href="#" className="d-flex justify-content-end">
-                          <BtnLink color="primary" btnText="閱讀全文" rightIcon={true} />
+                          <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
+                            閱讀全文
+                          </Button>
                         </a>
                       </div>
                     </div>
