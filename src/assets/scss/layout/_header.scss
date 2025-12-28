@@ -9,12 +9,12 @@
   }
 }
 
-.z-index-1035 {
-  z-index: 1035 !important;
+.z-index-1050 {
+  z-index: 1050 !important;
 }
 
-.z-index-1034 {
-  z-index: 1034 !important; // 比 bs 預設的 fixed 多 （為了遮蓋 back to top 按鈕）
+.z-index-1046 {
+  z-index: 1046 !important;
 }
 
 .custom-nav-overlay {
@@ -106,10 +106,16 @@
   }
 }
 
-.custom-navbar-collapse-mobile {
-  top: 3.5rem;
-  left: 0;
-  min-width: 100%;
+.mobile-menu-offcanvas {
+  height: auto !important;
+  bottom: auto !important;
+  background-color: transparent !important;
+  pointer-events: none;
+  padding-top: 3.5rem;
+
+  .offcanvas-body {
+    pointer-events: auto;
+  }
 }
 
 .member.hidden {
