@@ -6,8 +6,30 @@ import FirstStep from './shopping-cart/FirstStep';
 import SecondStep from './shopping-cart/SecondStep';
 import ThirdStep from './shopping-cart/ThirdStep';
 
-// 步驟標題
-const stepInfo = ['購物車清單', '付款資料', '訂單確認'];
+// 步驟標題、名稱
+const stepInfo = [
+  {
+    title: '購物車清單',
+    step: {
+      name: '購物車清單',
+      enName: 'Cart List',
+    },
+  },
+  {
+    title: '付款資料',
+    step: {
+      name: '付款資料',
+      enName: 'Checkout Info',
+    },
+  },
+  {
+    title: '訂單確認',
+    step: {
+      name: '訂單完成',
+      enName: 'Completed',
+    },
+  },
+];
 
 // 之後由資料庫資料取得
 import productImg07 from 'assets/images/products/img_product_07.png';
@@ -126,8 +148,6 @@ const orderInfo = {
   notes: '',
 };
 
-const activeTabKey = ['first', 'second', 'third'];
-
 function ShoppingCart() {
   // 目前的 step 索引
   const [activeTab, setActiveTab] = useState(0);
@@ -141,61 +161,26 @@ function ShoppingCart() {
 
   return (
     <div className="container-fluid container-lg">
-      <Tab.Container activeKey={activeTabKey[activeTab]} onSelect={handleTabSelect}>
+      <Tab.Container activeKey={stepInfo[activeTab].step.name}>
         <Nav variant="pills" className="cart-nav flex-nowrap py-8 py-lg-13 w-100">
-          <Nav.Item className="col-4">
-            <Nav.Link
-              eventKey={activeTabKey[0]}
-              className={clsx(
-                'w-100',
-                'd-flex',
-                'flex-column',
-                'align-items-center',
-                activeTab === 0 ? 'step-active' : activeTab > 0 ? 'step-completed' : '',
-              )}
-            >
-              <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
-                1
-              </p>
-              <h3 className="fs-sm fs-lg-8 text-primary mt-2">Cart List</h3>
-              <h2 className="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
-              <div className="cart-progress"></div>
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="col-4">
-            <Nav.Link
-              eventKey={activeTabKey[1]}
-              className={clsx(
-                'w-100',
-                'd-flex',
-                'flex-column',
-                'align-items-center',
-                activeTab === 1 ? 'step-active' : activeTab > 1 ? 'step-completed' : '',
-              )}
-            >
-              <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
-                2
-              </p>
-              <h3 className="fs-sm fs-lg-8 text-primary text-nowrap mt-2">Checkout Info</h3>
-              <h2 className="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
-              <div className="cart-progress"></div>
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="col-4">
-            <Nav.Link
-              eventKey={activeTabKey[2]}
-              className={clsx('w-100', 'text-center', activeTab === 2 ? 'step-active' : '')}
-            >
-              <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
-                3
-              </p>
-              <h3 className="fs-sm fs-lg-8 text-primary mt-2">Completed</h3>
-              <h2 className="h6 fs-lg-3 text-neutral-700 mt-2">訂單完成</h2>
-            </Nav.Link>
-          </Nav.Item>
+          {stepInfo.map((info, index, array) => (
+            <Nav.Item className="col-4" key={index}>
+              <Nav.Link
+                eventKey={info.step.name}
+                className={clsx('w-100', 'd-flex', 'flex-column', 'align-items-center')}
+              >
+                <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
+                  {index + 1}
+                </p>
+                <h3 className="fs-sm fs-lg-8 text-primary mt-2">{info.step.enName}</h3>
+                <h2 className="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">{info.step.name}</h2>
+                {array.length - 1 !== index && <div className="cart-progress"></div>}
+              </Nav.Link>
+            </Nav.Item>
+          ))}
         </Nav>
         <Tab.Content className="py-12 py-lg-15">
-          <Tab.Pane eventKey={activeTabKey[0]}>
+          <Tab.Pane eventKey={stepInfo[0].step.name}>
             <FirstStep
               couponMenu={couponMenu}
               orderInfo={orderInfo}
@@ -212,10 +197,10 @@ function ShoppingCart() {
               handleTabSelect={handleTabSelect}
             />
           </Tab.Pane>
-          <Tab.Pane eventKey={activeTabKey[1]}>
+          <Tab.Pane eventKey={stepInfo[1].step.name}>
             <SecondStep orderInfo={orderInfo} handleTabSelect={handleTabSelect} />
           </Tab.Pane>
-          <Tab.Pane eventKey={activeTabKey[2]}>
+          <Tab.Pane eventKey={stepInfo[2].step.name}>
             <ThirdStep />
           </Tab.Pane>
         </Tab.Content>
