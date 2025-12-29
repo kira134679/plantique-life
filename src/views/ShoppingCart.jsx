@@ -1,10 +1,13 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import FirstStep from './shopping-cart/FirstStep';
 import SecondStep from './shopping-cart/SecondStep';
 import ThirdStep from './shopping-cart/ThirdStep';
+
+// 步驟標題
+const stepInfo = ['購物車清單', '付款資料', '訂單確認'];
 
 // 之後由資料庫資料取得
 import productImg07 from 'assets/images/products/img_product_07.png';
@@ -126,9 +129,15 @@ const orderInfo = {
 const activeTabKey = ['first', 'second', 'third'];
 
 function ShoppingCart() {
+  // 目前的 step 索引
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabSelect = k => setActiveTab(k);
+
+  useEffect(() => {
+    // 依目前步驟更新頁面標題
+    document.title = `${stepInfo[activeTab].title} | Plantique Life 植感生活`;
+  }, [activeTab]);
 
   return (
     <div className="container-fluid container-lg">
