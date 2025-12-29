@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
 import ProductCard from '../../components/ProductCard';
 
-function FirstStep({ orderInfo, couponMenu, productImages, handleSwitchStep }) {
+function FirstStep({ orderInfo, productImages, handleSwitchStep }) {
   const {
     productAddImg02,
     productAddImg03,
@@ -13,11 +11,6 @@ function FirstStep({ orderInfo, couponMenu, productImages, handleSwitchStep }) {
     productImg09,
     productImg13,
   } = productImages;
-
-  const [showCouponModal, setShowCouponModal] = useState(false);
-
-  const handleCloseCouponModal = () => setShowCouponModal(false);
-  const handleShowCouponModal = () => setShowCouponModal(true);
 
   return (
     <>
@@ -98,7 +91,7 @@ function FirstStep({ orderInfo, couponMenu, productImages, handleSwitchStep }) {
         <div className="col-lg-4 pb-12 pt-8 pt-lg-13">
           <section className="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
             <h6 className="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">使用優惠券</h6>
-            <div className="mb-6">
+            <div>
               <div className="d-flex align-items-center">
                 <label htmlFor="coupon-code" className="col-form-label fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3">
                   輸入代碼
@@ -120,7 +113,9 @@ function FirstStep({ orderInfo, couponMenu, productImages, handleSwitchStep }) {
               </div>
               <div className="d-none fs-sm mt-2" id="coupon-feedback"></div>
             </div>
-            <div className="d-flex align-items-center">
+            {/* 因資料庫不支援，暫將該區塊註解掉 */}
+            {/* 優惠券選擇區塊 */}
+            {/* <div className="d-flex align-items-center">
               <span className="fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3">選擇優惠</span>
               <span
                 className="coupon-selected-name fs-xs fs-lg-sm text-truncate text-neutral-400 bg-neutral-100 py-1 px-2 px-lg-3 me-2"
@@ -187,7 +182,7 @@ function FirstStep({ orderInfo, couponMenu, productImages, handleSwitchStep }) {
                   </ul>
                 </Modal.Body>
               </Modal>
-            </div>
+            </div> */}
           </section>
           <section className="border border-2 p-4 p-lg-6">
             <h6 className="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
