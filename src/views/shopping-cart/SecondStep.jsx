@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 
-function SecondStep({ orderInfo, handleTabSelect }) {
+function SecondStep({ orderInfo, handleSwitchStep }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
@@ -422,7 +422,7 @@ function SecondStep({ orderInfo, handleTabSelect }) {
                 type="button"
                 className="btn custom-btn-outline-neutral custom-btn-pill-lg text-nowrap flex-lg-grow-1 checkout-btn-basis px-lg-5"
                 id="btn-back-cart-desktop"
-                onClick={() => handleTabSelect(0)}
+                onClick={() => handleSwitchStep(0, false)}
               >
                 返回購物車
               </button>
@@ -451,7 +451,7 @@ function SecondStep({ orderInfo, handleTabSelect }) {
           type="button"
           className="btn custom-btn-outline-neutral custom-btn-pill-lg w-100 text-nowrap mt-4"
           id="btn-back-cart-mobile"
-          onClick={() => handleTabSelect(0)}
+          onClick={() => handleSwitchStep(0, false)}
         >
           返回購物車
         </button>
@@ -491,8 +491,8 @@ function SecondStep({ orderInfo, handleTabSelect }) {
             className="btn custom-btn-filled-primary custom-btn-pill-lg flex-grow-1 m-0"
             id="confirmModalCheckBtn"
             onClick={() => {
-              handleTabSelect(2);
               handleCloseConfirmModal();
+              handleSwitchStep(2);
             }}
           >
             確認送出

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
 import FirstStep from './shopping-cart/FirstStep';
@@ -148,11 +148,109 @@ const orderInfo = {
   notes: '',
 };
 
+// 滾動至頂部
+function scrollToTop() {
+  return new Promise(resolve => {
+    // 已經在頂部或接近頂部
+    if (window.scrollY <= 1) {
+      resolve();
+      return;
+    }
+
+    let resolved = false;
+    const maxWait = 1000; // 最大等待時間 1 秒
+
+    function done() {
+      if (resolved) return;
+      resolved = true;
+      window.removeEventListener('scroll', onScroll);
+      resolve();
+    }
+
+    function onScroll() {
+      // 使用 <= 1 而非 === 0，避免浮點數精確度問題
+      if (window.scrollY <= 1) {
+        done();
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 備用超時，防止滾動事件不觸發或卡住
+    setTimeout(done, maxWait);
+  });
+}
+
 function ShoppingCart() {
   // 目前的 step 索引
   const [activeTab, setActiveTab] = useState(0);
+  // 追蹤每個 step 的狀態：'', 'step-active', 'step-completed'
+  const [stepStates, setStepStates] = useState(['step-active', '', '']);
+  // 追蹤是否正在切換中，避免重複觸發
+  const isTransitioning = useRef(false);
+  // 儲存 Nav.Link 元素的 refs
+  const navLinkRefs = useRef([null, null, null]);
 
-  const handleTabSelect = k => setActiveTab(k);
+  // 切換 step 函式 (對應原 JS 的 switchStep)
+  const switchStep = async (currentIndex, targetIndex, isForward = true) => {
+    // 避免重複觸發
+    if (isTransitioning.current) return;
+    isTransitioning.current = true;
+
+    await scrollToTop(); // 等滾動完成
+
+    const currentEl = navLinkRefs.current[currentIndex];
+
+    await new Promise(resolve => {
+      let resolved = false;
+
+      const handleEnd = () => {
+        if (resolved) return;
+        resolved = true;
+
+        // 更新狀態
+        setStepStates(prev => {
+          const newStates = [...prev];
+          // 目標添加 step-active
+          newStates[targetIndex] = 'step-active';
+          return newStates;
+        });
+
+        // 更新 activeTab 來切換 Tab.Pane
+        setActiveTab(targetIndex);
+        resolve();
+      };
+
+      // 監聽 transitionend
+      if (currentEl) {
+        currentEl.addEventListener('transitionend', handleEnd, { once: true });
+      }
+
+      // 移除當前的 step-active (觸發動畫)
+      setStepStates(prev => {
+        const newStates = [...prev];
+        newStates[currentIndex] = isForward ? 'step-completed' : '';
+        if (!isForward) {
+          newStates[targetIndex] = '';
+        }
+        return newStates;
+      });
+
+      // 備用超時，防止 transitionend 不觸發
+      setTimeout(() => {
+        if (!resolved) {
+          handleEnd();
+        }
+      }, 600);
+    });
+
+    isTransitioning.current = false;
+  };
+  // 給子組件使用的換頁方法
+  const handleSwitchStep = (targetIndex, isForward) => {
+    switchStep(activeTab, targetIndex, isForward);
+  };
 
   useEffect(() => {
     // 依目前步驟更新頁面標題
@@ -166,8 +264,9 @@ function ShoppingCart() {
           {stepInfo.map((info, index, array) => (
             <Nav.Item className="col-4" key={index}>
               <Nav.Link
+                ref={el => (navLinkRefs.current[index] = el)}
                 eventKey={info.step.name}
-                className={clsx('w-100', 'd-flex', 'flex-column', 'align-items-center')}
+                className={clsx('w-100', 'd-flex', 'flex-column', 'align-items-center', stepStates[index])}
               >
                 <p className="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle mx-auto">
                   {index + 1}
@@ -194,11 +293,11 @@ function ShoppingCart() {
                 productImg09,
                 productImg13,
               }}
-              handleTabSelect={handleTabSelect}
+              handleSwitchStep={handleSwitchStep}
             />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[1].step.name}>
-            <SecondStep orderInfo={orderInfo} handleTabSelect={handleTabSelect} />
+            <SecondStep orderInfo={orderInfo} handleSwitchStep={handleSwitchStep} />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[2].step.name}>
             <ThirdStep />
