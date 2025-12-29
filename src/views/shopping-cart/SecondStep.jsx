@@ -1,12 +1,29 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 
 function SecondStep({ orderInfo, handleSwitchStep }) {
+  // 用於追蹤 Modal 關閉後是否要換頁
+  const shouldSwitchAfterClose = useRef(false);
+  // 控制 Modal 顯示與否
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
   const handleShowConfirmModal = () => setShowConfirmModal(true);
+
+  // Modal 完全關閉後，依 flag 決定是否換頁
+  const handleModalExited = () => {
+    if (shouldSwitchAfterClose.current) {
+      shouldSwitchAfterClose.current = false;
+      handleSwitchStep(2);
+    }
+  };
+
+  // 確認送出：設定 flag，關閉 Modal 後會觸發換頁
+  const handleConfirmSubmit = () => {
+    shouldSwitchAfterClose.current = true;
+    handleCloseConfirmModal();
+  };
 
   return (
     <>
@@ -460,6 +477,7 @@ function SecondStep({ orderInfo, handleSwitchStep }) {
       <Modal
         show={showConfirmModal}
         onHide={handleCloseConfirmModal}
+        onExited={handleModalExited}
         className="confirm-modal"
         aria-labelledby="confirmModalLabel"
         centered
@@ -490,10 +508,7 @@ function SecondStep({ orderInfo, handleSwitchStep }) {
             type="button"
             className="btn custom-btn-filled-primary custom-btn-pill-lg flex-grow-1 m-0"
             id="confirmModalCheckBtn"
-            onClick={() => {
-              handleCloseConfirmModal();
-              handleSwitchStep(2);
-            }}
+            onClick={handleConfirmSubmit}
           >
             確認送出
           </button>
