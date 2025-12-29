@@ -1,0 +1,102 @@
+import clsx from 'clsx';
+import { useState } from 'react';
+import Accordion from 'react-bootstrap/Accordion';
+import { NavLink, useLocation } from 'react-router';
+
+const sideMenuPath = [
+  {
+    title: '首頁',
+    path: '/backstage',
+  },
+  {
+    title: '商品管理',
+    subMenu: [
+      { title: '產品概覽', path: '/backstage/products' },
+      { title: '優惠券管理', path: '/backstage/coupons' },
+    ],
+  },
+  {
+    title: '訂單管理',
+    path: '/backstage/orders',
+  },
+  {
+    title: '營收數據',
+    subMenu: [
+      { title: '數據概覽', path: '/backstage/data-overview' },
+      { title: '銷售報表', path: '/backstage/sales-report' },
+    ],
+  },
+  {
+    title: '文章管理',
+    path: '/backstage/articles',
+  },
+];
+
+// 根據路徑計算應該開啟的 Accordion 項目
+function getInitialActiveKeys(pathname) {
+  // 依 sideMenuPath ，取得 index 和 對應路徑的對應關係
+  const pathIndexMap = sideMenuPath.reduce((acc, menu, index) => {
+    if (menu.subMenu) {
+      menu.subMenu.forEach(subItem => {
+        acc.push({ index: String(index), path: subItem.path });
+      });
+    } else {
+      acc.push({ index: String(index), path: menu.path });
+    }
+    return acc;
+  }, []);
+
+  // 比對當前路徑，找出對應的 index
+  const matchedIndex = pathIndexMap.find(item => pathname === item.path);
+
+  return [matchedIndex.index || '0'];
+}
+
+function SideMenu() {
+  const location = useLocation();
+
+  // 使用 useState 的 lazy initializer，只在元件掛載時計算一次
+  const [activeKeys, setActiveKeys] = useState(() => getInitialActiveKeys(location.pathname));
+
+  return (
+    <Accordion
+      activeKey={activeKeys}
+      alwaysOpen
+      className="backstage-sidemenu-accordion"
+      onSelect={keys => setActiveKeys(keys)}
+    >
+      {sideMenuPath.map((menu, index) => (
+        <Accordion.Item eventKey={String(index)} className="border-0 border-bottom" key={index}>
+          {menu.subMenu ? (
+            <>
+              <Accordion.Header>
+                <span className="noto-sans-tc lh-base fs-6 fw-medium py-2 px-1 text-neutral-700">{menu.title}</span>
+              </Accordion.Header>
+              <Accordion.Body className="p-0">
+                <ul className="list-unstyled">
+                  {menu.subMenu.map((subItem, subIndex) => (
+                    <li key={subIndex}>
+                      <AccordionLink path={subItem.path} title={subItem.title} className="d-block fs-8 py-4 px-6" />
+                    </li>
+                  ))}
+                </ul>
+              </Accordion.Body>
+            </>
+          ) : (
+            <AccordionLink path={menu.path} title={menu.title} className="d-block fs-6 p-6" />
+          )}
+        </Accordion.Item>
+      ))}
+    </Accordion>
+  );
+}
+
+function AccordionLink({ path, title, className }) {
+  return (
+    <NavLink to={path} end className={clsx('backstage-sidemenu-accordion-link', className)}>
+      {title}
+    </NavLink>
+  );
+}
+
+export default SideMenu;

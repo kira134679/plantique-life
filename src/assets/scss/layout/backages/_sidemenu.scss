@@ -1,0 +1,28 @@
+.backstage-sidemenu-accordion {
+  // 移除 Accordion Header 預設的邊框
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+  // 移除 Accordion Header 預設展開時的背景色
+  .accordion-button:not(.collapsed) {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .backstage-sidemenu-accordion-link {
+    color: $neutral-700;
+  }
+  .accordion-body .backstage-sidemenu-accordion-link {
+    color: $neutral-400;
+  }
+  .backstage-sidemenu-accordion-link {
+    &:hover {
+      background-color: $primary-50;
+      color: $primary-700;
+    }
+    &.active {
+      background-color: $primary-50;
+      color: $primary-700;
+    }
+  }
+}

@@ -2,6 +2,9 @@ import App from '../App';
 import Home from '../views/Home';
 import Articles from '../views/Articles';
 import NotFound from '../views/NotFound';
+// 後台管理頁面
+import Backstage from '../views/Backstage.jsx';
+import Orders from '../views/Backstage/Orders.jsx';
 
 const routes = [
   {
@@ -12,7 +15,44 @@ const routes = [
       { path: 'articles', Component: Articles },
     ],
   },
-  { path: '*', Component: NotFound },
+  {
+    path: '/backstage',
+    Component: Backstage,
+    children: [
+      {
+        index: true,
+        Component: () => <h2>首頁</h2>,
+      },
+      {
+        path: 'products',
+        Component: () => <h2>產品概覽</h2>,
+      },
+      {
+        path: 'coupons',
+        Component: () => <h2>優惠券管理</h2>,
+      },
+      {
+        path: 'orders',
+        Component: Orders,
+      },
+      {
+        path: 'articles',
+        Component: () => <h2>文章管理</h2>,
+      },
+      {
+        path: 'data-overview',
+        Component: () => <h2>數據概覽</h2>,
+      },
+      {
+        path: 'sales-report',
+        Component: () => <h2>銷售報表</h2>,
+      },
+    ],
+  },
+  {
+    path: '*',
+    Component: NotFound,
+  },
 ];
 
 export default routes;
