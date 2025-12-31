@@ -1,7 +1,7 @@
 import App from '../App';
 import ArticleDetail from '../views/ArticleDetail';
 import Articles from '../views/Articles';
-import { default as Home, default as Home } from '../views/Home';
+import Home from '../views/Home';
 import NotFound from '../views/NotFound';
 import ShoppingCart from '../views/ShoppingCart';
 
