@@ -14,6 +14,7 @@ import productImg13 from 'assets/images/products/img_product_13.png';
 import imgAddOn1 from 'assets/images/products/img_product_add_01.png';
 import imgAddOn2 from 'assets/images/products/img_product_add_02.png';
 import { useState } from 'react';
+import { Nav, Tab } from 'react-bootstrap';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
 
@@ -268,133 +269,101 @@ export default function ProductDetail() {
       {/* <!-- 產品細節 Tab 區塊 --> */}
       <section className="py-8 py-lg-13">
         {/* <!-- Tab 按鈕 --> */}
-        <div className="custom-container-lg">
-          <ul
-            className="nav d-flex flex-nowrap gap-3 gap-lg-6 text-center border-bottom mb-6 mb-lg-12"
-            id="productDetailTab"
-            role="tablist"
-          >
-            <li className="w-100" role="presentation">
-              <button
-                className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn active"
-                id="introduction-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#introduction-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="introduction-tab-pane"
-                aria-selected="true"
-              >
-                介紹
-              </button>
-            </li>
-            <li className="w-100" role="presentation">
-              <button
-                className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
-                id="care-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#care-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="care-tab-pane"
-                aria-selected="false"
-              >
-                照顧方式
-              </button>
-            </li>
-            <li className="w-100" role="presentation">
-              <button
-                className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
-                id="notice-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#notice-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="notice-tab-pane"
-                aria-selected="false"
-              >
-                注意事項
-              </button>
-            </li>
-          </ul>
-        </div>
-        {/* <!-- Tab 內容 --> */}
-        <div className="tab-content" id="productDetailTabContent">
-          {/* <!-- 介紹 Tab 的內容 --> */}
-          <div
-            className="tab-pane fade show active"
-            id="introduction-tab-pane"
-            role="tabpanel"
-            aria-labelledby="introduction-tab"
-            tabIndex="0"
-          >
-            {/* <!-- 當前商品字卡 --> */}
-            <div className="container mb-lg-10">
-              <div className="row align-items-center">
-                <div className="card border-0 col-lg-6">
-                  <div className="card-body px-0 py-3 p-lg-6">
-                    <h3 className="card-title h4 text-neutral-700">荒原綠影</h3>
-                    <p className="card-text text-neutral-400">
-                      以三款仙人掌組成的荒漠組盆。我們精心挑選各式仙人掌，它們身形各異，有的高聳挺拔，有的嬌小圓潤，有的則滿佈刺毛，每一株都是荒野中的獨立角色。
-                    </p>
+        <Tab.Container defaultActiveKey="introduction">
+          <div className="custom-container-lg">
+            <Nav as="ul" className="nav d-flex flex-nowrap gap-3 gap-lg-6 text-center border-bottom mb-6 mb-lg-12">
+              <Nav.Item as="li" className="w-100">
+                <Nav.Link
+                  as="button"
+                  eventKey="introduction"
+                  className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+                >
+                  介紹
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item as="li" className="w-100">
+                <Nav.Link
+                  as="button"
+                  eventKey="care"
+                  className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+                >
+                  照顧方式
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item as="li" className="w-100">
+                <Nav.Link
+                  as="button"
+                  eventKey="notice"
+                  className="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+                >
+                  注意事項
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+          </div>
+          <Tab.Content>
+            <Tab.Pane eventKey="introduction">
+              <div className="container mb-lg-10">
+                <div className="row align-items-center">
+                  <div className="card border-0 col-lg-6">
+                    <div className="card-body px-0 py-3 p-lg-6">
+                      <h3 className="card-title h4 text-neutral-700">荒原綠影</h3>
+                      <p className="card-text text-neutral-400">
+                        以三款仙人掌組成的荒漠組盆。我們精心挑選各式仙人掌，它們身形各異，有的高聳挺拔，有的嬌小圓潤，有的則滿佈刺毛，每一株都是荒野中的獨立角色。
+                      </p>
+                    </div>
                   </div>
+                  <img className="d-lg-block d-none col-lg-6" src={productImg133} alt="product_13-3" />
                 </div>
-                <img className="d-lg-block d-none col-lg-6" src={productImg133} alt="product_13-3" />
               </div>
-            </div>
-            <img className="d-block d-lg-none mb-6 w-100" src={productImg133} alt="product_13-3" />
-            {/* <!-- 組盆內容 --> */}
-            <div className="container">
-              <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
-              <div className="row align-items-center py-6 py-lg-40">
-                <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
-                  <div className="card-body px-0 py-3 p-lg-6">
-                    <h3 className="card-title h4 text-neutral-700">白烏帽子</h3>
-                    <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                      Opuntia microdasys var. albispina
-                    </h6>
-                    <p className="card-text text-neutral-400">
-                      掌狀莖覆滿白色細緻絨毛狀刺座，外觀柔和卻兼具仙人掌的堅韌特性，是造型獨特且充滿可愛感的品種。
-                    </p>
+              <img className="d-block d-lg-none mb-6 w-100" src={productImg133} alt="product_13-3" />
+              {/* <!-- 組盆內容 --> */}
+              <div className="container">
+                <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
+                <div className="row align-items-center py-6 py-lg-40">
+                  <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
+                    <div className="card-body px-0 py-3 p-lg-6">
+                      <h3 className="card-title h4 text-neutral-700">白烏帽子</h3>
+                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                        Opuntia microdasys var. albispina
+                      </h6>
+                      <p className="card-text text-neutral-400">
+                        掌狀莖覆滿白色細緻絨毛狀刺座，外觀柔和卻兼具仙人掌的堅韌特性，是造型獨特且充滿可愛感的品種。
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
-                  <div className="card-body px-0 py-3 p-lg-6">
-                    <h3 className="card-title h4 text-neutral-700">緋牡丹錦</h3>
-                    <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                      Gymnocalycium mihanovichii var. ufriedrichii
-                    </h6>
-                    <p className="card-text text-neutral-400">
-                      以鮮紅、橙黃、粉紫等錦斑色澤聞名，宛如一朵小小的彩色牡丹，鮮豔奪目，是觀賞價值極高的仙人掌種類。
-                    </p>
+                  <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
+                    <div className="card-body px-0 py-3 p-lg-6">
+                      <h3 className="card-title h4 text-neutral-700">緋牡丹錦</h3>
+                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                        Gymnocalycium mihanovichii var. ufriedrichii
+                      </h6>
+                      <p className="card-text text-neutral-400">
+                        以鮮紅、橙黃、粉紫等錦斑色澤聞名，宛如一朵小小的彩色牡丹，鮮豔奪目，是觀賞價值極高的仙人掌種類。
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="card border-0 col-xl-4">
-                  <div className="card-body px-0 py-3 p-lg-6">
-                    <h3 className="card-title h4 text-neutral-700">熊童子</h3>
-                    <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                      Cotyledon tomentosa
-                    </h6>
-                    <p className="card-text text-neutral-400">
-                      圓潤厚實的葉片覆有細絨毛，葉尖呈爪狀，宛如小熊的掌心，造型療癒，深受多肉愛好者喜愛。
-                    </p>
+                  <div className="card border-0 col-xl-4">
+                    <div className="card-body px-0 py-3 p-lg-6">
+                      <h3 className="card-title h4 text-neutral-700">熊童子</h3>
+                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                        Cotyledon tomentosa
+                      </h6>
+                      <p className="card-text text-neutral-400">
+                        圓潤厚實的葉片覆有細絨毛，葉尖呈爪狀，宛如小熊的掌心，造型療癒，深受多肉愛好者喜愛。
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="custom-container-lg">
-              <img className="d-block" src={productImg132} alt="product_13-2" />
-            </div>
-          </div>
-          {/* <!-- 照顧方式 Tab 的內容 --> */}
-          <div className="tab-pane fade" id="care-tab-pane" role="tabpanel" aria-labelledby="care-tab" tabIndex="0">
-            {/* <!-- 照顧方式的內容 --> */}
-          </div>
-          {/* <!-- 注意事項 Tab 的內容 --> */}
-          <div className="tab-pane fade" id="notice-tab-pane" role="tabpanel" aria-labelledby="notice-tab" tabIndex="0">
-            {/* <!-- 注意事項的內容 --> */}
-          </div>
-        </div>
+              <div className="custom-container-lg">
+                <img className="d-block" src={productImg132} alt="product_13-2" />
+              </div>
+            </Tab.Pane>
+            <Tab.Pane eventKey="care">{/* 照顧方式 */}</Tab.Pane>
+            <Tab.Pane eventKey="notice">{/* 注意事項 */}</Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
       </section>
       {/* <!-- 相關商品區塊 --> */}
       <section className="container py-12 py-lg-15">
