@@ -34,26 +34,6 @@ function SecondStep({ orderInfo, handleSwitchStep }) {
               選擇運送及付款方式 <span className="text-danger">*</span>
             </h6>
             <p className="fs-lg-7 text-neutral-700 mb-2">運送方式</p>
-            {/* <div className="dropdown checkout-dropdown" id="delivery-dropdown">
-              <button
-                className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                id="delivery-toggle"
-                data-initial-text="請選擇運送方式"
-              >
-                請選擇運送方式
-              </button>
-              <ul className="dropdown-menu w-100">
-                <li>
-                  <a className="dropdown-item fs-sm fs-lg-8" href="#" id="yamato-transport">
-                    黑貓宅配
-                  </a>
-                </li>
-              </ul>
-              <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-            </div> */}
             <Dropdown className="checkout-dropdown" id="delivery-dropdown">
               <Dropdown.Toggle
                 variant=""
@@ -72,36 +52,6 @@ function SecondStep({ orderInfo, handleSwitchStep }) {
             <p className="fs-sm text-neutral-400 mt-1">* 宅配貨到付款會產生額外手續費</p>
             <p className="fs-sm text-neutral-400 mb-3">* 宅配週日不配送</p>
             <p className="fs-lg-7 text-neutral-700 mb-2">付款方式</p>
-            {/* <div className="dropdown checkout-dropdown" id="payment-dropdown">
-              <button
-                className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                id="payment-toggle"
-                data-initial-text="請選擇付款方式"
-              >
-                請選擇付款方式
-              </button>
-              <ul className="dropdown-menu w-100">
-                <li>
-                  <a className="dropdown-item fs-sm fs-lg-8" href="#">
-                    貨到付款
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item fs-sm fs-lg-8" href="#" id="credit-card-one-time-payment">
-                    信用卡一次付清
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item fs-sm fs-lg-8" href="#">
-                    轉帳
-                  </a>
-                </li>
-              </ul>
-              <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-            </div> */}
             <Dropdown className="checkout-dropdown" id="payment-dropdown">
               <Dropdown.Toggle
                 variant=""
@@ -294,36 +244,6 @@ function SecondStep({ orderInfo, handleSwitchStep }) {
             </h6>
             <form id="invoice-form" noValidate>
               <p className="fs-lg-7 text-neutral-700 mb-2">選擇發票類型</p>
-              {/* <div className="dropdown checkout-dropdown" id="invoice-dropdown">
-                <button
-                  className="btn dropdown-toggle border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  id="invoice-toggle"
-                  data-initial-text="請選擇發票類型"
-                >
-                  請選擇發票類型
-                </button>
-                <ul className="dropdown-menu w-100">
-                  <li>
-                    <a className="dropdown-item fs-sm fs-lg-8" href="#">
-                      電子發票
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item fs-sm fs-lg-8" href="#" id="mobile-barcode-item">
-                      雲端載具
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item fs-sm fs-lg-8" href="#" id="ubn-item">
-                      統一編號
-                    </a>
-                  </li>
-                </ul>
-                <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-              </div> */}
               <Dropdown className="checkout-dropdown" id="invoice-dropdown">
                 <Dropdown.Toggle
                   variant=""
