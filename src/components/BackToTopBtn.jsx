@@ -12,20 +12,18 @@ export default function BackToTopBtn() {
   };
 
   useEffect(() => {
-    const handleVisible = () => {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      });
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
     };
 
-    handleVisible();
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleVisible);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
