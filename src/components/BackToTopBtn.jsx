@@ -1,15 +1,9 @@
+import { scrollToTop } from '@/utils/scroll';
 import { useEffect, useState } from 'react';
 import Button from './Button';
 
 export default function BackToTopBtn() {
   const [visible, setVisible] = useState(false);
-
-  const scrollToTop = () => {
-    scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
 
   useEffect(() => {
     const handleScroll = () => {

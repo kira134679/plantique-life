@@ -1,3 +1,4 @@
+import { scrollToTop } from '@/utils/scroll';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
@@ -148,40 +149,6 @@ const orderInfo = {
   notes: '',
 };
 
-// 滾動至頂部
-function scrollToTop() {
-  return new Promise(resolve => {
-    // 已經在頂部或接近頂部
-    if (window.scrollY <= 1) {
-      resolve();
-      return;
-    }
-
-    let resolved = false;
-    const maxWait = 1000; // 最大等待時間 1 秒
-
-    function done() {
-      if (resolved) return;
-      resolved = true;
-      window.removeEventListener('scroll', onScroll);
-      resolve();
-    }
-
-    function onScroll() {
-      // 使用 <= 1 而非 === 0，避免浮點數精確度問題
-      if (window.scrollY <= 1) {
-        done();
-      }
-    }
-
-    window.addEventListener('scroll', onScroll);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // 備用超時，防止滾動事件不觸發或卡住
-    setTimeout(done, maxWait);
-  });
-}
-
 function ShoppingCart() {
   // 目前的 step 索引
   const [activeTab, setActiveTab] = useState(0);
@@ -198,7 +165,7 @@ function ShoppingCart() {
     if (isTransitioning.current) return;
     isTransitioning.current = true;
 
-    await scrollToTop(); // 等滾動完成
+    await scrollToTop({ waitForComplete: true }); // 等滾動完成
 
     const currentEl = navLinkRefs.current[currentIndex];
 
