@@ -1,8 +1,9 @@
 import App from '../App';
 import ArticleDetail from '../views/ArticleDetail';
-import Home from '../views/Home';
 import Articles from '../views/Articles';
+import Home from '../views/Home';
 import NotFound from '../views/NotFound';
+import ShoppingCart from '../views/ShoppingCart';
 
 const routes = [
   {
@@ -12,6 +13,7 @@ const routes = [
       { index: true, Component: Home },
       { path: 'article-detail', Component: ArticleDetail },
       { path: 'articles', Component: Articles },
+      { path: 'shopping-cart', Component: ShoppingCart },
     ],
   },
   { path: '*', Component: NotFound },
