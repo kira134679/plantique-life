@@ -171,7 +171,7 @@ export default function ProductDetail() {
                           <h4 className="fs-7 text-neutral-700">噴霧器</h4>
                           <p className="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
                             NT$129
-                            {hasDiscount ? <s className="fs-sm fs-lg-8 text-neutral-400 ms-1 ms-lg-2">NT$249</s> : ''}
+                            {hasDiscount ? <s className="fs-sm fs-lg-8 text-neutral-400 ms-1 ms-lg-2">$249</s> : ''}
                           </p>
                         </div>
                         <div className="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
