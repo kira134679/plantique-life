@@ -225,8 +225,8 @@ export default function ProductList() {
                           alwaysOpen
                         >
                           <Accordion.Item eventKey="0">
-                            <Accordion.Button className={`text-neutral-700 fw-medium d-flex accordion-header`}>
-                              配件商品
+                            <Accordion.Button className={`text-neutral-700 fw-medium d-flex`}>
+                              {item.label}
                               <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
                                 keyboard_arrow_down
                               </span>
@@ -301,8 +301,8 @@ export default function ProductList() {
                       <li key={idx}>
                         <Accordion defaultActiveKey={['0']} bsPrefix="border-bottom p-6 accordion-item" alwaysOpen>
                           <Accordion.Item eventKey="0">
-                            <Accordion.Button className="text-neutral-700 fs-6 fw-medium d-flex accordion-header">
-                              配件商品
+                            <Accordion.Button className="text-neutral-700 fs-6 fw-medium d-flex">
+                              {item.label}
                               <span className="material-symbols-rounded align-bottom ms-auto accordion-icon">
                                 keyboard_arrow_down
                               </span>
