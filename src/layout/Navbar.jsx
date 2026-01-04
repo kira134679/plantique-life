@@ -195,6 +195,7 @@ export default function Navbar() {
         placement="end"
         scroll={true}
         className="header-offcanvas border-start-0 z-index-1050"
+        backdropClassName="z-index-1046"
       >
         <Offcanvas.Header closeButton className="position-relative">
           <Offcanvas.Title as="p" className="h5 text-primary-700 offcanvas-title">
