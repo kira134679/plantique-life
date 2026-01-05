@@ -219,7 +219,7 @@ export default function ProductList() {
                   {menuItem.map((item, idx) => {
                     return item.children ? (
                       <li className="border-bottom" key={idx}>
-                        <Accordion defaultActiveKey="0" bsPrefix={`dropdown-item py-5 px-3`}>
+                        <Accordion defaultActiveKey="0" bsPrefix={`d-block py-5 px-3`}>
                           <Accordion.Item eventKey="0">
                             <Accordion.Button className={`text-neutral-700 fw-medium d-flex`}>
                               {item.label}
@@ -246,7 +246,7 @@ export default function ProductList() {
                       </li>
                     ) : (
                       <li className="border-bottom" key={item.path}>
-                        <NavLink to={item.path} className="dropdown-item fw-medium py-5 px-3 text-neutral-700">
+                        <NavLink to={item.path} className="d-block fw-medium py-5 px-3 text-neutral-700">
                           {item.label}
                         </NavLink>
                       </li>
