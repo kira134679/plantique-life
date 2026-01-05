@@ -219,11 +219,7 @@ export default function ProductList() {
                   {menuItem.map((item, idx) => {
                     return item.children ? (
                       <li className="border-bottom" key={idx}>
-                        <Accordion
-                          defaultActiveKey={['0']}
-                          bsPrefix={`dropdown-item fw-medium py-5 px-3 text-neutral-700`}
-                          alwaysOpen
-                        >
+                        <Accordion defaultActiveKey="0" bsPrefix={`dropdown-item py-5 px-3`}>
                           <Accordion.Item eventKey="0">
                             <Accordion.Button className={`text-neutral-700 fw-medium d-flex`}>
                               {item.label}
@@ -298,8 +294,8 @@ export default function ProductList() {
                 <ul className="w-100 rounded-0 list-unstyled sticky-top product-list-lg-menu">
                   {menuItem.map((item, idx) => {
                     return item.children ? (
-                      <li key={idx}>
-                        <Accordion defaultActiveKey={['0']} bsPrefix="border-bottom p-6 accordion-item" alwaysOpen>
+                      <li key={idx} className="border-bottom">
+                        <Accordion defaultActiveKey="0" bsPrefix="p-6">
                           <Accordion.Item eventKey="0">
                             <Accordion.Button className="text-neutral-700 fs-6 fw-medium d-flex">
                               {item.label}
