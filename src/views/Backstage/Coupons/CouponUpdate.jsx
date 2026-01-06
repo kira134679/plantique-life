@@ -1,7 +1,27 @@
+import { useState } from 'react';
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
 
+// 套件
+import DatePicker from 'react-datepicker';
+
+// 自訂時間輸入框
+const CustomTimeInput = ({ date, onChangeCustom }) => {
+  const value = date instanceof Date && !isNaN(date) ? date.toLocaleTimeString('it-IT') : '';
+  return <input type="time" step="1" value={value} onChange={event => onChangeCustom(date, event.target.value)} />;
+};
+
 function CouponUpdate() {
+  // 選日期時間套件的資料處理
+  const [startDate, setStartDate] = useState(new Date());
+  const handleChangeTime = (date, time) => {
+    const [hh, mm, ss] = time.split(':');
+    const targetDate = date instanceof Date && !isNaN(date) ? date : new Date();
+    targetDate.setHours(Number(hh) || 0, Number(mm) || 0, Number(ss) || 0);
+    setStartDate(targetDate);
+  };
+
   return (
     <>
       <div className="container py-13">
@@ -51,12 +71,12 @@ function CouponUpdate() {
               <label className="form-label text-neutral-700 fs-7" htmlFor="update-coupon-duetime">
                 結束時間<span className="text-danger">*</span>
               </label>
-              <input
-                type="datetime-local"
-                id="update-coupon-duetime"
-                name="update-coupon-duetime"
-                min="2023-01-01T00:00"
-                max="2028-12-30T00:00"
+              <DatePicker
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                dateFormat="yyyy/MM/dd HH:mm:ss"
+                showTimeInput
+                customTimeInput={<CustomTimeInput onChangeCustom={handleChangeTime} />}
                 className="form-control"
               />
             </div>
