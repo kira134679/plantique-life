@@ -39,7 +39,7 @@ function Coupons() {
           {/* 優惠券 1 */}
           <ul className="row list-unstyled align-items-center mb-4 py-4 border-bottom border-1">
             <li className="col-3">
-              <h4 className="h6 mb-2 p-1 bg-primary-100 d-inline-block">首購優惠 10 % OFF</h4>
+              <h4 className="fs-7 mb-2 p-1 bg-primary-100 d-inline-block">首購優惠 10 % OFF</h4>
               <p className="fs-sm text-neutral-400 text-truncate">plantique10</p>
             </li>
             <li className="col-2 fs-6 text-primary-700 noto-serif-tc fw-bold">10 %</li>
@@ -89,7 +89,7 @@ function Coupons() {
           {/* 優惠券 2 */}
           <ul className="row list-unstyled align-items-center mb-4 py-4 border-bottom border-1">
             <li className="col-3">
-              <h4 className="h6 mb-2 p-1 bg-primary-100 d-inline-block">週年優惠 20 % OFF</h4>
+              <h4 className="fs-7 mb-2 p-1 bg-primary-100 d-inline-block">週年優惠 20 % OFF</h4>
               <p className="fs-sm text-neutral-400 text-truncate">anniv2026</p>
             </li>
             <li className="col-2 fs-6 text-primary-700 noto-serif-tc fw-bold">20 %</li>
