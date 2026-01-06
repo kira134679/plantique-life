@@ -10,6 +10,9 @@ import ShoppingCart from '../views/ShoppingCart';
 import { Outlet } from 'react-router';
 import Admin from '../views/Admin.jsx';
 import Orders from '../views/admin/Orders.jsx';
+import CouponAdd from '../views/Backstage/Coupons/CouponAdd.jsx';
+import Coupons from '../views/Backstage/Coupons/Coupons.jsx';
+import CouponUpdate from '../views/Backstage/Coupons/CouponUpdate.jsx';
 import ProductAdd from '../views/Backstage/Products/ProductAdd.jsx';
 import Products from '../views/Backstage/Products/Products.jsx';
 import ProductUpdate from '../views/Backstage/Products/ProductUpdate.jsx';
@@ -47,7 +50,12 @@ const routes = [
       },
       {
         path: 'coupons',
-        Component: () => <h2>優惠券管理</h2>,
+        Component: () => <Outlet />,
+        children: [
+          { index: true, Component: Coupons },
+          { path: 'add', Component: CouponAdd },
+          { path: 'update', Component: CouponUpdate },
+        ],
       },
       {
         path: 'orders',
