@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
@@ -15,8 +16,8 @@ function Coupons() {
       <div className="container py-13">
         <h2 className="h3 mb-4">優惠券管理</h2>
         <Button
-          as="a"
-          href="#/backstage/coupons/add"
+          as={Link}
+          to="/backstage/coupons/edit"
           variant="filled-primary"
           shape="pill"
           size="sm"
@@ -63,8 +64,8 @@ function Coupons() {
             </li>
             <li className="col-2">
               <Button
-                as="a"
-                href="#/backstage/coupons/update"
+                as={Link}
+                to="/backstage/coupons/edit/plantique10"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"
@@ -113,8 +114,8 @@ function Coupons() {
             </li>
             <li className="col-2">
               <Button
-                as="a"
-                href="#/backstage/coupons/update"
+                as={Link}
+                to="/backstage/coupons/edit/anniv2026"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"

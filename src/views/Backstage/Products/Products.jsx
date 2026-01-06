@@ -2,6 +2,7 @@ import productImg1 from 'assets/images/products/img_product_01.png';
 import productImg2 from 'assets/images/products/img_product_02.png';
 
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
@@ -18,8 +19,8 @@ function Products() {
       <div className="container py-13">
         <h2 className="h3 mb-4">產品概覽</h2>
         <Button
-          as="a"
-          href="#/backstage/products/add"
+          as={Link}
+          to="/backstage/products/edit"
           variant="filled-primary"
           shape="pill"
           size="sm"
@@ -77,8 +78,8 @@ function Products() {
             </li>
             <li className="col-2">
               <Button
-                as="a"
-                href="#/backstage/products/update"
+                as={Link}
+                to="/backstage/products/edit/-L9tH8jxVb2Ka_DYPwng"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"
@@ -104,7 +105,7 @@ function Products() {
                 </div>
                 <div className="col-8">
                   <h4 className="h6 mb-2">向陽而生</h4>
-                  <p className="fs-sm text-neutral-400 text-truncate">-L9tH8jxVb2Ka_ DYPwng</p>
+                  <p className="fs-sm text-neutral-400 text-truncate">-Oh5ZDdgEvRErn5csfA2</p>
                 </div>
               </div>
             </li>
@@ -130,8 +131,8 @@ function Products() {
             </li>
             <li className="col-2">
               <Button
-                as="a"
-                href="#/backstage/products/update"
+                as={Link}
+                to="/backstage/products/edit/-Oh5ZDdgEvRErn5csfA2"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"
