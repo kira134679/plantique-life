@@ -1,3 +1,5 @@
+import { useParams } from 'react-router';
+
 import productImg1 from 'assets/images/products/img_product_01.png';
 import productImgDefault from 'assets/images/products/img_product_default.jpg';
 
@@ -5,28 +7,50 @@ import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
 
-function ProductAdd() {
+function ProductEdit() {
+  const { id } = useParams();
+  const isUpdateMode = id !== undefined;
+
   return (
     <>
       <div className="container py-13">
-        <h2 className="h3 mb-8">新增商品</h2>
+        <h2 className="h3 mb-8">{isUpdateMode ? '更新商品' : '新增商品'}</h2>
         <form>
           <section className="py-6">
             <h3 className="h4 mb-6">基本設定</h3>
+            {isUpdateMode ? (
+              <div className="mb-4 w-50 min-w-14rem">
+                <label className="form-label text-neutral-700 fs-7" htmlFor="product-id">
+                  商品 ID
+                </label>
+                <input id="product-id" className="form-control" type="text" value={id} readOnly />
+              </div>
+            ) : null}
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-title">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-title`}
+              >
                 商品名稱<span className="text-danger">*</span>
               </label>
-              <input id="new-product-title" className="form-control" type="text" placeholder="請輸入商品名稱" />
+              <input
+                id={`${isUpdateMode ? 'update-' : 'new-'}product-title`}
+                className="form-control"
+                type="text"
+                placeholder="請輸入商品名稱"
+              />
             </div>
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-category">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-category`}
+              >
                 類別<span className="text-danger">*</span>
               </label>
               <Dropdown className="checkout-dropdown">
                 <Dropdown.Toggle
                   className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  id="new-product-category"
+                  id={`${isUpdateMode ? 'update-' : 'new-'}product-category`}
                 >
                   請選擇商品類別
                 </Dropdown.Toggle>
@@ -39,13 +63,16 @@ function ProductAdd() {
               </Dropdown>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-status">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-status`}
+              >
                 狀態<span className="text-danger">*</span>
               </label>
               <Dropdown className="checkout-dropdown">
                 <Dropdown.Toggle
                   className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  id="new-product-status"
+                  id={`${isUpdateMode ? 'update-' : 'new-'}product-status`}
                 >
                   請選擇商品狀態
                 </Dropdown.Toggle>
@@ -70,12 +97,15 @@ function ProductAdd() {
                     <Card.Img variant="top" src={productImg1} className="w-100 object-fit-cover" />
                   </div>
                   <div className="position-absolute top-50 start-50 translate-middle z-2">
-                    <input className="d-none" id="new-product-main-image" type="file" />
+                    <input
+                      className="d-none"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-main-image" type="file`}
+                    />
                     {/* 上傳圖片 */}
                     <div className="card-img-upload">
                       <Button
                         as="label"
-                        htmlFor="new-product-main-image"
+                        htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-main-image`}
                         variant="outline-neutral"
                         shape="pill"
                         size="sm"
@@ -90,7 +120,7 @@ function ProductAdd() {
                     <div className="card-img-actions gap-2">
                       <Button
                         as="label"
-                        htmlFor="new-product-main-image"
+                        htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-main-image`}
                         variant="outline-neutral"
                         shape="circle"
                         size="md"
@@ -105,7 +135,7 @@ function ProductAdd() {
                 </div>
                 <Card.Body>
                   <input
-                    id="new-product-main-image-url"
+                    id={`${isUpdateMode ? 'update-' : 'new-'}product-main-image-url`}
                     className="form-control"
                     type="url"
                     placeholder="請輸入主圖網址"
@@ -127,12 +157,16 @@ function ProductAdd() {
                       <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
                     </div>
                     <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input className="d-none" id="new-product-image-1" type="file" />
+                      <input
+                        className="d-none"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
+                        type="file"
+                      />
 
                       <div className="card-img-upload">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-1"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
                           variant="outline-neutral"
                           shape="pill"
                           size="sm"
@@ -147,7 +181,7 @@ function ProductAdd() {
                       <div className="card-img-actions gap-2">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-1"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
                           variant="outline-neutral"
                           shape="circle"
                           size="md"
@@ -162,7 +196,7 @@ function ProductAdd() {
                   </div>
                   <Card.Body>
                     <input
-                      id="new-product-image-url-1"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-1`}
                       className="form-control"
                       type="url"
                       placeholder="請輸入其他圖片網址"
@@ -177,12 +211,16 @@ function ProductAdd() {
                       <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
                     </div>
                     <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input className="d-none" id="new-product-image-2" type="file" />
+                      <input
+                        className="d-none"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
+                        type="file"
+                      />
 
                       <div className="card-img-upload">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-2"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
                           variant="outline-neutral"
                           shape="pill"
                           size="sm"
@@ -197,7 +235,7 @@ function ProductAdd() {
                       <div className="card-img-actions gap-2">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-2"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
                           variant="outline-neutral"
                           shape="circle"
                           size="md"
@@ -212,7 +250,7 @@ function ProductAdd() {
                   </div>
                   <Card.Body>
                     <input
-                      id="new-product-image-url-2"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-2`}
                       className="form-control"
                       type="url"
                       placeholder="請輸入其他圖片網址"
@@ -227,12 +265,16 @@ function ProductAdd() {
                       <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
                     </div>
                     <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input className="d-none" id="new-product-image-3" type="file" />
+                      <input
+                        className="d-none"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
+                        type="file"
+                      />
 
                       <div className="card-img-upload">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-3"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
                           variant="outline-neutral"
                           shape="pill"
                           size="sm"
@@ -247,7 +289,7 @@ function ProductAdd() {
                       <div className="card-img-actions gap-2">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-3"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
                           variant="outline-neutral"
                           shape="circle"
                           size="md"
@@ -262,7 +304,7 @@ function ProductAdd() {
                   </div>
                   <Card.Body>
                     <input
-                      id="new-product-image-url-3"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-3`}
                       className="form-control"
                       type="url"
                       placeholder="請輸入其他圖片網址"
@@ -277,12 +319,16 @@ function ProductAdd() {
                       <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
                     </div>
                     <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input className="d-none" id="new-product-image-4" type="file" />
+                      <input
+                        className="d-none"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
+                        type="file"
+                      />
 
                       <div className="card-img-upload">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-4"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
                           variant="outline-neutral"
                           shape="pill"
                           size="sm"
@@ -297,7 +343,7 @@ function ProductAdd() {
                       <div className="card-img-actions gap-2">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-4"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
                           variant="outline-neutral"
                           shape="circle"
                           size="md"
@@ -312,7 +358,7 @@ function ProductAdd() {
                   </div>
                   <Card.Body>
                     <input
-                      id="new-product-image-url-4"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-4`}
                       className="form-control"
                       type="url"
                       placeholder="請輸入其他圖片網址"
@@ -327,12 +373,16 @@ function ProductAdd() {
                       <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
                     </div>
                     <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input className="d-none" id="new-product-image-5" type="file" />
+                      <input
+                        className="d-none"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
+                        type="file"
+                      />
 
                       <div className="card-img-upload">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-5"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
                           variant="outline-neutral"
                           shape="pill"
                           size="sm"
@@ -347,7 +397,7 @@ function ProductAdd() {
                       <div className="card-img-actions gap-2">
                         <Button
                           as="label"
-                          htmlFor="new-product-image-5"
+                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
                           variant="outline-neutral"
                           shape="circle"
                           size="md"
@@ -362,7 +412,7 @@ function ProductAdd() {
                   </div>
                   <Card.Body>
                     <input
-                      id="new-product-image-url-5"
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-5`}
                       className="form-control"
                       type="url"
                       placeholder="請輸入其他圖片網址"
@@ -375,13 +425,16 @@ function ProductAdd() {
           <section className="py-6">
             <h3 className="h4 mb-6">價格設定</h3>
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-origin-price">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-origin-price`}
+              >
                 原價<span className="text-danger">*</span>
               </label>
-              <div className="input-group">
+              <div className="input-group mb-4">
                 <span className="input-group-text bg-primary-100">NT$</span>
                 <input
-                  id="new-product-origin-price"
+                  id={`${isUpdateMode ? 'update-' : 'new-'}product-origin-price`}
                   className="form-control"
                   type="number"
                   placeholder="請輸入商品原價"
@@ -389,22 +442,33 @@ function ProductAdd() {
               </div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-price">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-price`}
+              >
                 售價<span className="text-danger">*</span>
               </label>
               <div className="input-group">
                 <span className="input-group-text bg-primary-100">NT$</span>
-                <input id="new-product-price" className="form-control" type="number" placeholder="請輸入商品售價" />
+                <input
+                  id={`${isUpdateMode ? 'update-' : 'new-'}product-price`}
+                  className="form-control"
+                  type="number"
+                  placeholder="請輸入商品售價"
+                />
               </div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-unit">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-unit`}
+              >
                 單位<span className="text-danger">*</span>
               </label>
               <Dropdown className="checkout-dropdown">
                 <Dropdown.Toggle
                   className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  id="new-product-unit"
+                  id={`${isUpdateMode ? 'update-' : 'new-'}product-unit`}
                 >
                   請選擇商品單位
                 </Dropdown.Toggle>
@@ -420,16 +484,28 @@ function ProductAdd() {
           <section className="py-6">
             <h3 className="h4 mb-6">內容設定</h3>
             <div className="mb-4">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-content">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-content`}
+              >
                 商品內容<span className="text-danger">*</span>
               </label>
-              <textarea id="new-product-content" className="form-control min-h-20rem min-w-14rem" />
+              <textarea
+                id={`${isUpdateMode ? 'update-' : 'new-'}product-content`}
+                className="form-control min-h-20rem min-w-14rem"
+              />
             </div>
             <div className="mb-4">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-product-description">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-description`}
+              >
                 商品描述<span className="text-danger">*</span>
               </label>
-              <textarea id="new-product-description" className="form-control min-h-20rem min-w-14rem" />
+              <textarea
+                id={`${isUpdateMode ? 'update-' : 'new-'}product-description`}
+                className="form-control min-h-20rem min-w-14rem"
+              />
             </div>
           </section>
           <div className="d-flex">
@@ -452,7 +528,7 @@ function ProductAdd() {
                 e.preventDefault();
               }}
             >
-              新增商品
+              {isUpdateMode ? '儲存變更' : '新增商品'}
             </Button>
           </div>
         </form>
@@ -461,4 +537,4 @@ function ProductAdd() {
   );
 }
 
-export default ProductAdd;
+export default ProductEdit;

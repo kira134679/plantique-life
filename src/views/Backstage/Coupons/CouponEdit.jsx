@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
@@ -12,7 +13,10 @@ const CustomTimeInput = ({ date, onChangeCustom }) => {
   return <input type="time" step="1" value={value} onChange={event => onChangeCustom(date, event.target.value)} />;
 };
 
-function CouponAdd() {
+function CouponEdit() {
+  const { id } = useParams();
+  const isUpdateMode = id !== undefined;
+
   // 選日期時間套件的資料處理
   const [startDate, setStartDate] = useState(new Date());
   const handleChangeTime = (date, time) => {
@@ -21,33 +25,54 @@ function CouponAdd() {
     targetDate.setHours(Number(hh) || 0, Number(mm) || 0, Number(ss) || 0);
     setStartDate(targetDate);
   };
+
   return (
     <>
       <div className="container py-13">
-        <h2 className="h3 mb-8">新增優惠券</h2>
+        <h2 className="h3 mb-8">{isUpdateMode ? '更改優惠券' : '新增優惠券'}</h2>
         <form>
           <section className="py-6">
             <h3 className="h4 mb-6">基本設定</h3>
             <div className="mb-6 w-50 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-coupon-code">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}coupon-code`}
+              >
                 折扣碼<span className="text-danger">*</span>
               </label>
-              <input id="new-coupon-code" className="form-control" type="text" placeholder="請輸入優惠券折扣碼" />
+              <input
+                id={`${isUpdateMode ? 'update-' : 'new-'}coupon-code`}
+                className="form-control"
+                type="text"
+                defaultValue={isUpdateMode ? id : null}
+                placeholder="請輸入優惠券折扣碼"
+              />
             </div>
             <div className="mb-6 w-50 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-coupon-title">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}coupon-title`}
+              >
                 名稱<span className="text-danger">*</span>
               </label>
-              <input id="new-coupon-title" className="form-control" type="text" placeholder="請輸入優惠券名稱" />
+              <input
+                id={`${isUpdateMode ? 'update-' : 'new-'}coupon-title`}
+                className="form-control"
+                type="text"
+                placeholder="請輸入優惠券名稱"
+              />
             </div>
             <div className="mb-6 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-coupon-status">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
+              >
                 狀態<span className="text-danger">*</span>
               </label>
               <Dropdown className="checkout-dropdown">
                 <Dropdown.Toggle
                   className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  id="new-coupon-status"
+                  id={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
                 >
                   請選擇優惠券狀態
                 </Dropdown.Toggle>
@@ -58,16 +83,27 @@ function CouponAdd() {
               </Dropdown>
             </div>
             <div className="mb-6 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-coupon-discount">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}coupon-discount`}
+              >
                 折扣<span className="text-danger">*</span>
               </label>
               <div className="input-group">
-                <input id="new-coupon-discount" className="form-control" type="number" placeholder="請輸入折扣" />
+                <input
+                  id={`${isUpdateMode ? 'update-' : 'new-'}coupon-discount`}
+                  className="form-control"
+                  type="number"
+                  placeholder="請輸入折扣"
+                />
                 <span className="input-group-text bg-primary-100">%</span>
               </div>
             </div>
             <div className="mb-6 w-25 min-w-14rem">
-              <label className="form-label text-neutral-700 fs-7" htmlFor="new-coupon-duetime">
+              <label
+                className="form-label text-neutral-700 fs-7"
+                htmlFor={`${isUpdateMode ? 'update-' : 'new-'}coupon-duetime`}
+              >
                 結束時間<span className="text-danger">*</span>
               </label>
               <DatePicker
@@ -100,7 +136,7 @@ function CouponAdd() {
                 e.preventDefault();
               }}
             >
-              新增優惠券
+              儲存變更
             </Button>
           </div>
         </form>
@@ -109,4 +145,4 @@ function CouponAdd() {
   );
 }
 
-export default CouponAdd;
+export default CouponEdit;

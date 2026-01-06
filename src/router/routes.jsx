@@ -10,12 +10,10 @@ import ShoppingCart from '../views/ShoppingCart';
 import { Outlet } from 'react-router';
 import Admin from '../views/Admin.jsx';
 import Orders from '../views/admin/Orders.jsx';
-import CouponAdd from '../views/Backstage/Coupons/CouponAdd.jsx';
+import CouponEdit from '../views/Backstage/Coupons/CouponEdit.jsx';
 import Coupons from '../views/Backstage/Coupons/Coupons.jsx';
-import CouponUpdate from '../views/Backstage/Coupons/CouponUpdate.jsx';
-import ProductAdd from '../views/Backstage/Products/ProductAdd.jsx';
+import ProductEdit from '../views/Backstage/Products/ProductEdit.jsx';
 import Products from '../views/Backstage/Products/Products.jsx';
-import ProductUpdate from '../views/Backstage/Products/ProductUpdate.jsx';
 
 const routes = [
   {
@@ -44,8 +42,7 @@ const routes = [
         Component: () => <Outlet />,
         children: [
           { index: true, Component: Products },
-          { path: 'add', Component: ProductAdd },
-          { path: 'update', Component: ProductUpdate },
+          { path: 'edit/:id?', Component: ProductEdit },
         ],
       },
       {
@@ -53,8 +50,7 @@ const routes = [
         Component: () => <Outlet />,
         children: [
           { index: true, Component: Coupons },
-          { path: 'add', Component: CouponAdd },
-          { path: 'update', Component: CouponUpdate },
+          { path: 'edit/:id?', Component: CouponEdit },
         ],
       },
       {
