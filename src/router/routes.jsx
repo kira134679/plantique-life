@@ -7,8 +7,12 @@ import ProductDetail from '../views/ProductDetail';
 import ProductList from '../views/ProductList';
 import ShoppingCart from '../views/ShoppingCart';
 // 後台管理頁面
+import { Outlet } from 'react-router';
 import Admin from '../views/Admin.jsx';
 import Orders from '../views/admin/Orders.jsx';
+import ProductAdd from '../views/Backstage/Products/ProductAdd.jsx';
+import Products from '../views/Backstage/Products/Products.jsx';
+import ProductUpdate from '../views/Backstage/Products/ProductUpdate.jsx';
 
 const routes = [
   {
@@ -34,7 +38,12 @@ const routes = [
       },
       {
         path: 'products',
-        Component: () => <h2>產品概覽</h2>,
+        Component: () => <Outlet />,
+        children: [
+          { index: true, Component: Products },
+          { path: 'add', Component: ProductAdd },
+          { path: 'update', Component: ProductUpdate },
+        ],
       },
       {
         path: 'coupons',
