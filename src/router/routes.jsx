@@ -1,5 +1,6 @@
 import App from '../App';
 import RequireAuth from '../components/RequireAuth.jsx';
+import TestCart from '../test/TestCart';
 import ArticleDetail from '../views/ArticleDetail';
 import Articles from '../views/Articles';
 import Home from '../views/Home';
@@ -47,6 +48,7 @@ const routes = [
           { path: 'wishlist', Component: () => <h2>願望清單</h2>, handle: { breadcrumb: () => '願望清單' } },
         ],
       },
+      { path: 'test-cart', Component: TestCart },
     ],
   },
   { path: '/login', Component: Login },
