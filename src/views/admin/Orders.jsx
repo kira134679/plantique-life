@@ -202,11 +202,11 @@ function Orders() {
                 placeholder="訂單編號 / ​姓​名​ / Email"
               />
             </div>
-            <Button type="button" variant="tag">
-              <span className="d-block material-symbols-rounded">search</span>
+            <Button type="button" variant="outline-neutral" shape="circle" size="sm">
+              <span className="custom-btn-icon material-symbols-rounded">search</span>
             </Button>
           </div>
-          <Button type="button" variant="outline-danger">
+          <Button type="button" variant="outline-danger" className="ms-auto">
             刪除全部訂單
           </Button>
         </div>
@@ -246,19 +246,21 @@ function Orders() {
                   </td>
                   <td>{timestampToDate(order.create_at)}</td>
                   <td className="text-center">
-                    <button
+                    <Button
                       type="button"
-                      className="btn"
+                      variant="outline-neutral"
+                      shape="circle"
+                      size="sm"
                       onClick={() => {
                         setOrderDetail(order);
                         setOrderDetailShow(true);
                       }}
                     >
-                      <span className="material-symbols-rounded">visibility</span>
-                    </button>
-                    <button type="button" className="btn">
-                      <span className="material-symbols-rounded">delete</span>
-                    </button>
+                      <span className="custom-btn-icon material-symbols-rounded">visibility</span>
+                    </Button>
+                    <Button type="button" variant="outline-danger" shape="circle" size="sm">
+                      <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                    </Button>
                   </td>
                 </tr>
               ))}
