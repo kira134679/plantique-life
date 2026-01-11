@@ -120,6 +120,10 @@
   transform: rotate(180deg);
 }
 
+.accordion-button::after {
+  content: none;
+}
+
 .accessories-item {
   &:hover {
     color: $primary-400 !important;

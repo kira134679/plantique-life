@@ -1,31 +1,23 @@
+import { scrollToTop } from '@/utils/scroll';
 import { useEffect, useState } from 'react';
 import Button from './Button';
 
 export default function BackToTopBtn() {
   const [visible, setVisible] = useState(false);
 
-  const scrollToTop = () => {
-    scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
   useEffect(() => {
-    const handleVisible = () => {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      });
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
     };
 
-    handleVisible();
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleVisible);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 

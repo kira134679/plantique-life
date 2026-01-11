@@ -99,53 +99,6 @@
   }
 }
 
-.coupon-selected-name.selected {
-  color: $secondary !important;
-  background-color: $secondary-100 !important;
-}
-.coupon-modal {
-  .modal-dialog {
-    --bs-modal-margin: calc(var(--bs-gutter-x) * 0.5);
-    --bs-modal-width: 416px;
-  }
-  .modal-content {
-    max-height: 600px;
-  }
-}
-.coupon-modal-list > li:not(:last-child) {
-  margin-bottom: map-get($spacers, 4);
-}
-.coupon-layout {
-  height: 96px;
-  position: relative;
-  & > *:first-child {
-    width: 90px;
-  }
-  &:not(.unselected)::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: -2px;
-    border-left: 4px dotted $white;
-  }
-}
-.coupon-select {
-  height: 96px;
-  position: relative;
-  &.unselected::before {
-    content: '未選擇優惠券';
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: $font-size-sm;
-    color: $neutral-400;
-    background-color: $neutral-100;
-  }
-}
-
 .product-add1-position {
   object-position: 50% 20%;
 }
@@ -272,6 +225,8 @@ input.form-control {
     }
   }
   .modal-content {
+    border: 0;
+    border-radius: 0;
     padding-left: 16px;
     padding-right: 16px;
     @include media-breakpoint-up(lg) {
