@@ -1,6 +1,6 @@
 import App from '../App';
-import Home from '../views/Home';
 import Articles from '../views/Articles';
+import Home from '../views/Home';
 import NotFound from '../views/NotFound';
 // 後台管理頁面
 import Backstage from '../views/Backstage.jsx';
@@ -16,7 +16,7 @@ const routes = [
     ],
   },
   {
-    path: '/backstage',
+    path: '/admin',
     Component: Backstage,
     children: [
       {
