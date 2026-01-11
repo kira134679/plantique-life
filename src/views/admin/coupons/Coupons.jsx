@@ -17,7 +17,7 @@ function Coupons() {
         <h2 className="h3 mb-4">優惠券管理</h2>
         <Button
           as={Link}
-          to="/backstage/coupons/edit"
+          to="/admin/coupons/edit"
           variant="filled-primary"
           shape="pill"
           size="sm"
@@ -65,7 +65,7 @@ function Coupons() {
             <li className="col-2">
               <Button
                 as={Link}
-                to="/backstage/coupons/edit/plantique10"
+                to="/admin/coupons/edit/plantique10"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"
@@ -115,7 +115,7 @@ function Coupons() {
             <li className="col-2">
               <Button
                 as={Link}
-                to="/backstage/coupons/edit/anniv2026"
+                to="/admin/coupons/edit/anniv2026"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"

@@ -528,7 +528,7 @@ function ProductEdit() {
           <div className="d-flex">
             <Button
               as="a"
-              href="#/backstage/products"
+              href="#/admin/products"
               variant="outline-neutral"
               shape="pill"
               size="sm"
