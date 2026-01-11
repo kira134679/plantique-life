@@ -10,7 +10,15 @@ import DatePicker from 'react-datepicker';
 // 自訂時間輸入框
 const CustomTimeInput = ({ date, onChangeCustom }) => {
   const value = date instanceof Date && !isNaN(date) ? date.toLocaleTimeString('it-IT') : '';
-  return <input type="time" step="1" value={value} onChange={event => onChangeCustom(date, event.target.value)} />;
+  return (
+    <input
+      type="time"
+      step="1"
+      value={value}
+      onChange={event => onChangeCustom(date, event.target.value)}
+      className="form-control form-control-sm is-invalid"
+    />
+  );
 };
 
 function CouponEdit() {
@@ -47,6 +55,7 @@ function CouponEdit() {
                 defaultValue={isUpdateMode ? id : null}
                 placeholder="請輸入優惠券折扣碼"
               />
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-6 w-50 min-w-14rem">
               <label
@@ -61,6 +70,7 @@ function CouponEdit() {
                 type="text"
                 placeholder="請輸入優惠券名稱"
               />
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-6 w-25 min-w-14rem">
               <label
@@ -81,6 +91,7 @@ function CouponEdit() {
                   <Dropdown.Item href="#">停用</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-6 w-25 min-w-14rem">
               <label
@@ -98,6 +109,7 @@ function CouponEdit() {
                 />
                 <span className="input-group-text bg-primary-100">%</span>
               </div>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-6 w-25 min-w-14rem">
               <label
@@ -107,13 +119,18 @@ function CouponEdit() {
                 結束時間<span className="text-danger">*</span>
               </label>
               <DatePicker
+                id={`${isUpdateMode ? 'update-' : 'new-'}coupon-duetime`}
                 selected={startDate}
                 onChange={date => setStartDate(date)}
+                onChangeRaw={e => e.preventDefault()}
+                onFocus={e => e.target.blur()}
                 dateFormat="yyyy/MM/dd HH:mm:ss"
                 showTimeInput
                 customTimeInput={<CustomTimeInput onChangeCustom={handleChangeTime} />}
-                className="form-control"
+                className="form-control is-invalid"
+                popperClassName="z-5"
               />
+              <div className="invalid-feedback d-block">時間區間錯誤</div>
             </div>
           </section>
           <div className="d-flex">
