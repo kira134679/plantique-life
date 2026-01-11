@@ -30,6 +30,7 @@
     "vite-plugin-live-reload": "^3.0.2"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "clsx": "^2.1.1",
