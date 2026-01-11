@@ -36,6 +36,7 @@
     "bootstrap": "^5.3.8",
     "clsx": "^2.1.1",
     "imask": "^7.6.1",
+    "js-cookie": "^3.0.5",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-datepicker": "^9.1.0",
