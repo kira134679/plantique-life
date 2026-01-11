@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router';
-import Header from '../layout/backstage/Header';
-import SideMenu from '../layout/backstage/SideMenu';
+import Header from '../layout/admin/Header';
+import SideMenu from '../layout/admin/SideMenu';
 
-function Backstage() {
+function Admin() {
   return (
     <div className="container-xxl">
       <Header />
@@ -18,4 +18,4 @@ function Backstage() {
   );
 }
 
-export default Backstage;
+export default Admin;

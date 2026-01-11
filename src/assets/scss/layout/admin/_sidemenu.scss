@@ -1,4 +1,4 @@
-.backstage-sidemenu-accordion {
+.admin-sidemenu-accordion {
   // 移除 Accordion Header 預設的邊框
   .accordion-button:focus {
     box-shadow: none;
@@ -9,13 +9,13 @@
     box-shadow: none;
   }
 
-  .backstage-sidemenu-accordion-link {
+  .admin-sidemenu-accordion-link {
     color: $neutral-700;
   }
-  .accordion-body .backstage-sidemenu-accordion-link {
+  .accordion-body .admin-sidemenu-accordion-link {
     color: $neutral-400;
   }
-  .backstage-sidemenu-accordion-link {
+  .admin-sidemenu-accordion-link {
     &:hover {
       background-color: $primary-50;
       color: $primary-700;

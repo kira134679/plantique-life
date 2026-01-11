@@ -7,8 +7,8 @@ import ProductDetail from '../views/ProductDetail';
 import ProductList from '../views/ProductList';
 import ShoppingCart from '../views/ShoppingCart';
 // 後台管理頁面
-import Backstage from '../views/Backstage.jsx';
-import Orders from '../views/Backstage/Orders.jsx';
+import Admin from '../views/Admin.jsx';
+import Orders from '../views/admin/Orders.jsx';
 
 const routes = [
   {
@@ -26,7 +26,7 @@ const routes = [
   },
   {
     path: '/admin',
-    Component: Backstage,
+    Component: Admin,
     children: [
       {
         index: true,

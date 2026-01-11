@@ -6,29 +6,29 @@ import { NavLink, useLocation } from 'react-router';
 const sideMenuPath = [
   {
     title: '首頁',
-    path: '/backstage',
+    path: '/admin',
   },
   {
     title: '商品管理',
     subMenu: [
-      { title: '產品概覽', path: '/backstage/products' },
-      { title: '優惠券管理', path: '/backstage/coupons' },
+      { title: '產品概覽', path: '/admin/products' },
+      { title: '優惠券管理', path: '/admin/coupons' },
     ],
   },
   {
     title: '訂單管理',
-    path: '/backstage/orders',
+    path: '/admin/orders',
   },
   {
     title: '營收數據',
     subMenu: [
-      { title: '數據概覽', path: '/backstage/data-overview' },
-      { title: '銷售報表', path: '/backstage/sales-report' },
+      { title: '數據概覽', path: '/admin/data-overview' },
+      { title: '銷售報表', path: '/admin/sales-report' },
     ],
   },
   {
     title: '文章管理',
-    path: '/backstage/articles',
+    path: '/admin/articles',
   },
 ];
 
@@ -62,7 +62,7 @@ function SideMenu() {
     <Accordion
       activeKey={activeKeys}
       alwaysOpen
-      className="backstage-sidemenu-accordion"
+      className="admin-sidemenu-accordion"
       onSelect={keys => setActiveKeys(keys)}
     >
       {sideMenuPath.map((menu, index) => (
@@ -93,7 +93,7 @@ function SideMenu() {
 
 function AccordionLink({ path, title, className }) {
   return (
-    <NavLink to={path} end className={clsx('backstage-sidemenu-accordion-link', className)}>
+    <NavLink to={path} end className={clsx('admin-sidemenu-accordion-link', className)}>
       {title}
     </NavLink>
   );
