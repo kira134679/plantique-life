@@ -38,18 +38,24 @@ function getInitialActiveKeys(pathname) {
   const pathIndexMap = sideMenuPath.reduce((acc, menu, index) => {
     if (menu.subMenu) {
       menu.subMenu.forEach(subItem => {
-        acc.push({ index: String(index), path: subItem.path });
+        acc.push({ parentIndex: String(index), path: subItem.path });
       });
     } else {
-      acc.push({ index: String(index), path: menu.path });
+      acc.push({ parentIndex: String(index), path: menu.path });
     }
     return acc;
   }, []);
 
-  // 比對當前路徑，找出對應的 index
-  const matchedIndex = pathIndexMap.find(item => pathname === item.path);
+  // 比對當前路徑，找出對應的 index，優先選最長匹配避免被較短路徑搶先
+  const matchedIndex = pathIndexMap.reduce((best, item) => {
+    if (pathname === item.path) return item; // 完全相等直接命中
+    if (pathname.startsWith(`${item.path}/`)) {
+      if (!best || item.path.length > best.path.length) return item; // 取最長的前綴匹配
+    }
+    return best;
+  }, null);
 
-  return [matchedIndex.index || '0'];
+  return [matchedIndex?.parentIndex || '0'];
 }
 
 function SideMenu() {
