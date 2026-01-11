@@ -71,6 +71,7 @@ function SideMenu() {
             <>
               <Accordion.Header>
                 <span className="noto-sans-tc lh-base fs-6 fw-medium py-2 px-1 text-neutral-700">{menu.title}</span>
+                <span className="material-symbols-rounded admin-sidemenu-accordion-icon">keyboard_arrow_down</span>
               </Accordion.Header>
               <Accordion.Body className="p-0">
                 <ul className="list-unstyled">

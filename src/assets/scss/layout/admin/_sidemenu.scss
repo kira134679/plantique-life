@@ -9,6 +9,18 @@
     box-shadow: none;
   }
 
+  // Material Symbols 箭頭圖示樣式
+  .admin-sidemenu-accordion-icon {
+    margin-left: auto;
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+    color: $neutral-400;
+  }
+  // 展開時旋轉箭頭
+  .accordion-button:not(.collapsed) .admin-sidemenu-accordion-icon {
+    transform: rotate(180deg);
+  }
+
   .admin-sidemenu-accordion-link {
     color: $neutral-700;
   }
