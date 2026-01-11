@@ -35,10 +35,11 @@ function ProductEdit() {
               </label>
               <input
                 id={`${isUpdateMode ? 'update-' : 'new-'}product-title`}
-                className="form-control"
+                className="form-control is-invalid"
                 type="text"
                 placeholder="請輸入商品名稱"
               />
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
               <label
@@ -47,9 +48,9 @@ function ProductEdit() {
               >
                 類別<span className="text-danger">*</span>
               </label>
-              <Dropdown className="checkout-dropdown">
+              <Dropdown className="checkout-dropdown zod-validated is-invalid">
                 <Dropdown.Toggle
-                  className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
+                  className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8 is-invalid"
                   id={`${isUpdateMode ? 'update-' : 'new-'}product-category`}
                 >
                   請選擇商品類別
@@ -61,6 +62,7 @@ function ProductEdit() {
                   <Dropdown.Item href="#">配件</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
               <label
@@ -81,14 +83,13 @@ function ProductEdit() {
                   <Dropdown.Item href="#">停用</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
           </section>
           <section className="py-6">
             <h3 className="h4 mb-6">圖片設定</h3>
             <div className="mb-4">
-              <p className="mb-2 text-neutral-700 fs-7">
-                主圖設定<span className="text-danger">*</span>
-              </p>
+              <p className="mb-2 text-neutral-700 fs-7">主圖設定</p>
               {/* 主圖卡片 */}
               <Card className="flex-shrink-0 upload-img-card uploaded">
                 <div className="card-img-wrap position-relative overflow-hidden">
@@ -99,7 +100,9 @@ function ProductEdit() {
                   <div className="position-absolute top-50 start-50 translate-middle z-2">
                     <input
                       className="d-none"
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-main-image" type="file`}
+                      id={`${isUpdateMode ? 'update-' : 'new-'}product-main-image`}
+                      type="file"
+                      accept="image/*"
                     />
                     {/* 上傳圖片 */}
                     <div className="card-img-upload">
@@ -138,8 +141,9 @@ function ProductEdit() {
                     id={`${isUpdateMode ? 'update-' : 'new-'}product-main-image-url`}
                     className="form-control"
                     type="url"
-                    placeholder="請輸入主圖網址"
+                    placeholder="請輸入圖片網址"
                   />
+                  <div className="invalid-feedback">格式錯誤</div>
                 </Card.Body>
               </Card>
             </div>
@@ -161,6 +165,7 @@ function ProductEdit() {
                         className="d-none"
                         id={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
                         type="file"
+                        accept="image/*"
                       />
 
                       <div className="card-img-upload">
@@ -199,8 +204,9 @@ function ProductEdit() {
                       id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-1`}
                       className="form-control"
                       type="url"
-                      placeholder="請輸入其他圖片網址"
+                      placeholder="請輸入圖片網址"
                     />
+                    <div className="invalid-feedback">格式錯誤</div>
                   </Card.Body>
                 </Card>
                 {/* 副圖卡片 2 */}
@@ -215,6 +221,7 @@ function ProductEdit() {
                         className="d-none"
                         id={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
                         type="file"
+                        accept="image/*"
                       />
 
                       <div className="card-img-upload">
@@ -253,8 +260,9 @@ function ProductEdit() {
                       id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-2`}
                       className="form-control"
                       type="url"
-                      placeholder="請輸入其他圖片網址"
+                      placeholder="請輸入圖片網址"
                     />
+                    <div className="invalid-feedback">格式錯誤</div>
                   </Card.Body>
                 </Card>
                 {/* 副圖卡片 3 */}
@@ -269,6 +277,7 @@ function ProductEdit() {
                         className="d-none"
                         id={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
                         type="file"
+                        accept="image/*"
                       />
 
                       <div className="card-img-upload">
@@ -307,8 +316,9 @@ function ProductEdit() {
                       id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-3`}
                       className="form-control"
                       type="url"
-                      placeholder="請輸入其他圖片網址"
+                      placeholder="請輸入圖片網址"
                     />
+                    <div className="invalid-feedback">格式錯誤</div>
                   </Card.Body>
                 </Card>
                 {/* 副圖卡片 4 */}
@@ -323,6 +333,7 @@ function ProductEdit() {
                         className="d-none"
                         id={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
                         type="file"
+                        accept="image/*"
                       />
 
                       <div className="card-img-upload">
@@ -361,8 +372,9 @@ function ProductEdit() {
                       id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-4`}
                       className="form-control"
                       type="url"
-                      placeholder="請輸入其他圖片網址"
+                      placeholder="請輸入圖片網址"
                     />
+                    <div className="invalid-feedback">格式錯誤</div>
                   </Card.Body>
                 </Card>
                 {/* 副圖卡片 5 */}
@@ -377,6 +389,7 @@ function ProductEdit() {
                         className="d-none"
                         id={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
                         type="file"
+                        accept="image/*"
                       />
 
                       <div className="card-img-upload">
@@ -415,8 +428,9 @@ function ProductEdit() {
                       id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-5`}
                       className="form-control"
                       type="url"
-                      placeholder="請輸入其他圖片網址"
+                      placeholder="請輸入圖片網址"
                     />
+                    <div className="invalid-feedback">格式錯誤</div>
                   </Card.Body>
                 </Card>
               </div>
@@ -431,15 +445,16 @@ function ProductEdit() {
               >
                 原價<span className="text-danger">*</span>
               </label>
-              <div className="input-group mb-4">
+              <div className="input-group is-invalid">
                 <span className="input-group-text bg-primary-100">NT$</span>
                 <input
                   id={`${isUpdateMode ? 'update-' : 'new-'}product-origin-price`}
-                  className="form-control"
+                  className="form-control is-invalid"
                   type="number"
-                  placeholder="請輸入商品原價"
+                  placeholder="請輸入原價"
                 />
               </div>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
               <label
@@ -454,9 +469,10 @@ function ProductEdit() {
                   id={`${isUpdateMode ? 'update-' : 'new-'}product-price`}
                   className="form-control"
                   type="number"
-                  placeholder="請輸入商品售價"
+                  placeholder="請輸入售價"
                 />
               </div>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
             <div className="mb-4 w-25 min-w-14rem">
               <label
@@ -479,6 +495,7 @@ function ProductEdit() {
                   <Dropdown.Item href="#">組</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+              <div className="invalid-feedback">必填欄位</div>
             </div>
           </section>
           <section className="py-6">
@@ -488,7 +505,7 @@ function ProductEdit() {
                 className="form-label text-neutral-700 fs-7"
                 htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-content`}
               >
-                商品內容<span className="text-danger">*</span>
+                商品內容
               </label>
               <textarea
                 id={`${isUpdateMode ? 'update-' : 'new-'}product-content`}
@@ -500,7 +517,7 @@ function ProductEdit() {
                 className="form-label text-neutral-700 fs-7"
                 htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-description`}
               >
-                商品描述<span className="text-danger">*</span>
+                商品描述
               </label>
               <textarea
                 id={`${isUpdateMode ? 'update-' : 'new-'}product-description`}
