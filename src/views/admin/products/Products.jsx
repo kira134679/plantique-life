@@ -20,7 +20,7 @@ function Products() {
         <h2 className="h3 mb-4">產品概覽</h2>
         <Button
           as={Link}
-          to="/backstage/products/edit"
+          to="/admin/products/edit"
           variant="filled-primary"
           shape="pill"
           size="sm"
@@ -79,7 +79,7 @@ function Products() {
             <li className="col-2">
               <Button
                 as={Link}
-                to="/backstage/products/edit/-L9tH8jxVb2Ka_DYPwng"
+                to="/admin/products/edit/-L9tH8jxVb2Ka_DYPwng"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"
@@ -132,7 +132,7 @@ function Products() {
             <li className="col-2">
               <Button
                 as={Link}
-                to="/backstage/products/edit/-Oh5ZDdgEvRErn5csfA2"
+                to="/admin/products/edit/-Oh5ZDdgEvRErn5csfA2"
                 variant="outline-neutral"
                 shape="circle"
                 size="sm"

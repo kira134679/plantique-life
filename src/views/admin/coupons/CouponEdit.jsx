@@ -136,7 +136,7 @@ function CouponEdit() {
           <div className="d-flex">
             <Button
               as="a"
-              href="#/backstage/coupons"
+              href="#/admin/coupons"
               variant="outline-neutral"
               shape="pill"
               size="sm"
