@@ -141,4 +141,15 @@
   .card-img-top {
     height: 130px;
   }
+  button:disabled.deleting-button {
+    opacity: 1;
+  }
+}
+
+.navbar-spinner-wrapper {
+  height: 1.2rem;
+  .spinner-border {
+    --bs-spinner-width: 0.5rem;
+    --bs-spinner-height: 0.5rem;
+  }
 }
