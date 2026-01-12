@@ -144,3 +144,7 @@
     color: $white !important;
   }
 }
+.accordion-header:not(.collapsed) .accordion-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
