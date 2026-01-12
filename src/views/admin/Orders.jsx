@@ -190,37 +190,47 @@ function Orders() {
           ))}
         </ul>
         <div className="d-flex justify-content-between align-items-center mb-8">
-          <div className="flex-grow-1 d-flex align-items-center">
-            <div className="me-2">
-              <label htmlFor="exampleFormControlInput1" className="form-label d-none">
-                訂單編號 / 姓名 / Email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="exampleFormControlInput1"
-                placeholder="訂單編號 / ​姓​名​ / Email"
-              />
-            </div>
-            <Button type="button" variant="outline-neutral" shape="circle" size="sm">
-              <span className="custom-btn-icon material-symbols-rounded">search</span>
-            </Button>
+          <div className="me-2">
+            <label htmlFor="exampleFormControlInput1" className="form-label d-none">
+              訂單編號 / 姓名 / Email
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="exampleFormControlInput1"
+              placeholder="訂單編號 / ​姓​名​ / Email"
+            />
           </div>
+          <Button type="button" variant="outline-neutral" shape="circle" size="sm" className="border-0">
+            <span className="custom-btn-icon material-symbols-rounded">search</span>
+          </Button>
           <Button type="button" variant="outline-danger" className="ms-auto">
             刪除全部訂單
           </Button>
         </div>
         <div className="table-responsive">
-          <table className="table table-hover align-middle text-nowrap">
+          <table className="table align-middle text-nowrap">
             <thead>
               <tr>
-                <th scope="col">訂單編號</th>
-                <th scope="col">姓名</th>
-                <th scope="col">Email</th>
-                <th scope="col">訂單金額</th>
-                <th scope="col">付款狀態</th>
-                <th scope="col">下單日期</th>
-                <th scope="col" className="text-center">
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  訂單編號
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  姓名
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  Email
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium text-end">
+                  訂單金額
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium text-center">
+                  付款狀態
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  下單日期
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium text-center">
                   操作按鈕
                 </th>
               </tr>
@@ -232,7 +242,7 @@ function Orders() {
                   <td>{order.user.name}</td>
                   <td>{order.user.email}</td>
                   <td className="text-end">{`NT$${order.total.toLocaleString()}`}</td>
-                  <td>
+                  <td className="text-center">
                     {
                       <span
                         className={clsx(
@@ -245,7 +255,7 @@ function Orders() {
                     }
                   </td>
                   <td>{timestampToDate(order.create_at)}</td>
-                  <td className="text-center">
+                  <td className="d-flex justify-content-center gap-2 py-5">
                     <Button
                       type="button"
                       variant="outline-neutral"
@@ -391,7 +401,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                     </span>
                     {item.product.origin_price && (
                       <span className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
-                        {item.product.origin_price.toLocaleString()}
+                        {`$${item.product.origin_price.toLocaleString()}`}
                       </span>
                     )}
                   </div>
