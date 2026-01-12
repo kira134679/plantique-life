@@ -3,6 +3,7 @@ import { timestampToDate } from '@/utils/utils';
 import clsx from 'clsx';
 import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import DatePicker from 'react-datepicker';
 
 const orderTabs = ['全部訂單', '未付款', '已付款'];
 // 資料庫內容
@@ -176,6 +177,9 @@ function Orders() {
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderDetailShow, setOrderDetailShow] = useState(false);
 
+  // 日期區間選擇
+  const [dateRange, setDateRange] = useState([null, null]);
+
   return (
     <div className="d-flex flex-column" style={{ minHeight: 'calc(100vh - 80px)' }}>
       <div className="flex-grow-1">
@@ -201,7 +205,8 @@ function Orders() {
               placeholder="訂單編號 / ​姓​名​ / Email"
             />
           </div>
-          <Button type="button" variant="outline-neutral" shape="circle" size="sm" className="border-0">
+          <OrderDatePicker selectsRange={true} date={dateRange} setDate={setDateRange} />
+          <Button type="button" variant="outline-neutral" shape="circle" size="sm" className="border-0 ms-1">
             <span className="custom-btn-icon material-symbols-rounded">search</span>
           </Button>
           <Button type="button" variant="outline-danger" className="ms-auto">
@@ -291,12 +296,19 @@ function Orders() {
 }
 
 function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow }) {
+  // 是否可編輯
+  const [editable, setEditable] = useState(false);
+
   // 買家資訊
   const [userName, setUserName] = useState(orderDetail.user.name);
   const [userAddress, setUserAddress] = useState(orderDetail.user.address);
+  const [createDate, setCreateDate] = useState(timestampToDate(orderDetail.create_at));
 
   // 關閉側邊欄
-  const handleOffcanvasClose = () => setOrderDetailShow(false);
+  const handleOffcanvasClose = () => {
+    setOrderDetailShow(false);
+    setEditable(false);
+  };
 
   return (
     <Offcanvas
@@ -312,8 +324,15 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
         <section className="mb-10">
           <div className="d-flex justify-content-between align-items-center border-bottom pb-1 mb-3">
             <h2 className="fs-6">買家資訊</h2>
-            <Button type="button" variant="filled-primary" shape="circle" size="sm">
-              <span className="d-block material-symbols-rounded">edit</span>
+            <Button
+              type="button"
+              variant={editable ? 'filled-primary' : 'outline-neutral'}
+              shape="circle"
+              size="sm"
+              className="admin-orders-button"
+              onClick={() => setEditable(!editable)}
+            >
+              <span className="custom-btn-icon material-symbols-rounded">{editable ? 'check' : 'edit'}</span>
             </Button>
           </div>
           <div className="mb-2 row">
@@ -323,7 +342,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
             <div className="col-10">
               <input
                 type="text"
-                readOnly
+                disabled={!editable}
                 className="form-control"
                 id="userName"
                 value={userName}
@@ -366,7 +385,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
             <div className="col-10">
               <input
                 type="text"
-                readOnly
+                disabled={!editable}
                 className="form-control"
                 id="userAddress"
                 value={userAddress}
@@ -449,12 +468,11 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                   下單日期
                 </label>
                 <div className="col-9">
-                  <input
-                    type="text"
-                    readOnly
-                    className="form-control"
-                    id="orderDate"
-                    value={timestampToDate(orderDetail.create_at)}
+                  <OrderDatePicker
+                    selectsRange={false}
+                    date={createDate}
+                    setDate={setCreateDate}
+                    disabled={!editable}
                   />
                 </div>
               </div>
@@ -489,6 +507,27 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
     </Offcanvas>
   );
 }
+// 日期選擇器元件
+const OrderDatePicker = ({ selectsRange, date, setDate, disabled = false }) => {
+  return (
+    <DatePicker
+      selectsRange={selectsRange}
+      // 如果是範圍選擇，則傳入 startDate 和 endDate，否則傳入 selected
+      startDate={selectsRange ? date[0] : null}
+      endDate={selectsRange ? date[1] : null}
+      selected={selectsRange ? null : date}
+      dateFormat="yyyy/MM/dd"
+      onChange={update => setDate(update)}
+      disabled={disabled}
+      placeholderText={selectsRange ? '選擇日期範圍' : '選擇日期'}
+      isClearable
+      showMonthDropdown
+      showYearDropdown
+      dropdownMode="select"
+      className="form-control admin-orders-daypicker"
+    />
+  );
+};
 
 function Pagination() {
   return (
