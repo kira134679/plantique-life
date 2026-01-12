@@ -176,6 +176,8 @@ function Orders() {
   // 訂單詳情側邊欄
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderDetailShow, setOrderDetailShow] = useState(false);
+  // 編輯狀態與草稿訂單資料
+  const [draftOrder, setDraftOrder] = useState(null);
 
   // 日期區間選擇
   const [dateRange, setDateRange] = useState([null, null]);
@@ -268,6 +270,12 @@ function Orders() {
                       size="sm"
                       onClick={() => {
                         setOrderDetail(order);
+                        setDraftOrder({
+                          editable: false,
+                          userName: order.user.name,
+                          userAddress: order.user.address,
+                          createDate: new Date(order.create_at * 1000),
+                        });
                         setOrderDetailShow(true);
                       }}
                     >
@@ -284,30 +292,39 @@ function Orders() {
         </div>
       </div>
       <Pagination />
-      {orderDetail && (
+      {orderDetail && draftOrder && (
         <OrderDetailOffcanvas
           orderDetail={orderDetail}
           orderDetailShow={orderDetailShow}
           setOrderDetailShow={setOrderDetailShow}
+          draftOrder={draftOrder}
+          setDraftOrder={setDraftOrder}
         />
       )}
     </div>
   );
 }
 
-function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow }) {
-  // 是否可編輯
-  const [editable, setEditable] = useState(false);
+function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow, draftOrder, setDraftOrder }) {
+  // 安全解構，避免 draftOrder 為 null 時報錯
+  const { editable = false, userName = '', userAddress = '', createDate = null } = draftOrder || {};
 
-  // 買家資訊
-  const [userName, setUserName] = useState(orderDetail.user.name);
-  const [userAddress, setUserAddress] = useState(orderDetail.user.address);
-  const [createDate, setCreateDate] = useState(timestampToDate(orderDetail.create_at));
+  const handleDraftOrderChange = (key, value) => {
+    setDraftOrder(prev => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   // 關閉側邊欄
   const handleOffcanvasClose = () => {
     setOrderDetailShow(false);
-    setEditable(false);
+    setDraftOrder({
+      editable: false,
+      userName: '',
+      userAddress: '',
+      createDate: null,
+    });
   };
 
   return (
@@ -330,7 +347,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
               shape="circle"
               size="sm"
               className="admin-orders-button"
-              onClick={() => setEditable(!editable)}
+              onClick={() => handleDraftOrderChange('editable', !editable)}
             >
               <span className="custom-btn-icon material-symbols-rounded">{editable ? 'check' : 'edit'}</span>
             </Button>
@@ -346,7 +363,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                 className="form-control"
                 id="userName"
                 value={userName}
-                onChange={e => setUserName(e.target.value)}
+                onChange={e => handleDraftOrderChange('userName', e.target.value)}
               />
             </div>
           </div>
@@ -389,7 +406,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                 className="form-control"
                 id="userAddress"
                 value={userAddress}
-                onChange={e => setUserAddress(e.target.value)}
+                onChange={e => handleDraftOrderChange('userAddress', e.target.value)}
               />
             </div>
           </div>
@@ -471,7 +488,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                   <OrderDatePicker
                     selectsRange={false}
                     date={createDate}
-                    setDate={setCreateDate}
+                    setDate={date => handleDraftOrderChange('createDate', date)}
                     disabled={!editable}
                   />
                 </div>
