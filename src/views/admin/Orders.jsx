@@ -204,7 +204,7 @@ function Orders() {
               type="email"
               className="form-control"
               id="exampleFormControlInput1"
-              placeholder="訂單編號 / ​姓​名​ / Email"
+              placeholder="訂單編號 / 姓名 / Email"
             />
           </div>
           <OrderDatePicker selectsRange={true} date={dateRange} setDate={setDateRange} />
