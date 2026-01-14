@@ -197,15 +197,10 @@ function Orders() {
         </ul>
         <div className="d-flex justify-content-between align-items-center mb-8">
           <div className="me-2">
-            <label htmlFor="exampleFormControlInput1" className="form-label d-none">
+            <label htmlFor="searchOrderInput" className="form-label d-none">
               訂單編號 / 姓名 / Email
             </label>
-            <input
-              type="email"
-              className="form-control"
-              id="exampleFormControlInput1"
-              placeholder="訂單編號 / 姓名 / Email"
-            />
+            <input type="text" className="form-control" id="searchOrderInput" placeholder="訂單編號 / 姓名 / Email" />
           </div>
           <OrderDatePicker selectsRange={true} date={dateRange} setDate={setDateRange} />
           <Button type="button" variant="outline-neutral" shape="circle" size="sm" className="border-0 ms-1">
