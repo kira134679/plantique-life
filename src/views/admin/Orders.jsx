@@ -245,7 +245,7 @@ function Orders() {
             <tbody>
               {orderData.map(order => (
                 <tr key={order.id} className="fs-sm">
-                  <td scope="row">{order.id}</td>
+                  <td>{order.id}</td>
                   <td>{order.user.name}</td>
                   <td>{order.user.email}</td>
                   <td className="text-end">{`NT$${order.total.toLocaleString()}`}</td>
