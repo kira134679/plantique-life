@@ -191,7 +191,7 @@ function Products() {
         </div>
       </div>
       {/* Modal */}
-      <Modal show={show} onHide={handleClose} className="square-modal" size="sm" centered>
+      <Modal show={show} onHide={handleClose} contentClassName="rounded-0" size="sm" centered>
         <Modal.Header closeButton className="border-bottom-0 p-6">
           <Modal.Title className="h5 text-primary">刪除商品</Modal.Title>
         </Modal.Header>
