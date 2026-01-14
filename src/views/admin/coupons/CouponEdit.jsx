@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
@@ -135,8 +135,8 @@ function CouponEdit() {
           </section>
           <div className="d-flex">
             <Button
-              as="a"
-              href="#/admin/coupons"
+              as={Link}
+              to="/admin/coupons"
               variant="outline-neutral"
               shape="pill"
               size="sm"

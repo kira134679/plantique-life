@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import productImg1 from 'assets/images/products/img_product_01.png';
 import productImgDefault from 'assets/images/products/img_product_default.jpg';
@@ -527,8 +527,8 @@ function ProductEdit() {
           </section>
           <div className="d-flex">
             <Button
-              as="a"
-              href="#/admin/products"
+              as={Link}
+              to="/admin/products"
               variant="outline-neutral"
               shape="pill"
               size="sm"
