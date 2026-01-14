@@ -11,6 +11,9 @@ function ProductEdit() {
   const { id } = useParams();
   const isUpdateMode = id !== undefined;
 
+  // 模擬副圖卡片資料
+  const imgCardData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+
   return (
     <>
       <div className="container py-13">
@@ -153,286 +156,64 @@ function ProductEdit() {
                 <span className="ms-2 fs-sm bg-primary-100 px-3 py-1 ms-auto">0 / 5 已使用</span>
               </div>
               <div className="d-flex gap-4 overflow-x-auto">
-                {/* 副圖卡片 1 */}
-                <Card className="flex-shrink-0 upload-img-card">
-                  <div className="card-img-wrap position-relative overflow-hidden">
-                    <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-                    <div className="ratio ratio-1x1">
-                      <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
+                {/* 使用迴圈渲染副圖卡片 */}
+                {imgCardData.map(card => (
+                  <Card key={card.id} className="flex-shrink-0 upload-img-card">
+                    <div className="card-img-wrap position-relative overflow-hidden">
+                      <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
+                      <div className="ratio ratio-1x1">
+                        <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
+                      </div>
+                      <div className="position-absolute top-50 start-50 translate-middle z-2">
+                        <input
+                          className="d-none"
+                          id={`${isUpdateMode ? 'update-' : 'new-'}product-image-${card.id}`}
+                          type="file"
+                          accept="image/*"
+                        />
+
+                        <div className="card-img-upload">
+                          <Button
+                            as="label"
+                            htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-${card.id}`}
+                            variant="outline-neutral"
+                            shape="pill"
+                            size="sm"
+                            rightIcon={true}
+                            iconName="add"
+                            className="text-nowrap"
+                          >
+                            新增圖片
+                          </Button>
+                        </div>
+
+                        <div className="card-img-actions gap-2">
+                          <Button
+                            as="label"
+                            htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-${card.id}`}
+                            variant="outline-neutral"
+                            shape="circle"
+                            size="md"
+                          >
+                            <span className="custom-btn-icon material-symbols-rounded">upload</span>
+                          </Button>
+                          <Button type="button" variant="outline-danger" shape="circle" size="md">
+                            <span className="custom-btn-icon material-symbols-rounded">close</span>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="position-absolute top-50 start-50 translate-middle z-2">
+                    <Card.Body>
                       <input
-                        className="d-none"
-                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
-                        type="file"
-                        accept="image/*"
+                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-${card.id}`}
+                        className="form-control"
+                        type="url"
+                        placeholder="請輸入圖片網址"
                       />
-
-                      <div className="card-img-upload">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
-                          variant="outline-neutral"
-                          shape="pill"
-                          size="sm"
-                          rightIcon={true}
-                          iconName="add"
-                          className="text-nowrap"
-                        >
-                          新增圖片
-                        </Button>
-                      </div>
-
-                      <div className="card-img-actions gap-2">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-1`}
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="md"
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">upload</span>
-                        </Button>
-                        <Button type="button" variant="outline-danger" shape="circle" size="md">
-                          <span className="custom-btn-icon material-symbols-rounded">close</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Card.Body>
-                    <input
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-1`}
-                      className="form-control"
-                      type="url"
-                      placeholder="請輸入圖片網址"
-                    />
-                    <div className="invalid-feedback">格式錯誤</div>
-                  </Card.Body>
-                </Card>
-                {/* 副圖卡片 2 */}
-                <Card className="flex-shrink-0 upload-img-card">
-                  <div className="card-img-wrap position-relative overflow-hidden">
-                    <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-                    <div className="ratio ratio-1x1">
-                      <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
-                    </div>
-                    <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input
-                        className="d-none"
-                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
-                        type="file"
-                        accept="image/*"
-                      />
-
-                      <div className="card-img-upload">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
-                          variant="outline-neutral"
-                          shape="pill"
-                          size="sm"
-                          rightIcon={true}
-                          iconName="add"
-                          className="text-nowrap"
-                        >
-                          新增圖片
-                        </Button>
-                      </div>
-
-                      <div className="card-img-actions gap-2">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-2`}
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="md"
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">upload</span>
-                        </Button>
-                        <Button type="button" variant="outline-danger" shape="circle" size="md">
-                          <span className="custom-btn-icon material-symbols-rounded">close</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Card.Body>
-                    <input
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-2`}
-                      className="form-control"
-                      type="url"
-                      placeholder="請輸入圖片網址"
-                    />
-                    <div className="invalid-feedback">格式錯誤</div>
-                  </Card.Body>
-                </Card>
-                {/* 副圖卡片 3 */}
-                <Card className="flex-shrink-0 upload-img-card">
-                  <div className="card-img-wrap position-relative overflow-hidden">
-                    <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-                    <div className="ratio ratio-1x1">
-                      <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
-                    </div>
-                    <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input
-                        className="d-none"
-                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
-                        type="file"
-                        accept="image/*"
-                      />
-
-                      <div className="card-img-upload">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
-                          variant="outline-neutral"
-                          shape="pill"
-                          size="sm"
-                          rightIcon={true}
-                          iconName="add"
-                          className="text-nowrap"
-                        >
-                          新增圖片
-                        </Button>
-                      </div>
-
-                      <div className="card-img-actions gap-2">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-3`}
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="md"
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">upload</span>
-                        </Button>
-                        <Button type="button" variant="outline-danger" shape="circle" size="md">
-                          <span className="custom-btn-icon material-symbols-rounded">close</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Card.Body>
-                    <input
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-3`}
-                      className="form-control"
-                      type="url"
-                      placeholder="請輸入圖片網址"
-                    />
-                    <div className="invalid-feedback">格式錯誤</div>
-                  </Card.Body>
-                </Card>
-                {/* 副圖卡片 4 */}
-                <Card className="flex-shrink-0 upload-img-card">
-                  <div className="card-img-wrap position-relative overflow-hidden">
-                    <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-                    <div className="ratio ratio-1x1">
-                      <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
-                    </div>
-                    <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input
-                        className="d-none"
-                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
-                        type="file"
-                        accept="image/*"
-                      />
-
-                      <div className="card-img-upload">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
-                          variant="outline-neutral"
-                          shape="pill"
-                          size="sm"
-                          rightIcon={true}
-                          iconName="add"
-                          className="text-nowrap"
-                        >
-                          新增圖片
-                        </Button>
-                      </div>
-
-                      <div className="card-img-actions gap-2">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-4`}
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="md"
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">upload</span>
-                        </Button>
-                        <Button type="button" variant="outline-danger" shape="circle" size="md">
-                          <span className="custom-btn-icon material-symbols-rounded">close</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Card.Body>
-                    <input
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-4`}
-                      className="form-control"
-                      type="url"
-                      placeholder="請輸入圖片網址"
-                    />
-                    <div className="invalid-feedback">格式錯誤</div>
-                  </Card.Body>
-                </Card>
-                {/* 副圖卡片 5 */}
-                <Card className="flex-shrink-0 upload-img-card">
-                  <div className="card-img-wrap position-relative overflow-hidden">
-                    <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-                    <div className="ratio ratio-1x1">
-                      <Card.Img variant="top" src={productImgDefault} className="w-100 object-fit-cover" />
-                    </div>
-                    <div className="position-absolute top-50 start-50 translate-middle z-2">
-                      <input
-                        className="d-none"
-                        id={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
-                        type="file"
-                        accept="image/*"
-                      />
-
-                      <div className="card-img-upload">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
-                          variant="outline-neutral"
-                          shape="pill"
-                          size="sm"
-                          rightIcon={true}
-                          iconName="add"
-                          className="text-nowrap"
-                        >
-                          新增圖片
-                        </Button>
-                      </div>
-
-                      <div className="card-img-actions gap-2">
-                        <Button
-                          as="label"
-                          htmlFor={`${isUpdateMode ? 'update-' : 'new-'}product-image-5`}
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="md"
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">upload</span>
-                        </Button>
-                        <Button type="button" variant="outline-danger" shape="circle" size="md">
-                          <span className="custom-btn-icon material-symbols-rounded">close</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  <Card.Body>
-                    <input
-                      id={`${isUpdateMode ? 'update-' : 'new-'}product-image-url-5`}
-                      className="form-control"
-                      type="url"
-                      placeholder="請輸入圖片網址"
-                    />
-                    <div className="invalid-feedback">格式錯誤</div>
-                  </Card.Body>
-                </Card>
+                      <div className="invalid-feedback">格式錯誤</div>
+                    </Card.Body>
+                  </Card>
+                ))}
               </div>
             </div>
           </section>
