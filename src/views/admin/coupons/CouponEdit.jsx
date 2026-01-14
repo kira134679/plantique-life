@@ -36,7 +36,7 @@ function CouponEdit() {
 
   return (
     <>
-      <div className="container py-13">
+      <div className="py-13">
         <h2 className="h3 mb-8">{isUpdateMode ? '更改優惠券' : '新增優惠券'}</h2>
         <form>
           <section className="py-6">

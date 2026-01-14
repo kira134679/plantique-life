@@ -16,7 +16,7 @@ function Products() {
 
   return (
     <>
-      <div className="container py-13">
+      <div className="py-13">
         <h2 className="h3 mb-4">產品概覽</h2>
         <Button
           as={Link}

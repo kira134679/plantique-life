@@ -16,7 +16,7 @@ function ProductEdit() {
 
   return (
     <>
-      <div className="container py-13">
+      <div className="py-13">
         <h2 className="h3 mb-8">{isUpdateMode ? '更新商品' : '新增商品'}</h2>
         <form>
           <section className="py-6">

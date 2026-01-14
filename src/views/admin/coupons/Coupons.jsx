@@ -13,7 +13,7 @@ function Coupons() {
 
   return (
     <>
-      <div className="container py-13">
+      <div className="py-13">
         <h2 className="h3 mb-4">優惠券管理</h2>
         <Button
           as={Link}
