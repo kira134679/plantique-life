@@ -405,22 +405,45 @@ export default function Home() {
         {/* <!-- 產品卡片 --> */}
         <div className="container mb-8">
           <div className="position-relative">
-            <div className="swiper productSwiper">
-              <div className="swiper-wrapper">
-                {products.map((item, idx) => (
-                  <div className="swiper-slide swiper-slide-prouct" key={idx}>
-                    <ProductCard
-                      title={item.title}
-                      image={item.image}
-                      alt={item.alt}
-                      tag={item.tag}
-                      originPrice={item.originPrice}
-                      price={item.price}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <Swiper
+              modules={[Navigation]}
+              direction="horizontal"
+              loop={false}
+              autoHeight
+              navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }}
+              watchOverflow={false}
+              breakpoints={{
+                0: {
+                  slidesPerView: 'auto',
+                  spaceBetween: 12,
+                  freeMode: true,
+                  navigation: false,
+                },
+                768: {
+                  slidesPerView: 4,
+                  spaceBetween: 24,
+                  freeMode: false,
+                },
+              }}
+              className="productSwiper"
+            >
+              {products.map((item, idx) => (
+                <SwiperSlide key={idx} className="swiper-slide-prouct">
+                  <ProductCard
+                    title={item.title}
+                    image={item.image}
+                    alt={item.alt}
+                    tag={item.tag}
+                    originPrice={item.originPrice}
+                    price={item.price}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
             {/* <!-- 導航按鈕 --> */}
             <div className="swiper-button-prev">
               <span className="material-symbols-rounded">arrow_left_alt </span>
