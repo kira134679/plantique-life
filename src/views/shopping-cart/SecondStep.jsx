@@ -1,8 +1,90 @@
 import Button from '@/components/Button';
-import { useRef, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { z } from 'zod';
+
+// 運費
+const deliveryFee = 120;
+// 下拉選項
+const deliveryOptions = ['黑貓宅配'];
+const paymentOptions = ['貨到付款', '信用卡一次付清', '轉帳'];
+const invoiceOptions = ['電子發票', '雲端載具', '統一編號'];
+// 表單驗證規則
+const baseSchema = {
+  // 運送方式
+  delivery: z.enum(deliveryOptions, {
+    error: issue => (issue.code === 'invalid_enum_value' ? '不支援此運送方式，請重新選擇' : '未選擇運送方式'),
+  }),
+  // 付款方式
+  payment: z.enum(paymentOptions, {
+    error: issue => (issue.code === 'invalid_enum_value' ? '不支援此付款方式，請重新選擇' : '未選擇付款方式'),
+  }),
+  // 訂購人資訊
+  purchaserName: z.string().min(1, '未輸入訂購人姓名').max(20, '訂購人姓名最長為 20'),
+  purchaserPhone: z
+    .string()
+    .min(1, '未輸入訂購人電話')
+    .regex(/^09\d{2}(?:-\d{3}){2}$/, '訂購人電話輸入錯誤'),
+  purchaserEmail: z
+    .string()
+    .min(1, '未輸入訂購人電子郵件')
+    .refine(val => z.email().safeParse(val).success, '訂購人電子郵件輸入錯誤'),
+  // 收件人地址
+  recipientAddress: z.string().min(1, '未輸入收件人地址'),
+  // 發票類型
+  invoice: z.enum(invoiceOptions, {
+    error: issue => (issue.code === 'invalid_enum_value' ? '不支援此發票類型，請重新選擇' : '未選擇發票類型'),
+  }),
+  // 以下欄位預設不需要嚴格驗證，但需要包含在表單資料中
+  // 注意：recipientName, recipientPhone, recipientEmail 在未勾選「同訂購人資訊」時，
+  //      會被 recipientSchema 覆蓋為更嚴格的驗證規則
+  recipientChecked: z.boolean(),
+  recipientName: z.string(),
+  recipientPhone: z.string(),
+  recipientEmail: z.string(),
+  message: z.string(),
+};
+// 收件人資訊 (姓名、電話、Email)，依照「同訂購人資訊」勾選狀態決定是否驗證
+const recipientSchema = {
+  recipientName: z.string().min(1, '未輸入收件人姓名').max(20, '收件人姓名長度為 20'),
+  recipientPhone: z
+    .string()
+    .min(1, '未輸入收件人電話')
+    .regex(/^09\d{2}(?:-\d{3}){2}$/, '收件人電話輸入錯誤'),
+  recipientEmail: z
+    .string()
+    .min(1, '未輸入收件人電子郵件')
+    .refine(val => z.email().safeParse(val).success, '收件人電子郵件輸入錯誤'),
+};
+// 信用卡資訊
+const creditCardSchema = {
+  cardNumber: z
+    .string()
+    .regex(/^\d{4}(?:-\d{4}){3}$/, '卡號輸入錯誤')
+    .min(1, '未輸入信用卡號'),
+  cardExp: z
+    .string()
+    .regex(/\d{2}\/\d{2}/, '有效期限輸入錯誤')
+    .min(1, '未輸入有效期限'),
+  cardCvc: z.string().regex(/\d{3}/, '末三碼輸入錯誤').min(1, '未輸入末三碼'),
+};
+// 手機條碼
+const mobileBarcodeSchema = {
+  mobileBarcode: z
+    .string()
+    .length(8, '手機條碼輸入錯誤')
+    .regex(/^\/[0-9A-Z.\-+]{7}$/, '手機條碼輸入錯誤')
+    .min(1, '未輸入手機條碼'),
+};
+// 統一編號
+const ubnSchema = {
+  ubn: z.string().regex(/\d{8}/, '統一編號輸入錯誤').min(1, '未輸入統一編號'),
+};
 
 function SecondStep({ handleSwitchStep }) {
   // 用於追蹤 Modal 關閉後是否要換頁
@@ -17,9 +99,105 @@ function SecondStep({ handleSwitchStep }) {
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
   const handleShowConfirmModal = () => setShowConfirmModal(true);
 
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, dirtyFields },
+    setValue,
+    setFocus,
+    clearErrors,
+    reset,
+    resetField,
+    getValues,
+  } = useForm({
+    resolver: (values, context, options) => {
+      let schema = z.object(baseSchema);
+
+      // 未勾選「同訂購人資訊」時，需要驗證收件人欄位
+      if (!values.recipientChecked) {
+        schema = schema.extend(recipientSchema);
+      }
+      // 選擇信用卡付款時，需要驗證信用卡欄位
+      if (values.payment === '信用卡一次付清') {
+        schema = schema.extend(creditCardSchema);
+      }
+      // 選擇不同發票類型時，需要驗證對應欄位
+      if (values.invoice === '雲端載具') {
+        schema = schema.extend(mobileBarcodeSchema);
+      } else if (values.invoice === '統一編號') {
+        schema = schema.extend(ubnSchema);
+      }
+
+      return zodResolver(schema)(values, context, options);
+    },
+    mode: 'onChange', // 即時驗證
+    defaultValues: {
+      delivery: '',
+      payment: '',
+      cardNumber: '',
+      cardExp: '',
+      cardCvc: '',
+      purchaserName: '',
+      purchaserPhone: '',
+      purchaserEmail: '',
+      recipientChecked: false,
+      recipientName: '',
+      recipientPhone: '',
+      recipientEmail: '',
+      recipientAddress: '',
+      invoice: '',
+      mobileBarcode: '',
+      ubn: '',
+      message: '',
+    },
+  });
+
+  // 監聽付款方式和發票類型，用來顯示 / 隱藏相關欄位
+  const deliveryMethod = useWatch({ control, name: 'delivery' });
+  const paymentMethod = useWatch({ control, name: 'payment' });
+  const invoiceType = useWatch({ control, name: 'invoice' });
+  const recipientChecked = useWatch({ control, name: 'recipientChecked' });
+
+  // 監聽訂購人資訊，用於同步到收件人
+  const purchaserName = useWatch({ control, name: 'purchaserName' });
+  const purchaserPhone = useWatch({ control, name: 'purchaserPhone' });
+  const purchaserEmail = useWatch({ control, name: 'purchaserEmail' });
+  // 監聽收件人資訊，用於 Modal 顯示
+  const recipientName = useWatch({ control, name: 'recipientName' });
+  const recipientPhone = useWatch({ control, name: 'recipientPhone' });
+  const recipientAddress = useWatch({ control, name: 'recipientAddress' });
+
+  // 當勾選「同訂購人資訊」時，持續同步訂購人資訊到收件人
+  useEffect(() => {
+    if (recipientChecked) {
+      setValue('recipientName', purchaserName);
+      setValue('recipientPhone', purchaserPhone);
+      setValue('recipientEmail', purchaserEmail);
+      clearErrors('recipientName');
+      clearErrors('recipientPhone');
+      clearErrors('recipientEmail');
+    }
+  }, [recipientChecked, purchaserName, purchaserPhone, purchaserEmail, setValue, clearErrors]);
+
+  // 當選擇信用卡付款時，自動 focus 到卡號欄位
+  useEffect(() => {
+    if (paymentMethod === '信用卡一次付清') {
+      setFocus('cardNumber');
+    }
+  }, [paymentMethod, setFocus]);
+
+  // 當選擇發票類型時，自動 focus 到對應欄位
+  useEffect(() => {
+    if (invoiceType === '雲端載具') {
+      setFocus('mobileBarcode');
+    } else if (invoiceType === '統一編號') {
+      setFocus('ubn');
+    }
+  }, [invoiceType, setFocus]);
+
   // 驗證成功
-  const onSubmit = e => {
-    e.preventDefault();
+  const onSubmit = () => {
     handleShowConfirmModal();
   };
 
@@ -37,9 +215,24 @@ function SecondStep({ handleSwitchStep }) {
     handleCloseConfirmModal();
   };
 
+  const handleBackToCart = async () => {
+    await handleSwitchStep(0, false);
+    // 重設信用卡欄位（基於隱私考量，清除敏感資訊）
+    // keepError/keepDirty/keepTouched: false 只能清除「之前已存在」的狀態
+    const resetOptions = { keepError: false, keepDirty: false, keepTouched: false };
+    resetField('cardNumber', resetOptions);
+    resetField('cardExp', resetOptions);
+    resetField('cardCvc', resetOptions);
+    // 由於 mode: 'onChange'，resetField 改變值會觸發異步的 zodResolver 驗證
+    // 異步驗證完成後會產生「新的」錯誤，這些錯誤不受 resetOptions 控制
+    // 因此需要用 setTimeout 確保在異步驗證完成後，再用 reset() 清除所有狀態
+    const currentValues = getValues();
+    setTimeout(() => reset(currentValues, { keepValues: true }), 0);
+  };
+
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="row flex-column-reverse flex-lg-row">
           <div className="col-lg-8">
             <section className="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
@@ -48,85 +241,140 @@ function SecondStep({ handleSwitchStep }) {
               </h6>
               {/* 運送方式 */}
               <p className="fs-lg-7 text-neutral-700 mb-2">運送方式</p>
-              <Dropdown className="checkout-dropdown">
-                <Dropdown.Toggle variant="" className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8">
-                  請選擇運送方式
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  <Dropdown.Item href="#" className="fs-sm fs-lg-8">
-                    黑貓宅配
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-                <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-              </Dropdown>
+              <Controller
+                name="delivery"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <Dropdown
+                      className={clsx(
+                        'checkout-dropdown',
+                        (errors.delivery || (!errors.delivery && dirtyFields.delivery)) && 'zod-validated',
+                      )}
+                      onSelect={field.onChange}
+                    >
+                      <Dropdown.Toggle
+                        variant=""
+                        className={clsx(
+                          'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                          errors.delivery && 'is-invalid',
+                          !errors.delivery && dirtyFields.delivery && 'is-valid',
+                        )}
+                      >
+                        {(field.value && <span className="text-neutral-700">{field.value}</span>) || '請選擇運送方式'}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="w-100">
+                        {deliveryOptions.map(option => (
+                          <Dropdown.Item key={option} eventKey={option} className="fs-sm fs-lg-8">
+                            {option}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <div className="fs-sm text-danger mt-1">{errors.delivery?.message}</div>
+                  </>
+                )}
+              />
               <p className="fs-sm text-neutral-400 mt-1">* 宅配貨到付款會產生額外手續費</p>
               <p className="fs-sm text-neutral-400 mb-3">* 宅配週日不配送</p>
               {/* 付款方式 */}
               <p className="fs-lg-7 text-neutral-700 mb-2">付款方式</p>
-              <Dropdown className="checkout-dropdown">
-                <Dropdown.Toggle variant="" className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8">
-                  請選擇付款方式
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  <Dropdown.Item href="#" className="fs-sm fs-lg-8">
-                    貨到付款
-                  </Dropdown.Item>
-                  <Dropdown.Item href="#" className="fs-sm fs-lg-8">
-                    信用卡一次付清
-                  </Dropdown.Item>
-                  <Dropdown.Item href="#" className="fs-sm fs-lg-8">
-                    轉帳
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-                <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-              </Dropdown>
-              <div className="mt-4">
-                <div className="mb-2">
-                  <label htmlFor="card-number" className="form-label fs-lg-7 text-neutral-700">
-                    信用卡卡號
-                  </label>
-                  <div>
-                    <input
-                      type="text"
-                      className="form-control cart-card-number fs-sm fs-lg-8"
-                      id="card-number"
-                      placeholder="**** **** **** ****"
-                      required
-                    />
-                    <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-                  </div>
-                </div>
-                <div className="d-flex gap-4 gap-lg-6">
-                  <div>
-                    <label htmlFor="card-exp" className="form-label fs-lg-7 text-neutral-700">
-                      卡片有效期限
+              <Controller
+                name="payment"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <Dropdown
+                      className={clsx(
+                        'checkout-dropdown',
+                        (errors.payment || (!errors.payment && dirtyFields.payment)) && 'zod-validated',
+                      )}
+                      onSelect={field.onChange}
+                    >
+                      <Dropdown.Toggle
+                        variant=""
+                        className={clsx(
+                          'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                          errors.payment && 'is-invalid',
+                          !errors.payment && dirtyFields.payment && 'is-valid',
+                        )}
+                      >
+                        {(field.value && <span className="text-neutral-700">{field.value}</span>) || '請選擇付款方式'}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="w-100">
+                        {paymentOptions.map(option => (
+                          <Dropdown.Item key={option} eventKey={option} className="fs-sm fs-lg-8">
+                            {option}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <div className="fs-sm text-danger mt-1">{errors.payment?.message}</div>
+                  </>
+                )}
+              />
+              {/* 條件顯示：信用卡欄位 */}
+              {paymentMethod === '信用卡一次付清' && (
+                <div className="mt-4">
+                  <div className="mb-2">
+                    <label htmlFor="card-number" className="form-label fs-lg-7 text-neutral-700">
+                      信用卡卡號
                     </label>
                     <div>
                       <input
+                        {...register('cardNumber')}
                         type="text"
-                        className="form-control cart-card-exp fs-sm fs-lg-8"
-                        id="card-exp"
-                        placeholder="MM/YY"
-                        required
+                        className={clsx(
+                          'form-control cart-card-number fs-sm fs-lg-8',
+                          errors.cardNumber && 'is-invalid',
+                          !errors.cardNumber && dirtyFields.cardNumber && 'is-valid',
+                        )}
+                        id="card-number"
+                        placeholder="**** **** **** ****"
                       />
-                      <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                      <div className="fs-sm text-danger mt-1">{errors.cardNumber?.message}</div>
                     </div>
                   </div>
-                  <div>
-                    <label htmlFor="card-cvc" className="form-label fs-lg-7 text-neutral-700">
-                      背面末三碼
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control cart-card-cvc fs-sm fs-lg-8"
-                      id="card-cvc"
-                      placeholder="CVC"
-                      required
-                    />
-                    <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                  <div className="d-flex gap-4 gap-lg-6">
+                    <div>
+                      <label htmlFor="card-exp" className="form-label fs-lg-7 text-neutral-700">
+                        卡片有效期限
+                      </label>
+                      <div>
+                        <input
+                          {...register('cardExp')}
+                          type="text"
+                          className={clsx(
+                            'form-control cart-card-exp fs-sm fs-lg-8',
+                            errors.cardExp && 'is-invalid',
+                            !errors.cardExp && dirtyFields.cardExp && 'is-valid',
+                          )}
+                          id="card-exp"
+                          placeholder="MM/YY"
+                        />
+                        <div className="fs-sm text-danger mt-1">{errors.cardExp?.message}</div>
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="card-cvc" className="form-label fs-lg-7 text-neutral-700">
+                        背面末三碼
+                      </label>
+                      <input
+                        {...register('cardCvc')}
+                        type="text"
+                        className={clsx(
+                          'form-control cart-card-cvc fs-sm fs-lg-8',
+                          errors.cardCvc && 'is-invalid',
+                          !errors.cardCvc && dirtyFields.cardCvc && 'is-valid',
+                        )}
+                        id="card-cvc"
+                        placeholder="CVC"
+                      />
+                      <div className="fs-sm text-danger mt-1">{errors.cardCvc?.message}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </section>
             {/* 訂購人資料 */}
             <section className="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
@@ -139,26 +387,34 @@ function SecondStep({ handleSwitchStep }) {
                     訂購人姓名
                   </label>
                   <input
+                    {...register('purchaserName')}
                     type="text"
-                    className="form-control fs-sm fs-lg-8"
+                    className={clsx(
+                      'form-control fs-sm fs-lg-8',
+                      errors.purchaserName && 'is-invalid',
+                      !errors.purchaserName && dirtyFields.purchaserName && 'is-valid',
+                    )}
                     id="purchaser-name"
                     placeholder="ex: 王X明"
-                    required
                   />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                  <div className="fs-sm text-danger mt-1">{errors.purchaserName?.message}</div>
                 </div>
                 <div className="flex-grow-1">
                   <label htmlFor="purchaser-phone" className="form-label fs-lg-7 text-neutral-700">
                     訂購人電話
                   </label>
                   <input
+                    {...register('purchaserPhone')}
                     type="tel"
-                    className="form-control fs-sm fs-lg-8"
+                    className={clsx(
+                      'form-control fs-sm fs-lg-8',
+                      errors.purchaserPhone && 'is-invalid',
+                      !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
+                    )}
                     id="purchaser-phone"
                     placeholder="ex: 0912-123-123"
-                    required
                   />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                  <div className="fs-sm text-danger mt-1">{errors.purchaserPhone?.message}</div>
                 </div>
               </div>
               <div className="mb-3">
@@ -166,13 +422,17 @@ function SecondStep({ handleSwitchStep }) {
                   訂購人電子郵件
                 </label>
                 <input
+                  {...register('purchaserEmail')}
                   type="email"
-                  className="form-control fs-sm fs-lg-8"
+                  className={clsx(
+                    'form-control fs-sm fs-lg-8',
+                    errors.purchaserEmail && 'is-invalid',
+                    !errors.purchaserEmail && dirtyFields.purchaserEmail && 'is-valid',
+                  )}
                   id="purchaser-email"
                   placeholder="ex: plantique@gmail.com"
-                  required
                 />
-                <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                <div className="fs-sm text-danger mt-1">{errors.purchaserEmail?.message}</div>
               </div>
             </section>
             {/* 收件人資料 */}
@@ -182,7 +442,13 @@ function SecondStep({ handleSwitchStep }) {
                   收件人資料 <span className="text-danger">*</span>
                 </h6>
                 <div className="form-check ms-auto">
-                  <input className="form-check-input" type="checkbox" value="" id="recipient-checked" />
+                  <input
+                    {...register('recipientChecked')}
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="recipient-checked"
+                  />
                   <label className="form-check-label" htmlFor="recipient-checked">
                     同訂購人資訊
                   </label>
@@ -195,26 +461,36 @@ function SecondStep({ handleSwitchStep }) {
                       收件人姓名
                     </label>
                     <input
+                      {...register('recipientName')}
                       type="text"
-                      className="form-control fs-sm fs-lg-8"
+                      className={clsx(
+                        'form-control fs-sm fs-lg-8',
+                        errors.recipientName && 'is-invalid',
+                        !errors.recipientName && dirtyFields.recipientName && 'is-valid',
+                      )}
+                      disabled={recipientChecked}
                       id="recipient-name"
                       placeholder="ex: 王X明"
-                      required
                     />
-                    <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                    <div className="fs-sm text-danger mt-1">{errors.recipientName?.message}</div>
                   </div>
                   <div className="flex-grow-1">
                     <label htmlFor="recipient-phone" className="form-label fs-lg-7 text-neutral-700">
                       收件人電話
                     </label>
                     <input
+                      {...register('recipientPhone')}
                       type="tel"
-                      className="form-control fs-sm fs-lg-8"
+                      className={clsx(
+                        'form-control fs-sm fs-lg-8',
+                        errors.recipientPhone && 'is-invalid',
+                        !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
+                      )}
+                      disabled={recipientChecked}
                       id="recipient-phone"
                       placeholder="ex: 0912-123-123"
-                      required
                     />
-                    <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                    <div className="fs-sm text-danger mt-1">{errors.recipientPhone?.message}</div>
                   </div>
                 </div>
                 <div className="mb-3">
@@ -222,26 +498,35 @@ function SecondStep({ handleSwitchStep }) {
                     收件人電子郵件
                   </label>
                   <input
+                    {...register('recipientEmail')}
                     type="email"
-                    className="form-control fs-sm fs-lg-8"
+                    className={clsx(
+                      'form-control fs-sm fs-lg-8',
+                      errors.recipientEmail && 'is-invalid',
+                      !errors.recipientEmail && dirtyFields.recipientEmail && 'is-valid',
+                    )}
+                    disabled={recipientChecked}
                     id="recipient-email"
                     placeholder="ex: plantique@gmail.com"
-                    required
                   />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                  <div className="fs-sm text-danger mt-1">{errors.recipientEmail?.message}</div>
                 </div>
                 <div className="flex-grow-1 mb-3">
                   <label htmlFor="recipient-address" className="form-label fs-lg-7 text-neutral-700">
                     收件人地址
                   </label>
                   <input
+                    {...register('recipientAddress')}
                     type="text"
-                    className="form-control fs-sm fs-lg-8"
+                    className={clsx(
+                      'form-control fs-sm fs-lg-8',
+                      errors.recipientAddress && 'is-invalid',
+                      !errors.recipientAddress && dirtyFields.recipientAddress && 'is-valid',
+                    )}
                     id="recipient-address"
                     placeholder="請填寫收件地址"
-                    required
                   />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
+                  <div className="fs-sm text-danger mt-1">{errors.recipientAddress?.message}</div>
                 </div>
               </div>
             </section>
@@ -252,49 +537,85 @@ function SecondStep({ handleSwitchStep }) {
               </h6>
               <div>
                 <p className="fs-lg-7 text-neutral-700 mb-2">選擇發票類型</p>
-                <Dropdown className="checkout-dropdown">
-                  <Dropdown.Toggle variant="" className="border w-100 text-start text-neutral-500 fs-sm fs-lg-8">
-                    請選擇發票類型
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="w-100">
-                    <Dropdown.Item href="#" className="fs-sm fs-lg-8">
-                      電子發票
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#" className="fs-sm fs-lg-8" id="mobile-barcode-item">
-                      雲端載具
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#" className="fs-sm fs-lg-8" id="ubn-item">
+                <Controller
+                  name="invoice"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <Dropdown
+                        className={clsx(
+                          'checkout-dropdown',
+                          (errors.invoice || (!errors.invoice && dirtyFields.invoice)) && 'zod-validated',
+                        )}
+                        onSelect={field.onChange}
+                        onToggle={isOpen => {
+                          if (!isOpen) {
+                            field.onBlur(); // 手動觸發 onBlur，讓 RHF 知道欄位被摸過了
+                          }
+                        }}
+                      >
+                        <Dropdown.Toggle
+                          variant=""
+                          className={clsx(
+                            'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                            errors.invoice && 'is-invalid',
+                            !errors.invoice && dirtyFields.invoice && 'is-valid',
+                          )}
+                        >
+                          {(field.value && <span className="text-neutral-700">{field.value}</span>) || '請選擇發票類型'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="w-100">
+                          {invoiceOptions.map(option => (
+                            <Dropdown.Item key={option} eventKey={option} className="fs-sm fs-lg-8">
+                              {option}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      <div className="fs-sm text-danger mt-1">{errors.invoice?.message}</div>
+                    </>
+                  )}
+                />
+                {/* 條件顯示：載具欄位 */}
+                {invoiceType === '雲端載具' && (
+                  <div className="mt-3">
+                    <label htmlFor="mobile-barcode" className="form-label fs-lg-7">
+                      手機條碼
+                    </label>
+                    <input
+                      {...register('mobileBarcode')}
+                      type="text"
+                      className={clsx(
+                        'form-control fs-sm fs-lg-8',
+                        errors.mobileBarcode && 'is-invalid',
+                        !errors.mobileBarcode && dirtyFields.mobileBarcode && 'is-valid',
+                      )}
+                      id="mobile-barcode"
+                      placeholder="請輸入手機條碼"
+                    />
+                    <div className="fs-sm text-danger mt-1">{errors.mobileBarcode?.message}</div>
+                  </div>
+                )}
+                {/* 條件顯示：統一編號欄位 */}
+                {invoiceType === '統一編號' && (
+                  <div className="mt-3">
+                    <label htmlFor="ubn" className="form-label fs-lg-7">
                       統一編號
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-                </Dropdown>
-                <div className="mt-3">
-                  <label htmlFor="mobile-barcode" className="form-label fs-lg-7">
-                    手機條碼
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control fs-sm fs-lg-8"
-                    id="mobile-barcode"
-                    placeholder="請輸入手機條碼"
-                    required
-                  />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-                </div>
-                <div className="mt-3">
-                  <label htmlFor="ubn" className="form-label fs-lg-7">
-                    統一編號
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control fs-sm fs-lg-8"
-                    id="ubn"
-                    placeholder="請輸入統一編號"
-                    required
-                  />
-                  <div className="zod-invalid-feedback fs-sm text-danger mt-1"></div>
-                </div>
+                    </label>
+                    <input
+                      {...register('ubn')}
+                      type="text"
+                      className={clsx(
+                        'form-control fs-sm fs-lg-8',
+                        errors.ubn && 'is-invalid',
+                        !errors.ubn && dirtyFields.ubn && 'is-valid',
+                      )}
+                      id="ubn"
+                      placeholder="請輸入統一編號"
+                    />
+                    <div className="fs-sm text-danger mt-1">{errors.ubn?.message}</div>
+                  </div>
+                )}
               </div>
             </section>
             <section className="border border-2 p-4 p-lg-6">
@@ -304,6 +625,7 @@ function SecondStep({ handleSwitchStep }) {
                   備註
                 </label>
                 <textarea
+                  {...register('message')}
                   className="form-control fs-sm fs-lg-8"
                   id="checkout-notes-text"
                   rows="3"
@@ -352,7 +674,15 @@ function SecondStep({ handleSwitchStep }) {
               </div>
               <div className="d-flex justify-content-between mb-3 mb-lg-4">
                 <span className="fs-sm fs-lg-8 text-neutral-400">運費</span>
-                <span className="fs-sm fs-lg-8 text-secondary"></span>
+                <span className="fs-sm fs-lg-8 text-secondary">
+                  {deliveryMethod === '黑貓宅配' ? (
+                    <>
+                      NT$0 <del className="text-neutral-400">{`$${deliveryFee}`}</del>
+                    </>
+                  ) : (
+                    'NT$0'
+                  )}
+                </span>
               </div>
               <div className="d-flex justify-content-between mb-3 mb-lg-4">
                 <span className="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
@@ -370,7 +700,7 @@ function SecondStep({ handleSwitchStep }) {
                   shape="pill"
                   size="lg"
                   className="text-nowrap flex-lg-grow-1 checkout-btn-basis px-lg-5"
-                  onClick={() => handleSwitchStep(0, false)}
+                  onClick={handleBackToCart}
                 >
                   返回購物車
                 </Button>
@@ -398,7 +728,7 @@ function SecondStep({ handleSwitchStep }) {
             shape="pill"
             size="lg"
             className="w-100 text-nowrap mt-4"
-            onClick={() => handleSwitchStep(0, false)}
+            onClick={handleBackToCart}
           >
             返回購物車
           </Button>
@@ -423,10 +753,10 @@ function SecondStep({ handleSwitchStep }) {
           <p className="fs-6 noto-serif-tc text-neutral-700 mb-3">請再次確認您的收件資訊</p>
           <p className="fs-8 text-neutral-400 mb-1">收件資訊</p>
           <div className="d-flex justify-content-center mb-1 mb-lg-2">
-            <p className="h5 fs-lg-4 text-danger me-3">王小明</p>
-            <p className="h5 fs-lg-4 text-danger">0923-123-123</p>
+            <p className="h5 fs-lg-4 text-danger me-3">{recipientName}</p>
+            <p className="h5 fs-lg-4 text-danger">{recipientPhone}</p>
           </div>
-          <p className="h5 fs-lg-4 text-danger">台北市信義區101</p>
+          <p className="h5 fs-lg-4 text-danger">{recipientAddress}</p>
         </Modal.Body>
         <Modal.Footer className="flex-column flex-lg-row-reverse align-items-stretch border-top-0 border-top-lg gap-3 gap-lg-4 pb-8 pb-lg-12 pt-0 pt-lg-8 px-0">
           <Button

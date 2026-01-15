@@ -106,18 +106,6 @@
   object-position: 50% 20%;
 }
 
-.zod-invalid-feedback {
-  display: none;
-}
-.zod-validated {
-  .is-invalid ~ .zod-invalid-feedback {
-    display: block;
-  }
-  .is-valid ~ .zod-invalid-feedback {
-    display: none;
-  }
-}
-
 .checkout-dropdown {
   .dropdown-toggle {
     position: relative;
