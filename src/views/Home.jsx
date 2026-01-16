@@ -26,8 +26,6 @@ import { timestampToDate } from '../utils/utils';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-import 'swiper/css';
-
 const events = [
   {
     title: '送禮不只月餅\n中秋綠意禮盒預購中！',
