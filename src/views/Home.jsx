@@ -403,53 +403,55 @@ export default function Home() {
         </div>
 
         {/* <!-- 產品卡片 --> */}
-        <div className="container mb-8">
-          <div className="position-relative">
-            <Swiper
-              modules={[Navigation]}
-              direction="horizontal"
-              loop={false}
-              autoHeight
-              navigation={{
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-              }}
-              watchOverflow={false}
-              breakpoints={{
-                0: {
-                  slidesPerView: 'auto',
-                  spaceBetween: 12,
-                  freeMode: true,
-                  navigation: false,
-                },
-                768: {
-                  slidesPerView: 4,
-                  spaceBetween: 24,
-                  freeMode: false,
-                },
-              }}
-              className="productSwiper"
-            >
-              {products.map((item, idx) => (
-                <SwiperSlide key={idx} className="swiper-slide-prouct">
-                  <ProductCard
-                    title={item.title}
-                    image={item.image}
-                    alt={item.alt}
-                    tag={item.tag}
-                    originPrice={item.originPrice}
-                    price={item.price}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+        <div className="px-0 px-lg-15">
+          <div className="container-fiuid container-xl mb-8">
+            <div className="position-relative">
+              <Swiper
+                modules={[Navigation]}
+                direction="horizontal"
+                loop={false}
+                autoHeight
+                navigation={{
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                }}
+                watchOverflow={false}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 'auto',
+                    spaceBetween: 12,
+                    freeMode: true,
+                    navigation: false,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                    spaceBetween: 24,
+                    freeMode: false,
+                  },
+                }}
+                className="productSwiper"
+              >
+                {products.map((item, idx) => (
+                  <SwiperSlide key={idx} className="swiper-slide-prouct">
+                    <ProductCard
+                      title={item.title}
+                      image={item.image}
+                      alt={item.alt}
+                      tag={item.tag}
+                      originPrice={item.originPrice}
+                      price={item.price}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-            {/* <!-- 導航按鈕 --> */}
-            <div className="swiper-button-prev">
-              <span className="material-symbols-rounded">arrow_left_alt </span>
-            </div>
-            <div className="swiper-button-next">
-              <span className="material-symbols-rounded"> arrow_right_alt </span>
+              {/* <!-- 導航按鈕 --> */}
+              <div className="swiper-button-prev">
+                <span className="material-symbols-rounded">arrow_left_alt </span>
+              </div>
+              <div className="swiper-button-next">
+                <span className="material-symbols-rounded"> arrow_right_alt </span>
+              </div>
             </div>
           </div>
         </div>
