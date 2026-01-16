@@ -95,7 +95,7 @@ function Products() {
                   </td>
                   <td>
                     <div>
-                      <StatusDropdown isEnabled={product.is_enabled} />
+                      <StatusDropdown product={product} />
                     </div>
                   </td>
                   <td>
