@@ -44,42 +44,45 @@
 }
 
 //swiper
-.swiper-pagination-bullet {
-  width: 8px;
-  height: 4px;
-  border-radius: 1000px;
-  background-color: $primary-600;
-  margin-right: 12px;
-  transition:
-    width 0.3s ease,
-    background-color 0.3s ease;
-  text-align: start;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
+.swiper-pagination-news {
+  .swiper-pagination-bullet {
+    width: 8px;
     height: 4px;
     border-radius: 1000px;
     background-color: $primary-600;
+    margin-right: 12px;
+    transition:
+      width 0.3s ease,
+      background-color 0.3s ease;
+    text-align: start;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 4px;
+      border-radius: 1000px;
+      background-color: $primary-600;
+    }
   }
-}
 
-.swiper-pagination-bullet-active {
-  --animation-duration: 3s;
-  width: 80px;
-  background-color: $primary-300;
-  position: relative;
-  &::before {
-    animation: bullet-timeline calc(var(--animation-duration) + 0.3s) ease-out forwards;
+  .swiper-pagination-bullet-active {
+    --animation-duration: 3s;
+    width: 80px;
+    background-color: $primary-300;
+    position: relative;
+    &::before {
+      animation: bullet-timeline calc(var(--animation-duration) + 0.3s) ease-out forwards;
+    }
+    &.restart::before {
+      animation: bullet-timeline-restart calc(var(--animation-duration) + 0.3s) ease-out forwards;
+    }
   }
-  &.restart::before {
-    animation: bullet-timeline-restart calc(var(--animation-duration) + 0.3s) ease-out forwards;
+
+  .is-paused .swiper-pagination-bullet-active::before {
+    animation-play-state: paused;
   }
-}
-.is-paused .swiper-pagination-bullet-active::before {
-  animation-play-state: paused;
 }
 
 @keyframes bullet-timeline {

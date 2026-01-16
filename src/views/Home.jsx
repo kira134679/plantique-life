@@ -241,7 +241,7 @@ export default function Home() {
                 loop
                 autoHeight
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
-                pagination={{ el: '.swiper-pagination', clickable: true }}
+                pagination={{ el: '.swiper-pagination-news', clickable: true }}
                 // 暫停動畫
                 onTouchStart={swiper => {
                   swiper.el.classList.add('is-paused');
@@ -302,7 +302,7 @@ export default function Home() {
                     </div>
                   </SwiperSlide>
                 ))}
-                <div className="d-flex justify-content-center justify-content-lg-start position-static mt-8 mt-lg-10 swiper-pagination"></div>
+                <div className="d-flex justify-content-center justify-content-lg-start position-static mt-8 mt-lg-10 swiper-pagination-news"></div>
               </Swiper>
             </div>
           </div>
