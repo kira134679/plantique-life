@@ -1,59 +1,25 @@
-import { useState } from 'react';
+import { fetchProducts } from '@/slice/productSlice';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import Button from '../../../components/Button';
 
-// 模擬商品資料
-const products = [
-  {
-    category: '療癒組盆',
-    content: '',
-    description: '',
-    id: '-Oih7Pgbo5UG_glIcshO',
-    imageUrl: 'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768135980082.png',
-    imagesUrl: [
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132535151.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132574231.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132605112.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132642689.jpg',
-      '',
-    ],
-    is_enabled: 1,
-    origin_price: 7200,
-    price: 7200,
-    title: '向陽而生',
-    unit: '個',
-    num: 4,
-  },
-  {
-    category: '療癒組盆',
-    content: '',
-    description: '',
-    id: '-Oih6wYWfwzQ1QIkCizU',
-    imageUrl: 'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768135923693.png',
-    imagesUrl: [
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132310257.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132371732.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132429756.jpg',
-      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132499116.jpg',
-      '',
-    ],
-    is_enabled: 0,
-    origin_price: 6200,
-    price: 5800,
-    title: '泡泡森林',
-    unit: '個',
-    num: 5,
-  },
-];
-
 function Products() {
+  // Redux
+  const dispatch = useDispatch();
+  const { products } = useSelector(state => state.product);
+
   // Modal 資料控制
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    dispatch(fetchProducts({ page: 1 }));
+  }, [dispatch]);
 
   return (
     <>
