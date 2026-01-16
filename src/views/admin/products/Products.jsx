@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import Button from '../../../components/Button';
+
+import StatusDropdown from './components/StatusDropdown';
 
 function Products() {
   // Redux
@@ -94,18 +95,7 @@ function Products() {
                   </td>
                   <td>
                     <div>
-                      <Dropdown className="checkout-dropdown min-w-5rem">
-                        <Dropdown.Toggle
-                          className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                          id="product-status"
-                        >
-                          {product.is_enabled ? '啟用' : '停用'}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="w-100">
-                          <Dropdown.Item href="#">啟用</Dropdown.Item>
-                          <Dropdown.Item href="#">停用</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <StatusDropdown isEnabled={product.is_enabled} />
                     </div>
                   </td>
                   <td>
