@@ -1,12 +1,53 @@
-import productImg1 from 'assets/images/products/img_product_01.png';
-import productImg2 from 'assets/images/products/img_product_02.png';
-
 import { useState } from 'react';
 import { Link } from 'react-router';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import Button from '../../../components/Button';
+
+// 模擬商品資料
+const products = [
+  {
+    category: '療癒組盆',
+    content: '',
+    description: '',
+    id: '-Oih7Pgbo5UG_glIcshO',
+    imageUrl: 'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768135980082.png',
+    imagesUrl: [
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132535151.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132574231.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132605112.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132642689.jpg',
+      '',
+    ],
+    is_enabled: 1,
+    origin_price: 7200,
+    price: 7200,
+    title: '向陽而生',
+    unit: '個',
+    num: 4,
+  },
+  {
+    category: '療癒組盆',
+    content: '',
+    description: '',
+    id: '-Oih6wYWfwzQ1QIkCizU',
+    imageUrl: 'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768135923693.png',
+    imagesUrl: [
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132310257.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132371732.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132429756.jpg',
+      'https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1768132499116.jpg',
+      '',
+    ],
+    is_enabled: 0,
+    origin_price: 6200,
+    price: 5800,
+    title: '泡泡森林',
+    unit: '個',
+    num: 5,
+  },
+];
 
 function Products() {
   // Modal 資料控制
@@ -30,121 +71,96 @@ function Products() {
         >
           新增商品
         </Button>
-        <section className="py-10">
-          {/* 商品列表表頭 */}
-          <ul className="row list-unstyled py-4 border-bottom mb-4 text-neutral-400">
-            <li className="col-4">名稱</li>
-            <li className="col-2">價格</li>
-            <li className="col-2">類別</li>
-            <li className="col-4">狀態</li>
-          </ul>
-          {/* 商品列表*/}
-          {/* 商品 1 */}
-          <ul className="row list-unstyled align-items-center mb-4">
-            <li className="col-4">
-              <div className="row g-0 align-items-center">
-                <div className="col-4">
-                  <div className="me-4">
-                    <div className="ratio ratio-1x1">
-                      <img className="object-fit-cover" src={productImg1} alt="productImg1" />
+        {/* 商品列表 */}
+        <section className="table-responsive py-10">
+          <table className="table align-middle">
+            {/* 表頭 */}
+            <thead>
+              <tr>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  名稱
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  價格
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  類別
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  狀態
+                </th>
+                <th scope="col" className="text-neutral-400 fw-medium">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            {/* 表格內容*/}
+            <tbody>
+              {products.map(product => (
+                <tr key={product.id}>
+                  <td>
+                    <div className="row g-0 align-items-center">
+                      <div className="col-4">
+                        <div className="me-4">
+                          <div className="ratio ratio-1x1">
+                            <img className="object-fit-cover" src={product.imageUrl} alt={product.title} />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-8">
+                        <h4 className="h6 mb-2">{product.title}</h4>
+                        <p className="fs-sm text-neutral-400 text-truncate">{product.id}</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="col-8">
-                  <h4 className="h6 mb-2">泡泡森林</h4>
-                  <p className="fs-sm text-neutral-400 text-truncate">-L9tH8jxVb2Ka_ DYPwng</p>
-                </div>
-              </div>
-            </li>
-            <li className="col-2 fs-7 text-primary-700 noto-serif-tc fw-bold">NT$2400</li>
-            <li className="col-2">
-              <span className="px-3 py-1 text-primary bg-primary-100">組盆</span>
-            </li>
-            <li className="col-2">
-              <div>
-                <Dropdown className="checkout-dropdown">
-                  <Dropdown.Toggle
-                    className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                    id="product-status"
-                  >
-                    啟用
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="w-100">
-                    <Dropdown.Item href="#">啟用</Dropdown.Item>
-                    <Dropdown.Item href="#">停用</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </li>
-            <li className="col-2">
-              <Button
-                as={Link}
-                to="/admin/products/edit/-L9tH8jxVb2Ka_DYPwng"
-                variant="outline-neutral"
-                shape="circle"
-                size="sm"
-                className="me-2"
-              >
-                <span className="custom-btn-icon material-symbols-rounded">edit</span>
-              </Button>
-              <Button type="button" variant="outline-danger" shape="circle" size="sm" onClick={handleShow}>
-                <span className="custom-btn-icon material-symbols-rounded">delete</span>
-              </Button>
-            </li>
-          </ul>
-          {/* 商品 2 */}
-          <ul className="row list-unstyled align-items-center mb-4">
-            <li className="col-4">
-              <div className="row g-0 align-items-center">
-                <div className="col-4">
-                  <div className="me-4">
-                    <div className="ratio ratio-1x1">
-                      <img className="object-fit-cover" src={productImg2} alt="productImg2" />
+                  </td>
+                  <td className="fs-7 text-primary-700 noto-serif-tc fw-bold">
+                    {product.price === product.origin_price ? (
+                      `NT$${product.price.toLocaleString()}`
+                    ) : (
+                      <>
+                        NT${product.price.toLocaleString()}
+                        <del className="ms-2 text-neutral-400 fs-sm">{product.origin_price.toLocaleString()}</del>
+                      </>
+                    )}
+                  </td>
+                  <td className="col-2">
+                    <span className="px-3 py-1 text-primary bg-primary-100 text-nowrap">{product.category}</span>
+                  </td>
+                  <td>
+                    <div>
+                      <Dropdown className="checkout-dropdown min-w-5rem">
+                        <Dropdown.Toggle
+                          className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
+                          id="product-status"
+                        >
+                          {product.is_enabled ? '啟用' : '停用'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="w-100">
+                          <Dropdown.Item href="#">啟用</Dropdown.Item>
+                          <Dropdown.Item href="#">停用</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </div>
-                  </div>
-                </div>
-                <div className="col-8">
-                  <h4 className="h6 mb-2">向陽而生</h4>
-                  <p className="fs-sm text-neutral-400 text-truncate">-Oh5ZDdgEvRErn5csfA2</p>
-                </div>
-              </div>
-            </li>
-            <li className="col-2 fs-7 text-primary-700 noto-serif-tc fw-bold">NT$2400</li>
-            <li className="col-2">
-              <span className="px-3 py-1 text-primary bg-primary-100">單品</span>
-            </li>
-            <li className="col-2">
-              <div>
-                <Dropdown className="checkout-dropdown">
-                  <Dropdown.Toggle
-                    className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                    id="product-status"
-                  >
-                    啟用
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="w-100">
-                    <Dropdown.Item href="#">啟用</Dropdown.Item>
-                    <Dropdown.Item href="#">停用</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </li>
-            <li className="col-2">
-              <Button
-                as={Link}
-                to="/admin/products/edit/-Oh5ZDdgEvRErn5csfA2"
-                variant="outline-neutral"
-                shape="circle"
-                size="sm"
-                className="me-2"
-              >
-                <span className="custom-btn-icon material-symbols-rounded">edit</span>
-              </Button>
-              <Button type="button" variant="outline-danger" shape="circle" size="sm" onClick={handleShow}>
-                <span className="custom-btn-icon material-symbols-rounded">delete</span>
-              </Button>
-            </li>
-          </ul>
+                  </td>
+                  <td>
+                    <Button
+                      as={Link}
+                      to={`/admin/products/edit/${product.id}`}
+                      variant="outline-neutral"
+                      shape="circle"
+                      size="sm"
+                      className="me-2"
+                    >
+                      <span className="custom-btn-icon material-symbols-rounded">edit</span>
+                    </Button>
+                    <Button type="button" variant="outline-danger" shape="circle" size="sm" onClick={handleShow}>
+                      <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
         {/* 頁碼 */}
         <div className="pb-10">
