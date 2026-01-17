@@ -23,6 +23,8 @@ import { Fragment } from 'react';
 import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
 import { timestampToDate } from '../utils/utils';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const events = [
   {
@@ -233,55 +235,75 @@ export default function Home() {
 
             {/* <!-- 資訊 --> */}
             <div className="col-lg-10">
-              <div className="swiper newsSwiper">
-                <div className="swiper-wrapper">
-                  {events.map((item, idx) => (
-                    <div className="swiper-slide" key={idx}>
-                      <div className="d-flex flex-column">
-                        <div className="d-lg-flex">
-                          <div className="news-image">
-                            <img src={item.image} alt={item.title} />
-                          </div>
-                          <div className="d-flex flex-column justify-content-lg-center p-4 p-lg-6 py-lg-5 gap-4 gap-lg-6 w-100">
-                            <div>
-                              <p className="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
-                              <h3 className="fs-4 fs-lg-3 text-neutral-700">
-                                {item.title.split('\n').map((line, idx, arr) => (
-                                  <Fragment key={idx}>
-                                    {line}
-                                    {idx < arr.length - 1 && <br />}
-                                  </Fragment>
-                                ))}
-                              </h3>
-                            </div>
-                            <p className="fs-sm fs-lg-8 text-neutral-400">
-                              {item.description.split('\n').map((line, idx, arr) => (
+              <Swiper
+                modules={[Pagination, Autoplay]}
+                direction="horizontal"
+                loop
+                autoHeight
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                pagination={{ el: '.swiper-pagination-news', clickable: true }}
+                // 暫停動畫
+                onTouchStart={swiper => {
+                  swiper.el.classList.add('is-paused');
+                }}
+                // 恢復動畫
+                onTouchEnd={swiper => {
+                  swiper.el.classList.remove('is-paused');
+
+                  // 重置 pagination 動畫
+                  swiper.pagination.bullets.forEach(bullet => {
+                    bullet.classList.remove('restart');
+                    void bullet.offsetWidth;
+                    bullet.classList.add('restart');
+                  });
+                }}
+              >
+                {events.map((item, idx) => (
+                  <SwiperSlide key={idx}>
+                    <div className="d-flex flex-column">
+                      <div className="d-lg-flex">
+                        <div className="news-image">
+                          <img src={item.image} alt={item.title} />
+                        </div>
+                        <div className="d-flex flex-column justify-content-lg-center p-4 p-lg-6 py-lg-5 gap-4 gap-lg-6 w-100">
+                          <div>
+                            <p className="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
+                            <h3 className="fs-4 fs-lg-3 text-neutral-700">
+                              {item.title.split('\n').map((line, idx, arr) => (
                                 <Fragment key={idx}>
                                   {line}
                                   {idx < arr.length - 1 && <br />}
                                 </Fragment>
                               ))}
-                            </p>
-                            <div className="d-flex justify-content-end">
-                              <Button
-                                variant="link-primary"
-                                href={item.link}
-                                shape="link"
-                                size="sm"
-                                rightIcon={true}
-                                iconName="arrow_right_alt"
-                              >
-                                活動詳情
-                              </Button>
-                            </div>
+                            </h3>
+                          </div>
+                          <p className="fs-sm fs-lg-8 text-neutral-400">
+                            {item.description.split('\n').map((line, idx, arr) => (
+                              <Fragment key={idx}>
+                                {line}
+                                {idx < arr.length - 1 && <br />}
+                              </Fragment>
+                            ))}
+                          </p>
+                          <div className="d-flex justify-content-end">
+                            <Button
+                              variant="link-primary"
+                              href={item.link}
+                              shape="link"
+                              size="sm"
+                              rightIcon={true}
+                              iconName="arrow_right_alt"
+                            >
+                              活動詳情
+                            </Button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-                <div className="d-flex justify-content-center justify-content-lg-start position-static mt-8 mt-lg-10 swiper-pagination"></div>
-              </div>
+                  </SwiperSlide>
+                ))}
+                <div className="d-flex justify-content-center justify-content-lg-start position-static mt-8 mt-lg-10 swiper-pagination-news"></div>
+              </Swiper>
             </div>
           </div>
         </div>
