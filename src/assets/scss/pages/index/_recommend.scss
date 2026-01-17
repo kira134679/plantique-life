@@ -13,7 +13,7 @@
   color: #fff;
   display: none;
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     display: flex;
     align-items: center;
     justify-content: center;
