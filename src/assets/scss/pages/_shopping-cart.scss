@@ -198,7 +198,33 @@ input.form-control {
     width: 100px;
   }
   &.cart-card-cvc {
-    width: 90px;
+    width: 120px;
+    transition: width 0.15s ease-out;
+    &.unvalidated {
+      width: 90px;
+    }
+  }
+}
+.cart-custom-icon-btn {
+  position: absolute;
+  top: 50%;
+  right: 34px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  color: $neutral-400;
+  transition:
+    right 0.15s ease-out,
+    color 0.15s ease-out;
+  &.unvalidated {
+    right: 12px;
+  }
+  & > span {
+    font-size: map-get($font-sizes, 6);
+  }
+  &:hover {
+    color: $neutral-600;
   }
 }
 

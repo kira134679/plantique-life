@@ -1,10 +1,12 @@
 import Button from '@/components/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
+import IMask from 'imask';
 import { useEffect, useRef, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import { Controller, useForm, useWatch } from 'react-hook-form';
+import { IMaskInput } from 'react-imask';
 import { useSelector } from 'react-redux';
 import { z } from 'zod';
 
@@ -91,6 +93,9 @@ function SecondStep({ handleSwitchStep }) {
   const shouldSwitchAfterClose = useRef(false);
   // 控制 Modal 顯示與否
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // 控制 cvc 欄位內容隱藏與否
+  const [isCvcVisible, setIsCvcVisible] = useState(false);
 
   // 從 Redux 取得購物車資料
   const { carts, total, finalTotal } = useSelector(state => state.cart);
@@ -321,16 +326,32 @@ function SecondStep({ handleSwitchStep }) {
                       信用卡卡號
                     </label>
                     <div>
-                      <input
-                        {...register('cardNumber')}
-                        type="text"
-                        className={clsx(
-                          'form-control cart-card-number fs-sm fs-lg-8',
-                          errors.cardNumber && 'is-invalid',
-                          !errors.cardNumber && dirtyFields.cardNumber && 'is-valid',
+                      <Controller
+                        name="cardNumber"
+                        control={control}
+                        render={({ field: { onChange, value, ref } }) => (
+                          <IMaskInput
+                            id="card-number"
+                            inputRef={ref}
+                            value={value}
+                            className={clsx(
+                              'form-control cart-card-number fs-sm fs-lg-8',
+                              errors.cardNumber && 'is-invalid',
+                              !errors.cardNumber && dirtyFields.cardNumber && 'is-valid',
+                            )}
+                            // IMask 的 onAccept 會回傳 value 和 mask 實例
+                            onAccept={value => onChange(value)}
+                            // 當 Mask 填滿時觸發
+                            onComplete={() => {
+                              // 讓下一個欄位 (Expiry Date) 取得焦點
+                              setFocus('cardExp');
+                            }}
+                            // IMask 的設定
+                            mask="0000-0000-0000-0000"
+                            placeholder="****-****-****-****"
+                            overwrite={true} // 是否覆蓋模式
+                          />
                         )}
-                        id="card-number"
-                        placeholder="**** **** **** ****"
                       />
                       <div className="fs-sm text-danger mt-1">{errors.cardNumber?.message}</div>
                     </div>
@@ -341,16 +362,33 @@ function SecondStep({ handleSwitchStep }) {
                         卡片有效期限
                       </label>
                       <div>
-                        <input
-                          {...register('cardExp')}
-                          type="text"
-                          className={clsx(
-                            'form-control cart-card-exp fs-sm fs-lg-8',
-                            errors.cardExp && 'is-invalid',
-                            !errors.cardExp && dirtyFields.cardExp && 'is-valid',
+                        <Controller
+                          name="cardExp"
+                          control={control}
+                          render={({ field: { onChange, value, ref } }) => (
+                            <IMaskInput
+                              id="card-exp"
+                              inputRef={ref}
+                              value={value}
+                              className={clsx(
+                                'form-control cart-card-exp fs-sm fs-lg-8',
+                                errors.cardExp && 'is-invalid',
+                                !errors.cardExp && dirtyFields.cardExp && 'is-valid',
+                              )}
+                              onAccept={value => onChange(value)}
+                              // 填滿後跳去 CVC
+                              onComplete={() => {
+                                setFocus('cardCvc');
+                              }}
+                              mask="MM/YY"
+                              blocks={{
+                                MM: { mask: IMask.MaskedRange, from: 1, to: 12 },
+                                YY: { mask: IMask.MaskedRange, from: 25, to: 99 },
+                              }}
+                              placeholder="MM/YY"
+                              overwrite={true}
+                            />
                           )}
-                          id="card-exp"
-                          placeholder="MM/YY"
                         />
                         <div className="fs-sm text-danger mt-1">{errors.cardExp?.message}</div>
                       </div>
@@ -359,17 +397,42 @@ function SecondStep({ handleSwitchStep }) {
                       <label htmlFor="card-cvc" className="form-label fs-lg-7 text-neutral-700">
                         背面末三碼
                       </label>
-                      <input
-                        {...register('cardCvc')}
-                        type="text"
-                        className={clsx(
-                          'form-control cart-card-cvc fs-sm fs-lg-8',
-                          errors.cardCvc && 'is-invalid',
-                          !errors.cardCvc && dirtyFields.cardCvc && 'is-valid',
-                        )}
-                        id="card-cvc"
-                        placeholder="CVC"
-                      />
+                      <div className="position-relative">
+                        <Controller
+                          name="cardCvc"
+                          control={control}
+                          render={({ field: { onChange, value, ref } }) => (
+                            <IMaskInput
+                              id="card-cvc"
+                              inputRef={ref}
+                              value={value}
+                              type={isCvcVisible ? 'text' : 'password'}
+                              className={clsx(
+                                'form-control cart-card-cvc fs-sm fs-lg-8',
+                                errors.cardCvc && 'is-invalid',
+                                !errors.cardCvc && dirtyFields.cardCvc && 'is-valid',
+                                !errors.cardCvc && !dirtyFields.cardCvc && 'unvalidated',
+                              )}
+                              onAccept={value => onChange(value)}
+                              mask="000"
+                              placeholder="CVC"
+                              overwrite={true}
+                            />
+                          )}
+                        />
+                        <Button
+                          type="button"
+                          className={clsx(
+                            'cart-custom-icon-btn',
+                            !errors.cardCvc && !dirtyFields.cardCvc && 'unvalidated',
+                          )}
+                          onClick={() => setIsCvcVisible(!isCvcVisible)}
+                        >
+                          <span className="d-block material-symbols-rounded">
+                            {isCvcVisible ? 'visibility_off' : 'visibility'}
+                          </span>
+                        </Button>
+                      </div>
                       <div className="fs-sm text-danger mt-1">{errors.cardCvc?.message}</div>
                     </div>
                   </div>
@@ -403,16 +466,25 @@ function SecondStep({ handleSwitchStep }) {
                   <label htmlFor="purchaser-phone" className="form-label fs-lg-7 text-neutral-700">
                     訂購人電話
                   </label>
-                  <input
-                    {...register('purchaserPhone')}
-                    type="tel"
-                    className={clsx(
-                      'form-control fs-sm fs-lg-8',
-                      errors.purchaserPhone && 'is-invalid',
-                      !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
+                  <Controller
+                    name="purchaserPhone"
+                    control={control}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <IMaskInput
+                        id="purchaser-phone"
+                        inputRef={ref}
+                        value={value}
+                        className={clsx(
+                          'form-control fs-sm fs-lg-8',
+                          errors.purchaserPhone && 'is-invalid',
+                          !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
+                        )}
+                        onAccept={value => onChange(value)}
+                        mask="0000-000-000"
+                        placeholder="ex: 0912-123-123"
+                        overwrite={true}
+                      />
                     )}
-                    id="purchaser-phone"
-                    placeholder="ex: 0912-123-123"
                   />
                   <div className="fs-sm text-danger mt-1">{errors.purchaserPhone?.message}</div>
                 </div>
@@ -478,17 +550,26 @@ function SecondStep({ handleSwitchStep }) {
                     <label htmlFor="recipient-phone" className="form-label fs-lg-7 text-neutral-700">
                       收件人電話
                     </label>
-                    <input
-                      {...register('recipientPhone')}
-                      type="tel"
-                      className={clsx(
-                        'form-control fs-sm fs-lg-8',
-                        errors.recipientPhone && 'is-invalid',
-                        !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
+                    <Controller
+                      name="recipientPhone"
+                      control={control}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <IMaskInput
+                          id="recipient-phone"
+                          inputRef={ref}
+                          value={value}
+                          className={clsx(
+                            'form-control fs-sm fs-lg-8',
+                            errors.recipientPhone && 'is-invalid',
+                            !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
+                          )}
+                          disabled={recipientChecked}
+                          onAccept={value => onChange(value)}
+                          mask="0000-000-000"
+                          placeholder="ex: 0912-123-123"
+                          overwrite={true}
+                        />
                       )}
-                      disabled={recipientChecked}
-                      id="recipient-phone"
-                      placeholder="ex: 0912-123-123"
                     />
                     <div className="fs-sm text-danger mt-1">{errors.recipientPhone?.message}</div>
                   </div>
@@ -602,16 +683,24 @@ function SecondStep({ handleSwitchStep }) {
                     <label htmlFor="ubn" className="form-label fs-lg-7">
                       統一編號
                     </label>
-                    <input
-                      {...register('ubn')}
-                      type="text"
-                      className={clsx(
-                        'form-control fs-sm fs-lg-8',
-                        errors.ubn && 'is-invalid',
-                        !errors.ubn && dirtyFields.ubn && 'is-valid',
+                    <Controller
+                      name="ubn"
+                      control={control}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <IMaskInput
+                          id="ubn"
+                          inputRef={ref}
+                          value={value}
+                          className={clsx(
+                            'form-control fs-sm fs-lg-8',
+                            errors.ubn && 'is-invalid',
+                            !errors.ubn && dirtyFields.ubn && 'is-valid',
+                          )}
+                          onAccept={value => onChange(value)}
+                          mask="00000000"
+                          placeholder="請輸入統一編號"
+                        />
                       )}
-                      id="ubn"
-                      placeholder="請輸入統一編號"
                     />
                     <div className="fs-sm text-danger mt-1">{errors.ubn?.message}</div>
                   </div>
