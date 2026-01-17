@@ -6,7 +6,6 @@
 @import './utils/custom-utilities';
 
 // layout
-
 @import './layout/header';
 @import './layout/footer';
 
@@ -19,6 +18,7 @@
 @import './components/buttons/btn-social';
 @import './components/buttons/btn-filled-or-outline';
 @import './components/breadcrumb';
+@import './components/loading';
 
 //swiper
 @import 'swiper/css';
