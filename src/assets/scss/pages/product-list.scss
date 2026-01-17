@@ -116,7 +116,7 @@
   transition: transform 0.3s;
 }
 
-.accordion-item.active .accordion-icon {
+.accordion-button:not(.collapsed) .accordion-icon {
   transform: rotate(180deg);
 }
 
