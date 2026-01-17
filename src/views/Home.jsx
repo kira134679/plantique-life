@@ -404,7 +404,7 @@ export default function Home() {
 
         {/* <!-- 產品卡片 --> */}
         <div className="px-0 px-lg-15">
-          <div className="container-fiuid container-xl mb-8">
+          <div className="container-fiuid container-lg mb-8">
             <div className="position-relative">
               <Swiper
                 modules={[Navigation]}
