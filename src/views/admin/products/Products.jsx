@@ -1,4 +1,4 @@
-import { fetchProducts } from '@/slice/productSlice';
+import { deleteProduct, fetchProducts } from '@/slice/productSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
@@ -13,11 +13,35 @@ function Products() {
   const dispatch = useDispatch();
   const { products } = useSelector(state => state.product);
 
-  // Modal 資料控制
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // state
+  const [deleteId, setDeleteId] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
 
+  // event handler
+  // handle delete product
+  const openDeleteModal = id => {
+    setModalShow(true);
+    setDeleteId(id);
+  };
+
+  const handleDeleteConfirm = async () => {
+    setModalShow(false);
+    try {
+      await dispatch(deleteProduct(deleteId)).unwrap();
+      await dispatch(fetchProducts({ page: 1 })).unwrap();
+    } catch {
+      // handle error
+    } finally {
+      setDeleteId(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setModalShow(false);
+    setDeleteId(null);
+  };
+
+  // Initial data fetch
   useEffect(() => {
     dispatch(fetchProducts({ page: 1 }));
   }, [dispatch]);
@@ -109,7 +133,13 @@ function Products() {
                     >
                       <span className="custom-btn-icon material-symbols-rounded">edit</span>
                     </Button>
-                    <Button type="button" variant="outline-danger" shape="circle" size="sm" onClick={handleShow}>
+                    <Button
+                      type="button"
+                      variant="outline-danger"
+                      shape="circle"
+                      size="sm"
+                      onClick={() => openDeleteModal(product.id)}
+                    >
                       <span className="custom-btn-icon material-symbols-rounded">delete</span>
                     </Button>
                   </td>
@@ -163,7 +193,7 @@ function Products() {
         </div>
       </div>
       {/* Modal */}
-      <Modal show={show} onHide={handleClose} contentClassName="rounded-0" size="sm" centered>
+      <Modal show={modalShow} onHide={handleDeleteCancel} contentClassName="rounded-0" size="sm" centered>
         <Modal.Header closeButton className="border-bottom-0 p-6">
           <Modal.Title className="h5 text-primary">刪除商品</Modal.Title>
         </Modal.Header>
@@ -179,11 +209,18 @@ function Products() {
             size="sm"
             shape="square"
             className="bg-neutral-400 m-0"
-            onClick={handleClose}
+            onClick={handleDeleteCancel}
           >
             取消
           </Button>
-          <Button type="button" variant="filled-primary" size="sm" shape="square" className="m-0" onClick={handleClose}>
+          <Button
+            type="button"
+            variant="filled-primary"
+            size="sm"
+            shape="square"
+            className="m-0"
+            onClick={handleDeleteConfirm}
+          >
             確定
           </Button>
         </Modal.Footer>
