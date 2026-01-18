@@ -52,6 +52,9 @@ function ShoppingCart() {
   // 儲存 Nav.Link 元素的 refs
   const navLinkRefs = useRef([null, null, null]);
 
+  // 紀錄訂單編號
+  const [orderInfo, setOrderInfo] = useState({});
+
   // 切換 step 函式
   const switchStep = async (currentIndex, targetIndex, isForward = true) => {
     // 避免重複觸發
@@ -161,10 +164,10 @@ function ShoppingCart() {
             />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[1].step.name}>
-            <SecondStep handleSwitchStep={handleSwitchStep} />
+            <SecondStep handleSwitchStep={handleSwitchStep} setOrderInfo={setOrderInfo} />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[2].step.name}>
-            <ThirdStep />
+            <ThirdStep orderInfo={orderInfo} />
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>

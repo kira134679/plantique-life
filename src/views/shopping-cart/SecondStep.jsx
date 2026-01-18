@@ -1,3 +1,4 @@
+import { guestOrderApi } from '@/api';
 import Button from '@/components/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
@@ -6,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
 import { Controller, useForm, useWatch } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { IMaskInput } from 'react-imask';
 import { useSelector } from 'react-redux';
 import { z } from 'zod';
@@ -88,7 +90,7 @@ const ubnSchema = {
   ubn: z.string().regex(/\d{8}/, '統一編號輸入錯誤').min(1, '未輸入統一編號'),
 };
 
-function SecondStep({ handleSwitchStep }) {
+function SecondStep({ handleSwitchStep, setOrderInfo }) {
   // 用於追蹤 Modal 關閉後是否要換頁
   const shouldSwitchAfterClose = useRef(false);
   // 控制 Modal 顯示與否
@@ -177,6 +179,7 @@ function SecondStep({ handleSwitchStep }) {
   // 監聽收件人資訊，用於 Modal 顯示
   const recipientName = useWatch({ control, name: 'recipientName' });
   const recipientPhone = useWatch({ control, name: 'recipientPhone' });
+  const recipientEmail = useWatch({ control, name: 'recipientEmail' });
   const recipientAddress = useWatch({ control, name: 'recipientAddress' });
 
   // 當勾選「同訂購人資訊」時，持續同步訂購人資訊到收件人
@@ -254,9 +257,46 @@ function SecondStep({ handleSwitchStep }) {
   };
 
   // 確認送出：設定 flag，關閉 Modal 後會觸發換頁
-  const handleConfirmSubmit = () => {
-    shouldSwitchAfterClose.current = true;
-    handleCloseConfirmModal();
+  const handleConfirmSubmit = async () => {
+    // 建立訂單
+    try {
+      const orderData = getValues();
+      const apiData = {
+        user: {
+          name: orderData.recipientName,
+          email: orderData.recipientEmail,
+          tel: orderData.recipientPhone,
+          address: orderData.recipientAddress,
+          delivery: orderData.delivery,
+          payment: orderData.payment,
+          cardNumber: orderData.cardNumber,
+          cardExp: orderData.cardExp,
+          cardCvc: orderData.cardCvc,
+          purchaserName: orderData.purchaserName,
+          purchaserPhone: orderData.purchaserPhone,
+          purchaserEmail: orderData.purchaserEmail,
+          invoice: orderData.invoice,
+          mobileBarcode: orderData.mobileBarcode,
+          ubn: orderData.ubn,
+        },
+        message: orderData.message,
+      };
+      const res = await guestOrderApi.createOrder(apiData);
+      setOrderInfo({
+        orderId: res.orderId,
+        email: recipientEmail,
+        // 是否轉帳付款
+        isTransfer: paymentMethod === '轉帳',
+        // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59) (timestamp)
+        transferDeadline: new Date(res.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
+      });
+
+      // 設定 flag，關閉 Modal 後會觸發換頁
+      shouldSwitchAfterClose.current = true;
+      handleCloseConfirmModal();
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   const handleBackToCart = async () => {
