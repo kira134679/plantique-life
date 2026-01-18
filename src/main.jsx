@@ -10,7 +10,7 @@ import Loading from './components/Loading.jsx';
 import router from './router/index';
 import store from './store';
 
-setupAxiosInterceptors();
+setupAxiosInterceptors(store);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
