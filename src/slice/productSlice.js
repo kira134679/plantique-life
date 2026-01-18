@@ -15,7 +15,7 @@ export const fetchAllProducts = createAsyncThunk('product/fetchAllProducts', asy
 // 取得商品列表（可依頁數、分類篩選）
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
-  async ({ page = 1, category = null }, { rejectWithValue }) => {
+  async ({ page = 1, category = null } = {}, { rejectWithValue }) => {
     try {
       const response = await productApi.getProducts(page, category);
       return response;
