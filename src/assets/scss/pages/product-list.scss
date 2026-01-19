@@ -1,0 +1,150 @@
+.swiper-slide {
+  height: auto;
+}
+
+.news-card {
+  height: 412px;
+
+  @include media-breakpoint-up(lg) {
+    height: 366px;
+    position: static !important;
+  }
+
+  .news-card-img-box {
+    width: 100%;
+    flex-shrink: 0;
+
+    @include media-breakpoint-up(lg) {
+      width: 67.5%;
+    }
+
+    img {
+      object-position: center;
+    }
+  }
+}
+
+.news-card-text {
+  backdrop-filter: blur(12px) brightness(1.1) saturate(1.2);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 52px;
+
+  @include media-breakpoint-up(lg) {
+    position: static !important;
+    opacity: 100% !important;
+  }
+}
+
+.swiper-pagination {
+  bottom: 24px !important;
+
+  @include media-breakpoint-up(lg) {
+    width: auto !important;
+    bottom: 32px !important;
+    left: auto !important;
+    right: calc(32.5% - 160px);
+  }
+
+  @include media-breakpoint-up(xl) {
+    bottom: 60px !important;
+  }
+}
+
+.swiper-pagination-bullet {
+  margin: 0 8px 0 0 !important;
+  width: 8px;
+  height: 4px;
+  border-radius: 1000px;
+  background-color: $primary-600;
+  opacity: 40%;
+  transition:
+    width 0.3s,
+    opacity 0.3s;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    border-radius: 1000px;
+    background-color: $primary-600;
+  }
+}
+
+.swiper-pagination-bullet-active {
+  --animation-duration: 5s;
+  opacity: 100%;
+  background-color: rgba($primary-600, 0.5);
+  width: 80px;
+  &::before {
+    animation: bullet-timeline calc(var(--animation-duration) + 0.3s) ease-out forwards;
+  }
+  &.restart::before {
+    animation: bullet-timeline-restart calc(var(--animation-duration) + 0.3s) ease-out forwards;
+  }
+}
+.swiper.is-paused .swiper-pagination-bullet-active::before {
+  animation-play-state: paused;
+}
+
+@keyframes bullet-timeline {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80px;
+  }
+}
+@keyframes bullet-timeline-restart {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80px;
+  }
+}
+
+.product-list-lg-menu {
+  top: 84px;
+}
+
+.accordion-icon {
+  transition: transform 0.3s;
+}
+
+.accordion-button:not(.collapsed) .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-button::after {
+  content: none;
+}
+
+.accessories-item {
+  &:hover {
+    color: $primary-400 !important;
+  }
+  &:active {
+    color: $primary !important;
+  }
+}
+
+.dropdown-menu-shadow {
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.w-40 {
+  width: 40px;
+}
+
+.page-link {
+  &:hover,
+  &:active {
+    background-color: $primary !important;
+    color: $white !important;
+  }
+}

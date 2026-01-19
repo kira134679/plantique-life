@@ -1,0 +1,46 @@
+@use 'sass:map';
+
+// Back To Top 按鈕
+.custom-btn-backtotop {
+  @include button-variant(
+    $background: $primary-100,
+    $border: transparent,
+    $color: $primary-600,
+    $hover-background: $primary-600,
+    $hover-border: transparent,
+    $hover-color: $white,
+    $active-background: $primary-600,
+    $active-border: transparent,
+    $active-color: $white,
+    $disabled-background: $primary-100,
+    $disabled-border: transparent,
+    $disabled-color: $primary-600
+  );
+  @include button-size(
+    $padding-y: map.get($spacers, 2),
+    $padding-x: map.get($spacers, 2),
+    $font-size: map.get($font-sizes, 5),
+    $border-radius: 50%
+  );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
+  border-width: 0;
+  position: fixed;
+  z-index: 1030;
+  right: map.get($spacers, 3);
+  bottom: map.get($spacers, 3);
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-backtotop {
+    @include button-size(
+      $padding-y: map.get($spacers, 7),
+      $padding-x: map.get($spacers, 7),
+      $font-size: map.get($font-sizes, 5),
+      $border-radius: 50%
+    );
+    right: map.get($spacers, 5);
+    bottom: map.get($spacers, 5);
+  }
+}

@@ -1,0 +1,40 @@
+.multiline-ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2; /* 限制顯示 2 行 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.about-section {
+  height: 660px;
+  background: url('assets/images/index/img_banner_02.png') no-repeat 50% / cover;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 340px;
+    background: rgba($white, 0.6);
+    backdrop-filter: blur(12px);
+    z-index: 0;
+  }
+  @include media-breakpoint-up(lg) {
+    height: 640px;
+    &::before {
+      width: 50%;
+      height: 100%;
+    }
+  }
+  .about-text-wrapper {
+    z-index: 1;
+    position: relative;
+    top: 320px;
+    @include media-breakpoint-up(lg) {
+      top: 0;
+    }
+  }
+}

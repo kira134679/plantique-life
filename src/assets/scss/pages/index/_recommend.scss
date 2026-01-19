@@ -1,0 +1,31 @@
+.swiper-navigation-icon {
+  display: none;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 56px;
+  height: 56px;
+  padding: 16px;
+  font-size: 24px;
+  border-radius: 100%;
+  background: $primary;
+  color: #fff;
+  display: none;
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+  }
+}
+
+.swiper-button-prev {
+  transform: translateX(calc(-100% - 24px));
+}
+.swiper-button-next {
+  transform: translateX(calc(100% + 24px));
+}

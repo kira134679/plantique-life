@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:FILL@0..1'); //增加可調整的FILL
+
+@import './utils/custom-bs';
+
+@import './base/base';
+@import './utils/custom-utilities';
+
+// package
+@import 'react-datepicker/dist/react-datepicker.css';
+
+// layout
+@import './layout/header';
+@import './layout/footer';
+@import './layout/admin/sidemenu';
+
+// components
+@import './components/product-card';
+@import './components/buttons/btn-backtotop';
+@import './components/buttons/btn-tag';
+@import './components/buttons/btn-link';
+@import './components/buttons/btn-fav';
+@import './components/buttons/btn-social';
+@import './components/buttons/btn-filled-or-outline';
+@import './components/breadcrumb';
+@import './components/loading';
+
+//swiper
+@import 'swiper/css';
+
+// views
+@import 'assets/scss/index';
+@import 'assets/scss/product-list';
+@import 'assets/scss/product-detail';
+@import 'assets/scss/shopping-cart';
+@import 'assets/scss/article';
+@import 'assets/scss/article-detail';
+@import 'assets/scss/pages/admin/product-and-coupon';
+@import 'assets/scss/pages/admin/orders';

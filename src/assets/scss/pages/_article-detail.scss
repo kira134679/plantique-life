@@ -1,0 +1,54 @@
+.column-detail-banner {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: 600px;
+  background: url('assets/images/articles/img_column_07.png') no-repeat right 50% / cover;
+  z-index: -1;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, white 0%, transparent 50%, white 100%);
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(6px);
+  }
+}
+
+.column-detail-column-7 {
+  height: 152px;
+  @include media-breakpoint-up(lg) {
+    height: 561px;
+  }
+}
+
+.column-detail-img-h200 {
+  height: 200px;
+}
+
+@include media-breakpoint-up(lg) {
+  .column-detail-img-lg-h600 {
+    height: 600px;
+  }
+  .column-detail-img-lg-h730 {
+    height: 730px;
+  }
+}
+
+.column-detail-tips {
+  list-style-type: '˙  ';
+  color: $neutral-500;
+  li:not(:last-child) {
+    margin-bottom: map-get($spacers, 2);
+  }
+}
+
+.column-detail-recommend .card {
+  background-color: transparent;
+}

@@ -1,0 +1,372 @@
+.cart-nav {
+  --cart-step: 40px;
+  --cart-progress-height: 1px;
+  @include media-breakpoint-up(lg) {
+    --cart-step: 56px;
+    --cart-progress-height: 2px;
+  }
+  .cart-step {
+    width: var(--cart-step);
+    height: var(--cart-step);
+  }
+  .nav-link {
+    text-align: start;
+    pointer-events: none;
+    padding: 0;
+    position: relative;
+    .cart-step {
+      transition:
+        background-color 0.4s linear,
+        border-color 0.4s linear,
+        color 0.25s linear 0.15s;
+      @include media-breakpoint-up(lg) {
+        transition:
+          background-color 0.5s linear,
+          border-color 0.5s linear,
+          color 0.4s linear 0.1s;
+      }
+    }
+    .cart-progress {
+      position: absolute;
+      top: calc(var(--cart-step) / 2 - var(--cart-progress-height) / 2);
+      height: var(--cart-progress-height);
+      background-color: $border-color;
+      width: calc(100% - var(--cart-step));
+      left: calc(50% + var(--cart-step) / 2);
+    }
+    .cart-progress::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: var(--cart-progress-height);
+      background-color: $primary;
+      transition: width 0.4s linear;
+      @include media-breakpoint-up(lg) {
+        transition: width 0.5s linear;
+      }
+    }
+  }
+  // 移除 Bootstrap 的預設樣式
+  .nav-link.active {
+    background: none;
+    color: initial;
+  }
+  .nav-link.step-active .cart-step {
+    background-color: $primary;
+    border-color: $primary !important;
+    color: $white !important;
+  }
+  .nav-link.step-completed {
+    .cart-step {
+      background-color: $primary;
+      border-color: $primary !important;
+      color: $white !important;
+    }
+    .cart-progress::before {
+      width: 100%;
+    }
+  }
+}
+
+.cart-list {
+  li:not(:last-child) {
+    margin-bottom: map-get($spacers, 6);
+  }
+  .cart-product-img {
+    height: 233px;
+    @include media-breakpoint-up(lg) {
+      height: 269px;
+    }
+  }
+  .cart-product-img.add-on {
+    height: 160px;
+  }
+  .cart-product-quantity {
+    min-width: 36px;
+    @include media-breakpoint-up(lg) {
+      min-width: 28px;
+    }
+  }
+}
+.checkout-list {
+  .cart-product-img {
+    height: 100px;
+  }
+  .cart-product-img.add-on {
+    height: 100px;
+  }
+}
+
+.product-add1-position {
+  object-position: 50% 20%;
+}
+
+.zod-invalid-feedback {
+  display: none;
+}
+.zod-validated {
+  .is-invalid ~ .zod-invalid-feedback {
+    display: block;
+  }
+  .is-valid ~ .zod-invalid-feedback {
+    display: none;
+  }
+}
+
+.checkout-dropdown {
+  .dropdown-toggle {
+    position: relative;
+  }
+  // 檢核 icon，預設是錯誤 icon
+  .dropdown-toggle::before {
+    content: '\f22f';
+    font-family: 'Material Symbols Rounded';
+    font-size: map-get($font-sizes, 8);
+    border: 1.5px solid $danger;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    color: $danger;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    visibility: hidden;
+  }
+  // 下拉 icon
+  .dropdown-toggle::after {
+    content: '\e313';
+    font-family: 'Material Symbols Rounded';
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    transition: transform 0.4s;
+  }
+  .dropdown-toggle:focus {
+    background-color: var(--bs-body-bg);
+    border-color: $neutral-300 !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba($primary-600, 0.25);
+  }
+  .dropdown-toggle.show::after {
+    transform: translateY(-50%) rotateX(180deg);
+  }
+  .dropdown-item:hover {
+    background-color: $primary-100;
+  }
+  &.zod-validated {
+    .dropdown-toggle {
+      border-color: $danger !important;
+    }
+    .dropdown-toggle::before {
+      visibility: visible;
+    }
+    .dropdown-toggle::after {
+      transform: translate(-24px, -50%);
+    }
+    .dropdown-toggle.show::after {
+      transform: translate(-24px, -50%) rotateX(180deg);
+    }
+    .is-invalid:focus {
+      border-color: var(--bs-form-invalid-border-color);
+      box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+    }
+  }
+  &.zod-validated .is-valid {
+    &.dropdown-toggle {
+      border-color: $success !important;
+    }
+    &.dropdown-toggle::before {
+      content: '\f88b';
+      color: $success;
+      border: none;
+      font-size: map-get($font-sizes, 3);
+      width: 24px;
+      height: 24px;
+      right: 8px;
+    }
+    &:focus {
+      border-color: var(--bs-form-valid-border-color);
+      box-shadow: 0 0 0 0.25rem rgba(var(--bs-success-rgb), 0.25);
+    }
+  }
+}
+
+input.form-control {
+  &.cart-card-number {
+    width: 230px;
+  }
+  &.cart-card-exp {
+    width: 100px;
+  }
+  &.cart-card-cvc {
+    width: 90px;
+  }
+}
+
+.checkout-btn-basis {
+  // 基礎寬度為 50%，並考慮間距
+  flex-basis: calc(50% - calc(map-get($spacers, 4) / 2));
+  // 控制何時會換行
+  min-width: 136px;
+}
+
+.confirm-modal {
+  .modal-dialog {
+    @include media-breakpoint-up(lg) {
+      --bs-modal-width: 600px;
+    }
+  }
+  .modal-content {
+    border: 0;
+    border-radius: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    @include media-breakpoint-up(lg) {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+}
+
+.completed-tabContent {
+  padding-top: map-get($spacers, 8) !important;
+  padding-bottom: map-get($spacers, 8) !important;
+  @include media-breakpoint-up(lg) {
+    padding-top: map-get($spacers, 12) !important;
+    padding-bottom: map-get($spacers, 12) !important;
+  }
+}
+
+.completed-svg-wrapper {
+  width: 108px;
+  @include media-breakpoint-up(lg) {
+    width: 136px;
+  }
+  .completed-svg {
+    animation: completed-svg-scale-bounce 400ms ease 1100ms forwards;
+  }
+  .completed-svg-tick {
+    fill: none;
+    stroke-width: 1px;
+    stroke: $primary-700;
+    stroke-dasharray: 15px, 15px;
+    stroke-dashoffset: 15px;
+    animation: completed-svg-tick 400ms ease 1100ms forwards;
+    opacity: 0;
+  }
+  .completed-svg-circle-outline {
+    fill: none;
+    stroke-width: 1px;
+    stroke: $primary-100;
+    stroke-dasharray: 72px, 72px;
+    stroke-dashoffset: 72px;
+    animation: completed-svg-circle-outline 400ms ease-in-out 400ms forwards;
+    opacity: 0;
+  }
+  .completed-svg-circle-fill {
+    fill: $primary-100;
+    stroke: none;
+    opacity: 0;
+    animation: completed-svg-circle-fill 300ms ease-out 800ms forwards;
+  }
+  .completed-svg-circle-fill-center {
+    fill: $white;
+    stroke: none;
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: completed-svg-scale-out 300ms ease-out 800ms forwards;
+  }
+
+  @keyframes completed-svg-circle-outline {
+    0% {
+      stroke-dashoffset: 72px;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0px;
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-circle-fill {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-scale-bounce {
+    0%,
+    100% {
+      transform: none;
+    }
+    50% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+  }
+  @keyframes completed-svg-tick {
+    0% {
+      stroke-dashoffset: 15px;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0px;
+      opacity: 1;
+    }
+  }
+  @keyframes completed-svg-scale-out {
+    0% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0);
+      opacity: 1;
+    }
+  }
+}
+.completed-message-wrapper {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: completed-message-fadeIn 500ms ease-out 1600ms forwards;
+}
+@keyframes completed-message-fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demo-btn {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2000;
+  padding: 10px;
+  border-radius: 50%;
+  border: 0;
+  opacity: 0.6;
+  transition: background-color 0.5s;
+  &:hover {
+    background: radial-gradient(circle, $primary-200 0%, transparent 90%);
+  }
+  @include media-breakpoint-up(lg) {
+    padding: 15px;
+  }
+}
