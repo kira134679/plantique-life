@@ -9,20 +9,24 @@ import column07 from '../assets/images/articles/img_column_07.png';
 import column08 from '../assets/images/articles/img_column_08.png';
 import column09 from '../assets/images/articles/img_column_09.png';
 import column10 from '../assets/images/articles/img_column_10.png';
-import animSm from '../assets/images/articles/btn_anim_sm.svg';
-import animLg from '../assets/images/articles/btn_anim_lg.svg';
 
 import Button from '../components/Button';
+import { useRef } from 'react';
+import { Link } from 'react-router';
 
 function Articles() {
+  const curingRef = useRef(null);
+  const succulentRef = useRef(null);
+  const lifeRef = useRef(null);
+
   return (
     <>
       {/*life section start*/}
       <section className="life-section">
-        <div className="container-fluid container-lg">
-          <div className="d-flex flex-column flex-lg-row py-md-15">
+        <div className="container">
+          <div className="d-flex flex-column flex-lg-row py-lg-15">
             <div className="life-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-15 my-lg-auto">
-              <h6 className="card-text fs-5 fs-md-4 text-primary mb-2">Plantique Life</h6>
+              <h6 className="card-text fs-5 fs-lg-4 text-primary mb-2">Plantique Life</h6>
               <div className="d-flex justify-content-between">
                 <div className="d-flex flex-column text-primary-900">
                   <h3 className="fs-2 fs-lg-1 mb-1">探索植感生活</h3>
@@ -41,31 +45,30 @@ function Articles() {
 
       {/*tags section start*/}
       <div className="container">
-        <div
-          className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end my-lg-0 pt-md-15 pb-md-12"
-          id="column-filter"
-        >
-          <a
-            href="#curing"
+        <div className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end mt-lg-15 mb-lg-12" id="column-filter">
+          <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => curingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #養護指南
-          </a>
-          <a
+          </button>
+          <button
             href="#succulent"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => succulentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #多肉圖鑑
-          </a>
-          <a
+          </button>
+          <button
             href="#life"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => lifeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #生活提案
-          </a>
+          </button>
         </div>
       </div>
       {/*tags section end*/}
@@ -74,18 +77,12 @@ function Articles() {
       <section className="column-section">
         <div className="container">
           <div className="mb-12 mb-md-15">
-            <div id="curing" className="mb-8 mb-md-12">
+            <div ref={curingRef} className="mb-8 mb-md-12 column-anchor">
               {/*title*/}
-              <div className="d-flex justify-content-between align-items-center mb-6">
+              <div className="mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
                   <span className="fs-7 text-primary align-top me-1">#</span>養護指南
                 </h2>
-                <button type="button" className="btn p-0 bg-transparent">
-                  <picture>
-                    <source srcSet={animLg} media="(min-width: 768px)" />
-                    <img src={animSm} alt="更多文章" className="img-fluid" />
-                  </picture>
-                </button>
               </div>
               {/*card*/}
               <div className="row gy-6">
@@ -128,11 +125,11 @@ function Articles() {
                       </p>
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
-                        <a href="#" className="d-flex justify-content-end">
+                        <Link to="/article-detail" className="d-flex justify-content-end">
                           <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
                             閱讀全文
                           </Button>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -164,18 +161,12 @@ function Articles() {
               </div>
             </div>
             {/*succulent section start*/}
-            <div id="succulent" className="mb-8 mb-md-12">
+            <div ref={succulentRef} className="mb-8 mb-md-12 column-anchor">
               {/*title*/}
-              <div className="d-flex justify-content-between align-items-center mb-6">
+              <div className="mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
                   <span className="fs-7 text-primary align-top me-1">#</span>多肉圖鑑
                 </h2>
-                <button type="button" className="btn p-0 bg-transparent">
-                  <picture>
-                    <source srcSet={animLg} media="(min-width: 768px)" />
-                    <img src={animSm} alt="更多文章" className="img-fluid" />
-                  </picture>
-                </button>
               </div>
               {/*card*/}
               <div className="row gy-6">
@@ -256,18 +247,12 @@ function Articles() {
 
             {/*succulent section end*/}
             {/*life section start*/}
-            <div id="life">
+            <div ref={lifeRef} className="column-anchor">
               {/*title*/}
-              <div className="d-flex justify-content-between align-items-center mb-6">
+              <div className="mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
                   <span className="fs-7 text-primary align-top me-1">#</span>生活提案
                 </h2>
-                <button type="button" className="btn p-0 bg-transparent">
-                  <picture>
-                    <source srcSet={animLg} media="(min-width: 768px)" />
-                    <img src={animSm} alt="更多文章" className="img-fluid" />
-                  </picture>
-                </button>
               </div>
               {/*card*/}
               <div className="row gy-6">
