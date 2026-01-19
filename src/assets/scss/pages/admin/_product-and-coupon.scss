@@ -1,0 +1,51 @@
+// Products, Coupons
+.w-fit {
+  width: fit-content;
+}
+
+// ProductEdit, CouponEdit
+.min-w-14rem {
+  min-width: 14rem !important;
+}
+.min-h-20rem {
+  min-height: 20rem !important;
+}
+.z-5 {
+  z-index: 5;
+}
+
+// 圖片上傳卡片
+.upload-img-card {
+  width: 14rem;
+
+  .card-img-top {
+    transition: transform 0.5s ease;
+  }
+  .card-img-overlay {
+    transition: opacity 0.5s ease;
+    opacity: 0;
+  }
+  .card-img-upload {
+    display: block;
+  }
+  .card-img-actions {
+    display: none;
+  }
+
+  &.uploaded {
+    .card-img-upload {
+      display: none;
+    }
+    .card-img-wrap:hover {
+      .card-img-top {
+        transform: scale(1.1);
+      }
+      .card-img-overlay {
+        opacity: 0.4;
+      }
+      .card-img-actions {
+        display: flex;
+      }
+    }
+  }
+}
