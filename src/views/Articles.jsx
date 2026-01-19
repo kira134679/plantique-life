@@ -14,6 +14,7 @@ import animLg from '../assets/images/articles/btn_anim_lg.svg';
 
 import Button from '../components/Button';
 import { useRef } from 'react';
+import { Link } from 'react-router';
 
 function Articles() {
   const curingRef = useRef(null);
@@ -135,11 +136,11 @@ function Articles() {
                       </p>
                       <div className="d-flex justify-content-between align-items-center">
                         <p className="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
-                        <a href="#" className="d-flex justify-content-end">
+                        <Link to="/article-detail" className="d-flex justify-content-end">
                           <Button variant="link-primary" shape="link" size="sm" rightIcon iconName="arrow_right_alt">
                             閱讀全文
                           </Button>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
