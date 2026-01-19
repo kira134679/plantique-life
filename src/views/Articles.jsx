@@ -25,10 +25,10 @@ function Articles() {
     <>
       {/*life section start*/}
       <section className="life-section">
-        <div className="container-fluid container-lg">
-          <div className="d-flex flex-column flex-lg-row py-md-15">
+        <div className="container">
+          <div className="d-flex flex-column flex-lg-row py-lg-15">
             <div className="life-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-15 my-lg-auto">
-              <h6 className="card-text fs-5 fs-md-4 text-primary mb-2">Plantique Life</h6>
+              <h6 className="card-text fs-5 fs-lg-4 text-primary mb-2">Plantique Life</h6>
               <div className="d-flex justify-content-between">
                 <div className="d-flex flex-column text-primary-900">
                   <h3 className="fs-2 fs-lg-1 mb-1">探索植感生活</h3>
@@ -47,10 +47,7 @@ function Articles() {
 
       {/*tags section start*/}
       <div className="container">
-        <div
-          className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end my-lg-0 pt-md-15 pb-md-12"
-          id="column-filter"
-        >
+        <div className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end mt-lg-15 mb-lg-12" id="column-filter">
           <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
