@@ -12,3 +12,10 @@
 #life {
   scroll-margin-top: 120px; // 根據navbar高度微調
 }
+
+.column-anchor {
+  scroll-margin-top: 60px;
+  @include media-breakpoint-up(lg) {
+    scroll-margin-top: 100px;
+  }
+}

@@ -13,8 +13,13 @@ import animSm from '../assets/images/articles/btn_anim_sm.svg';
 import animLg from '../assets/images/articles/btn_anim_lg.svg';
 
 import Button from '../components/Button';
+import { useRef } from 'react';
 
 function Articles() {
+  const curingRef = useRef(null);
+  const succulentRef = useRef(null);
+  const lifeRef = useRef(null);
+
   return (
     <>
       {/*life section start*/}
@@ -45,27 +50,29 @@ function Articles() {
           className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end my-lg-0 pt-md-15 pb-md-12"
           id="column-filter"
         >
-          <a
-            href="#curing"
+          <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => curingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #養護指南
-          </a>
-          <a
+          </button>
+          <button
             href="#succulent"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => succulentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #多肉圖鑑
-          </a>
-          <a
+          </button>
+          <button
             href="#life"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+            onClick={() => lifeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
           >
             #生活提案
-          </a>
+          </button>
         </div>
       </div>
       {/*tags section end*/}
@@ -74,7 +81,7 @@ function Articles() {
       <section className="column-section">
         <div className="container">
           <div className="mb-12 mb-md-15">
-            <div id="curing" className="mb-8 mb-md-12">
+            <div ref={curingRef} className="mb-8 mb-md-12 column-anchor">
               {/*title*/}
               <div className="d-flex justify-content-between align-items-center mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
@@ -164,7 +171,7 @@ function Articles() {
               </div>
             </div>
             {/*succulent section start*/}
-            <div id="succulent" className="mb-8 mb-md-12">
+            <div ref={succulentRef} className="mb-8 mb-md-12 column-anchor">
               {/*title*/}
               <div className="d-flex justify-content-between align-items-center mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
@@ -256,7 +263,7 @@ function Articles() {
 
             {/*succulent section end*/}
             {/*life section start*/}
-            <div id="life">
+            <div ref={lifeRef} className="column-anchor">
               {/*title*/}
               <div className="d-flex justify-content-between align-items-center mb-6">
                 <h2 className="fs-md-2 text-neutral-700">
