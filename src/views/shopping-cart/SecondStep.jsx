@@ -97,6 +97,11 @@ function SecondStep({ handleSwitchStep }) {
   // 控制 cvc 欄位內容隱藏與否
   const [isCvcVisible, setIsCvcVisible] = useState(false);
 
+  // Dropdown refs (用於自訂 focus 順序)
+  const deliveryToggleRef = useRef(null);
+  const paymentToggleRef = useRef(null);
+  const invoiceToggleRef = useRef(null);
+
   // 從 Redux 取得購物車資料
   const { carts, total, finalTotal } = useSelector(state => state.cart);
 
@@ -137,6 +142,7 @@ function SecondStep({ handleSwitchStep }) {
       return zodResolver(schema)(values, context, options);
     },
     mode: 'onChange', // 即時驗證
+    shouldFocusError: false, // 關閉 RHF 自動 focus，改用自訂 onError
     defaultValues: {
       delivery: '',
       payment: '',
@@ -206,6 +212,39 @@ function SecondStep({ handleSwitchStep }) {
     handleShowConfirmModal();
   };
 
+  // 驗證失敗時，依照畫面順序 focus 到第一個錯誤欄位
+  const onError = errors => {
+    // 定義 focus 順序（依照畫面順序）
+    const focusOrder = [
+      { name: 'delivery', ref: deliveryToggleRef },
+      { name: 'payment', ref: paymentToggleRef },
+      { name: 'cardNumber', focusName: 'cardNumber' },
+      { name: 'cardExp', focusName: 'cardExp' },
+      { name: 'cardCvc', focusName: 'cardCvc' },
+      { name: 'purchaserName', focusName: 'purchaserName' },
+      { name: 'purchaserPhone', focusName: 'purchaserPhone' },
+      { name: 'purchaserEmail', focusName: 'purchaserEmail' },
+      { name: 'recipientName', focusName: 'recipientName' },
+      { name: 'recipientPhone', focusName: 'recipientPhone' },
+      { name: 'recipientEmail', focusName: 'recipientEmail' },
+      { name: 'recipientAddress', focusName: 'recipientAddress' },
+      { name: 'invoice', ref: invoiceToggleRef },
+      { name: 'mobileBarcode', focusName: 'mobileBarcode' },
+      { name: 'ubn', focusName: 'ubn' },
+    ];
+
+    for (const field of focusOrder) {
+      if (errors[field.name]) {
+        if (field.ref) {
+          field.ref.current?.focus();
+        } else if (field.focusName) {
+          setFocus(field.focusName);
+        }
+        break; // 只 focus 第一個錯誤
+      }
+    }
+  };
+
   // Modal 完全關閉後，依 flag 決定是否換頁
   const handleModalExited = () => {
     if (shouldSwitchAfterClose.current) {
@@ -237,7 +276,7 @@ function SecondStep({ handleSwitchStep }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
         <div className="row flex-column-reverse flex-lg-row">
           <div className="col-lg-8">
             <section className="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
@@ -259,6 +298,7 @@ function SecondStep({ handleSwitchStep }) {
                       onSelect={field.onChange}
                     >
                       <Dropdown.Toggle
+                        ref={deliveryToggleRef}
                         variant=""
                         className={clsx(
                           'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
@@ -297,6 +337,7 @@ function SecondStep({ handleSwitchStep }) {
                       onSelect={field.onChange}
                     >
                       <Dropdown.Toggle
+                        ref={paymentToggleRef}
                         variant=""
                         className={clsx(
                           'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
@@ -636,6 +677,7 @@ function SecondStep({ handleSwitchStep }) {
                         }}
                       >
                         <Dropdown.Toggle
+                          ref={invoiceToggleRef}
                           variant=""
                           className={clsx(
                             'border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
