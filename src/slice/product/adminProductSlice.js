@@ -1,14 +1,14 @@
+import { adminProductApi } from '@/api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productApi from '../api/productApi';
 
-// async thunks
+// --- Async Thunks ---
 // 取得全部商品
 export const fetchAllProducts = createAsyncThunk('product/fetchAllProducts', async (_, { rejectWithValue }) => {
   try {
-    const response = await productApi.getAllProducts();
+    const response = await adminProductApi.getAllProducts();
     return response;
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || '取得全部商品失敗');
+    return rejectWithValue(error);
   }
 });
 
@@ -17,10 +17,10 @@ export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async ({ page = 1, category = null } = {}, { rejectWithValue }) => {
     try {
-      const response = await productApi.getProducts(page, category);
+      const response = await adminProductApi.getProducts(page, category);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || '取得商品列表失敗');
+      return rejectWithValue(error);
     }
   },
 );
@@ -28,34 +28,34 @@ export const fetchProducts = createAsyncThunk(
 // 新增商品
 export const createProduct = createAsyncThunk('product/createProduct', async (data, { rejectWithValue }) => {
   try {
-    const response = await productApi.createProduct(data);
+    const response = await adminProductApi.createProduct(data);
     return response;
   } catch (error) {
-    return rejectWithValue(error.response?.data?.message || '新增商品失敗');
+    return rejectWithValue(error);
   }
 });
 
 // 更新特定商品資訊
 export const updateProduct = createAsyncThunk('product/updateProduct', async ({ id, data }, { rejectWithValue }) => {
   try {
-    const response = await productApi.updateProduct(id, data);
+    const response = await adminProductApi.updateProduct(id, data);
     return response;
   } catch (error) {
-    return rejectWithValue(error.response?.data.message || '更新商品失敗');
+    return rejectWithValue(error);
   }
 });
 
 // 刪除特定商品
 export const deleteProduct = createAsyncThunk('product/deleteProduct', async (id, { rejectWithValue }) => {
   try {
-    const response = await productApi.deleteProduct(id);
+    const response = await adminProductApi.deleteProduct(id);
     return response;
   } catch (error) {
-    return rejectWithValue(error.response?.data.message || '刪除商品失敗');
+    return rejectWithValue(error);
   }
 });
 
-// slice
+// --- Slice ---
 const productSlice = createSlice({
   name: 'products',
 
@@ -64,23 +64,25 @@ const productSlice = createSlice({
     products: [],
     pagination: {},
     isLoading: false,
-    error: null,
-  },
-
-  reducers: {
-    clearError(state) {
-      state.error = null;
+    errors: {
+      fetchAll: null,
+      fetch: null,
+      create: null,
+      update: null,
+      delete: null,
     },
   },
 
-  // extraReducers
+  reducers: {},
+
+  // --- Extra Reducers ---
   // 監聽 thunk，依據 thunk 狀態更新各個 state 的值
   extraReducers: builder => {
     builder
       // 取得全部商品
       .addCase(fetchAllProducts.pending, state => {
         state.isLoading = true;
-        state.error = null;
+        state.errors.fetchAll = null;
       })
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -88,13 +90,13 @@ const productSlice = createSlice({
       })
       .addCase(fetchAllProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.errors.fetchAll = action.payload;
       })
 
       // 取得商品列表
       .addCase(fetchProducts.pending, state => {
         state.isLoading = true;
-        state.error = null;
+        state.errors.fetch = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -103,46 +105,46 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.errors.fetch = action.payload;
       })
 
       // 新增商品
       .addCase(createProduct.pending, state => {
         state.isLoading = true;
-        state.error = null;
+        state.errors.create = null;
       })
       .addCase(createProduct.fulfilled, state => {
         state.isLoading = false;
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.errors.create = action.payload;
       })
 
       // 更新特定商品資訊
       .addCase(updateProduct.pending, state => {
         state.isLoading = true;
-        state.error = null;
+        state.errors.update = null;
       })
       .addCase(updateProduct.fulfilled, state => {
         state.isLoading = false;
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.errors.update = action.payload;
       })
 
       // 刪除特定商品
       .addCase(deleteProduct.pending, state => {
         state.isLoading = true;
-        state.error = null;
+        state.errors.delete = null;
       })
       .addCase(deleteProduct.fulfilled, state => {
         state.isLoading = false;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.errors.delete = action.payload;
       });
   },
 });

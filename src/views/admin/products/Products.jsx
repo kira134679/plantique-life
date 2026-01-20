@@ -1,4 +1,4 @@
-import { deleteProduct, fetchProducts } from '@/slice/productSlice';
+import { deleteProduct, fetchProducts } from '@/slice/product/adminProductSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';

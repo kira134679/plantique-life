@@ -1,4 +1,4 @@
-import { fetchProducts, updateProduct } from '@/slice/productSlice';
+import { fetchProducts, updateProduct } from '@/slice/product/adminProductSlice';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
