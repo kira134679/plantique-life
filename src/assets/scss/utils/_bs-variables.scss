@@ -253,3 +253,26 @@ $breadcrumb-active-color: $primary-600 !default;
 
 // modal
 $modal-backdrop-opacity: 0.4 !default;
+
+// pagination
+$pagination-padding-y: 0;
+$pagination-padding-x: 0;
+$pagination-padding-y-sm: 0;
+$pagination-padding-x-sm: 0;
+$pagination-padding-y-lg: 0;
+$pagination-padding-x-lg: 0;
+
+$pagination-color: $neutral-700;
+$pagination-border-width: 0;
+$pagination-font-size: $h7-font-size;
+$pagination-margin-start: 0;
+
+$pagination-focus-color: $neutral-700;
+$pagination-focus-bg: $primary-50;
+$pagination-focus-box-shadow: none;
+
+$pagination-hover-color: $neutral-700;
+$pagination-hover-bg: $primary-50;
+
+$pagination-disabled-color: $neutral-200;
+$pagination-disabled-bg: transparent;

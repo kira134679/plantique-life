@@ -1,0 +1,13 @@
+// pagination
+.custom-pagination {
+  .page-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+    border-radius: 50%;
+  }
+  .disabled-break {
+    pointer-events: none;
+  }
+}
