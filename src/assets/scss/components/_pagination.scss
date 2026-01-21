@@ -1,5 +1,8 @@
-// pagination
 .custom-pagination {
+  .disabled-break {
+    pointer-events: none;
+  }
+
   .page-link {
     width: 2.5rem;
     height: 2.5rem;
@@ -7,7 +10,23 @@
     text-align: center;
     border-radius: 50%;
   }
-  .disabled-break {
-    pointer-events: none;
+
+  .page-nav-link {
+    &:focus {
+      background-color: transparent;
+    }
+    &:focus-visible {
+      background-color: $primary-50;
+      outline: revert;
+    }
+    &:hover:focus {
+      background-color: $primary-50;
+    }
+    &:active {
+      color: $primary-600;
+    }
+    &:active:focus {
+      background-color: $primary-50;
+    }
   }
 }
