@@ -1,4 +1,10 @@
 .custom-pagination {
+  &.disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.4;
+  }
+
   .disabled-break {
     pointer-events: none;
   }
@@ -9,6 +15,7 @@
     line-height: 2.5rem;
     text-align: center;
     border-radius: 50%;
+    user-select: none;
   }
 
   .page-nav-link {
