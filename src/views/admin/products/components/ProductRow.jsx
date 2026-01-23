@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -16,14 +17,14 @@ function ProductRow({ product, openDeleteModal }) {
 
   // --- Event Handlers ---
   const handleStatusSelect = async eventKey => {
-    if (parseInt(eventKey, 10) === product.is_enabled) return;
+    const newStatus = parseInt(eventKey, 10);
+    if (newStatus === product.is_enabled) return;
     try {
-      await dispatch(
-        updateProduct({ id: product.id, data: { data: { ...product, is_enabled: parseInt(eventKey, 10) } } }),
-      ).unwrap();
-      await dispatch(fetchProducts({ page: current_page })).unwrap();
+      await dispatch(updateProduct({ id: product.id, data: { data: { ...product, is_enabled: newStatus } } })).unwrap();
+      toast.success('商品更新成功！');
+      dispatch(fetchProducts({ page: current_page }));
     } catch {
-      // handle error
+      toast.error('商品更新失敗！');
     }
   };
 
