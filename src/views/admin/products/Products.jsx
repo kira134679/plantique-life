@@ -1,28 +1,30 @@
-import { deleteProduct, fetchProducts } from '@/slice/product/adminProductSlice';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import Modal from 'react-bootstrap/Modal';
-import Button from '../../../components/Button';
+import { deleteProduct, fetchProducts } from '@/slice/product/adminProductSlice';
 
-import StatusDropdown from './components/StatusDropdown';
+import Button from '@/components/Button';
+import ProductRow from './components/ProductRow';
 
 function Products() {
-  // Redux
+  // --- Redux Hooks ---
   const dispatch = useDispatch();
   const { products } = useSelector(state => state.product);
 
-  // state
+  // --- Local State ---
   const [deleteId, setDeleteId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
 
-  // event handler
-  // handle delete product
-  const openDeleteModal = id => {
-    setModalShow(true);
-    setDeleteId(id);
-  };
+  // --- Event Handlers ---
+  const openDeleteModal = useCallback(
+    id => {
+      setModalShow(true);
+      setDeleteId(id);
+    },
+    [setModalShow, setDeleteId],
+  );
 
   const handleDeleteConfirm = async () => {
     setModalShow(false);
@@ -41,7 +43,7 @@ function Products() {
     setDeleteId(null);
   };
 
-  // Initial data fetch
+  // --- Side Effects ---
   useEffect(() => {
     dispatch(fetchProducts({ page: 1 }));
   }, [dispatch]);
@@ -88,62 +90,7 @@ function Products() {
             {/* 表格內容*/}
             <tbody>
               {products.map(product => (
-                <tr key={product.id}>
-                  <td>
-                    <div className="row g-0 align-items-center">
-                      <div className="col-4">
-                        <div className="me-4">
-                          <div className="ratio ratio-1x1">
-                            <img className="object-fit-cover" src={product.imageUrl} alt={product.title} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <h4 className="h6 mb-2">{product.title}</h4>
-                        <p className="fs-sm text-neutral-400 text-truncate">{product.id}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="fs-7 text-primary-700 noto-serif-tc fw-bold">
-                    {product.price === product.origin_price ? (
-                      `NT$${product.price.toLocaleString()}`
-                    ) : (
-                      <>
-                        NT${product.price.toLocaleString()}
-                        <del className="ms-2 text-neutral-400 fs-sm">{product.origin_price.toLocaleString()}</del>
-                      </>
-                    )}
-                  </td>
-                  <td className="col-2">
-                    <span className="px-3 py-1 text-primary bg-primary-100 text-nowrap">{product.category}</span>
-                  </td>
-                  <td>
-                    <div>
-                      <StatusDropdown product={product} />
-                    </div>
-                  </td>
-                  <td>
-                    <Button
-                      as={Link}
-                      to={`/admin/products/edit/${product.id}`}
-                      variant="outline-neutral"
-                      shape="circle"
-                      size="sm"
-                      className="me-2"
-                    >
-                      <span className="custom-btn-icon material-symbols-rounded">edit</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline-danger"
-                      shape="circle"
-                      size="sm"
-                      onClick={() => openDeleteModal(product.id)}
-                    >
-                      <span className="custom-btn-icon material-symbols-rounded">delete</span>
-                    </Button>
-                  </td>
-                </tr>
+                <ProductRow key={product.id} product={product} openDeleteModal={openDeleteModal} />
               ))}
             </tbody>
           </table>
