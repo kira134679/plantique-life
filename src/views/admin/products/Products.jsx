@@ -6,12 +6,16 @@ import { Link } from 'react-router';
 import { deleteProduct, fetchProducts } from '@/slice/product/adminProductSlice';
 
 import Button from '@/components/Button';
+import Pagination from '@/components/Pagination';
 import ProductRow from './components/ProductRow';
 
 function Products() {
   // --- Redux Hooks ---
   const dispatch = useDispatch();
-  const { products } = useSelector(state => state.product);
+  const {
+    products,
+    pagination: { current_page, total_pages },
+  } = useSelector(state => state.product);
 
   // --- Local State ---
   const [deleteId, setDeleteId] = useState(null);
@@ -41,6 +45,10 @@ function Products() {
   const handleDeleteCancel = () => {
     setModalShow(false);
     setDeleteId(null);
+  };
+
+  const handlePageChange = targetPage => {
+    dispatch(fetchProducts({ page: targetPage }));
   };
 
   // --- Side Effects ---
@@ -97,46 +105,13 @@ function Products() {
         </section>
         {/* 頁碼 */}
         <div className="pb-10">
-          <p className="text-end text-neutral-400 mb-8">每頁顯示 10 列，總共 15 列</p>
-          <nav aria-label="Page">
-            <ul className="pagination justify-content-end">
-              <li className="page-item me-4">
-                <a className="page-link p-0 border-0 rounded-circle">
-                  <span className="material-symbols-rounded p-2 text-neutral-700"> chevron_left </span>
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-white bg-primary" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  ...
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  20
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link p-0 border-0 rounded-circle text-neutral-700" href="#">
-                  <span className="material-symbols-rounded p-2"> chevron_right </span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          <p className="text-end text-neutral-400 mb-8">每頁顯示 10 列，總共 {total_pages} 頁</p>
+          <Pagination
+            currentPage={current_page}
+            totalPages={total_pages}
+            onPageChange={handlePageChange}
+            className="justify-content-end"
+          />
         </div>
       </div>
       {/* Modal */}
