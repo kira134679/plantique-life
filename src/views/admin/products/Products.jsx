@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -34,9 +35,16 @@ function Products() {
     setModalShow(false);
     try {
       await dispatch(deleteProduct(deleteId)).unwrap();
-      await dispatch(fetchProducts({ page: 1 })).unwrap();
+      toast.success('商品刪除成功！');
+      if (current_page === 1 && products.length === 1) {
+        dispatch(fetchProducts());
+      } else if (products.length === 1) {
+        dispatch(fetchProducts({ page: current_page - 1 }));
+      } else {
+        dispatch(fetchProducts({ page: current_page }));
+      }
     } catch {
-      // handle error
+      toast.error('商品刪除失敗！');
     } finally {
       setDeleteId(null);
     }
