@@ -392,6 +392,8 @@ export default function Home() {
             </hgroup>
             <div className="d-none d-md-block">
               <Button
+                as={Link}
+                to="/products"
                 type="button"
                 variant="outline-neutral"
                 shape="pill"
@@ -460,6 +462,8 @@ export default function Home() {
         </div>
         <div className="d-md-none d-flex justify-content-center">
           <Button
+            as={Link}
+            to="/products"
             type="button"
             variant="outline-neutral"
             shape="pill"
