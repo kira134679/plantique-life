@@ -25,6 +25,7 @@ import ProductCard from '../components/ProductCard';
 import { timestampToDate } from '../utils/utils';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Link } from 'react-router';
 
 const events = [
   {
@@ -189,6 +190,8 @@ export default function Home() {
               <div className="d-flex flex-column justify-content-center" id="slogan">
                 <img src={titleLg} alt="標語:植一抹綠，讓心寧靜。從多肉開始的療癒時刻" className="mb-10" />
                 <Button
+                  as={Link}
+                  to="/products"
                   type="button"
                   variant="filled-primary"
                   shape="pill"
