@@ -60,28 +60,24 @@ const category = [
     subTitle: '獨株盆栽，生活的慢光景',
     description: '每一株植物都擁有獨特姿態，不需繁複裝飾，就能為你的空間帶來療癒氣息，讓生活充滿生機。',
     image: categoryImg1,
-    link: 'product-list.html',
   },
   {
     title: '療 癒 組 盆',
     subTitle: '綠色風景，妝點專屬角落',
     description: '精心搭配的多肉組合，如同微型生態，讓你一次擁有豐富的綠意層次，創造屬於自己的心靈小天地。',
     image: categoryImg2,
-    link: 'product-list.html',
   },
   {
     title: '客 製 禮 盒',
     subTitle: '綠意心意，植感而生',
     description: '將這份溫柔的植感心意化作禮物，為重要的人客製專屬組合，傳達獨特而真摯的祝福。',
     image: categoryImg3,
-    link: 'product-list.html',
   },
   {
     title: '配 件 商 品',
     subTitle: '質感選物，植栽的日常絮語',
     description: '嚴選美觀又實用的質感配件，從花器到工具，讓你在照護植物的過程中，也能享受質感生活。',
     image: categoryImg4,
-    link: 'product-list.html',
   },
 ];
 
@@ -344,16 +340,16 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="category-col-3 d-flex d-lg-none justify-content-center">
-                            <a href={item.link} className="stretched-link">
+                            <Link to="/products" className="stretched-link">
                               <h3 className="vertical-lr fs-3 text-primary mx-0">{item.title}</h3>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                         <div className="row">
                           <div className="col-lg-3 d-none d-lg-flex justify-content-center">
-                            <a href={item.link} className="stretched-link">
+                            <Link to="/products" className="stretched-link">
                               <h3 className="vertical-lr fs-3 fs-lg-2 text-primary mx-0">{item.title}</h3>
-                            </a>
+                            </Link>
                           </div>
                           <div className="col-lg-9 mt-lg-auto">
                             <h4 className="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">{item.subTitle}</h4>
