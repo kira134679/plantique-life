@@ -1,7 +1,3 @@
-import articleImg1 from 'assets/images/articles/img_column_01.png';
-import articleImg2 from 'assets/images/articles/img_column_02.png';
-import articleImg3 from 'assets/images/articles/img_column_03.png';
-import articleImg4 from 'assets/images/articles/img_column_04.png';
 import headingDecorationSm from 'assets/images/index/heading-decoration-sm.svg';
 import headingDecoration from 'assets/images/index/heading-decoration.svg';
 import textLg from 'assets/images/index/img_banner_text02_lg.svg';
@@ -19,13 +15,16 @@ import productImg3 from 'assets/images/products/img_product_03.png';
 import productImg4 from 'assets/images/products/img_product_04.png';
 import productImg5 from 'assets/images/products/img_product_05.png';
 import productImg6 from 'assets/images/products/img_product_06.png';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
+import { getArticles } from '../slice/article/guestArticleSlice';
 import { timestampToDate } from '../utils/utils';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Link } from 'react-router';
 
 const events = [
   {
@@ -131,50 +130,29 @@ const products = [
 ];
 
 const columnTabs = [
-  { active: true, dataFilter: 'all', text: '全部' },
-  { active: false, dataFilter: 'guide', text: '#養護指南' },
-  { active: false, dataFilter: 'illustrated-book', text: '#多肉圖鑑' },
-  { active: false, dataFilter: 'proposal', text: '#生活提案' },
+  { name: '全部', displayName: '全部' },
+  { name: '養護指南', displayName: '#養護指南' },
+  { name: '多肉圖鑑', displayName: '#多肉圖鑑' },
+  { name: '生活提案', displayName: '#生活提案' },
 ];
 
-const articles = [
-  {
-    title: '新手必看：五種不易失敗的多肉推薦',
-    description: '第一次養多肉就上手！精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。',
-    image: articleImg1,
-    tag: ['# 養護指南'],
-    content: '',
-    created_at: 1754187214,
-  },
-  {
-    title: '圓滾滾的療癒系：綠之鈴',
-    description: '鑑在多肉植物的世界裡，若要選出一款最具垂墜美感、造境最討喜的代表，綠之鈴無疑名列前茅。',
-    image: articleImg2,
-    tag: ['# 多肉圖鑑'],
-    content: '',
-    created_at: 1754187214,
-  },
-  {
-    title: '為你的空間選一種氣質：多肉的氛圍搭配提案',
-    description:
-      '多肉植物們擁有多樣的顏色、形狀與質地，也乘載著一種「氛圍感」。你會發現，當一盆多肉出現在書桌上，氛圍感立刻不一樣。',
-    image: articleImg3,
-    tag: ['# 生活提案'],
-    content: '',
-    created_at: 1735693200,
-  },
-  {
-    title: '療癒系小宇宙：用多肉打造居家綠意角落',
-    description:
-      '在都市的繁忙節奏中，我們總渴望一處能讓心靈喘息的綠洲。多肉植物以其獨特的圓潤身形與豐富的姿態，正為我們的生活注入這股療癒能量。',
-    image: articleImg4,
-    tag: ['# 生活提案'],
-    content: '',
-    created_at: 1735693200,
-  },
-];
+const MAX_ARTICLES_DISPLAY_COUNT = 4;
 
 export default function Home() {
+  const [activeColumnTab, setActiveColumnTab] = useState('全部');
+  const dispatch = useDispatch();
+  const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
+
+  useEffect(() => {
+    dispatch(getArticles());
+  }, [dispatch]);
+
+  const displayArticles = useMemo(() => {
+    return (articleList || [])
+      .filter(article => (activeColumnTab === '全部' ? true : article.tag.includes(activeColumnTab)))
+      .slice(0, MAX_ARTICLES_DISPLAY_COUNT);
+  }, [activeColumnTab, articleList]);
+
   return (
     <>
       {/* <!-- hero section start --> */}
@@ -495,52 +473,82 @@ export default function Home() {
                 <img src={headingDecorationSm} className="img-fluid" alt="heading-decoration" />
               </picture>
             </div>
-            <div className="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0" id="column-filter">
-              {columnTabs.map((item, idx) => (
-                <Button key={idx} type="button" variant="tag" data-filter={item.dataFilter}>
-                  {item.text}
+            <div className="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0">
+              {columnTabs.map(tab => (
+                <Button
+                  key={tab.name}
+                  type="button"
+                  variant="tag"
+                  className={activeColumnTab === tab.name ? 'active' : ''}
+                  onClick={() => setActiveColumnTab(tab.name)}
+                >
+                  {tab.displayName}
                 </Button>
               ))}
             </div>
           </div>
-          <ul className="list-unstyled row g-6" id="">
-            {articles.map((item, idx) => (
-              <li key={idx} className="col-lg-6 column-item" data-category="guide">
-                <div className="card flex-lg-row border-0 rounded-0">
-                  <img
-                    src={item.image}
-                    className="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
-                    alt={item.title}
-                  />
-                  <div className="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
-                    <h4 className="card-title fs-7 fs-lg-6 text-neutral-700">{item.title}</h4>
-                    <span className="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100">
-                      {item.tag && item.tag[0]}
-                    </span>
-                    <p className="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
-                      {item.description}
-                    </p>
-                    <div className="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
-                      <p className="fs-xs fs-lg-sm text-primary-500">{timestampToDate(item.created_at)}</p>
-                      <Button
-                        type="button"
-                        variant="link-primary"
-                        href={'#'}
-                        shape="link"
-                        size="sm"
-                        rightIcon={true}
-                        iconName="arrow_right_alt"
-                      >
-                        閱讀全文
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {isArticlesLoading ? (
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" role="status" variant="primary" className="">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          ) : displayArticles?.length > 0 ? (
+            <ul className="list-unstyled row g-6">
+              {displayArticles.map(
+                article =>
+                  article.isPublic && (
+                    <li key={article.id} className="col-lg-6 column-item">
+                      <div className="card flex-lg-row border-0 rounded-0">
+                        <img
+                          src={article.image}
+                          className="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                          alt={article.title}
+                        />
+                        <div className="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                          <h4 className="card-title fs-7 fs-lg-6 text-neutral-700">{article.title}</h4>
+                          {article.tag && article.tag.length > 0 && (
+                            <ul className="list-unstyled d-flex gap-1">
+                              {article.tag.map((tag, idx) => (
+                                <li key={idx}>
+                                  <span className="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100">
+                                    {tag}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          <p className="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                            {article.description}
+                          </p>
+                          <div className="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                            <p className="fs-xs fs-lg-sm text-primary-500">{timestampToDate(article.create_at)}</p>
+                            <Button
+                              as={Link}
+                              variant="link-primary"
+                              to={`/articles/${article.id}`}
+                              shape="link"
+                              size="sm"
+                              rightIcon={true}
+                              iconName="arrow_right_alt"
+                            >
+                              閱讀全文
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ),
+              )}
+            </ul>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <p className="fs-6 text-neutral-700">目前沒有文章</p>
+            </div>
+          )}
           <div className="d-flex justify-content-center mt-8 mt-lg-12 mx-auto">
             <Button
+              as={Link}
               type="button"
               variant="outline-neutral"
               shape="pill"
@@ -548,6 +556,7 @@ export default function Home() {
               rightIcon={true}
               iconName="arrow_right_alt"
               className="more-btn"
+              to={'/articles'}
             >
               查看更多
             </Button>
