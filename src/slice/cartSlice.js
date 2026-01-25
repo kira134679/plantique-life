@@ -26,7 +26,7 @@ export const createAndRefetchCarts = createAsyncThunk(
       if (couponCode) {
         const isProductInCart = carts.some(cartItem => cartItem.product?.id === productId);
         if (!isProductInCart) {
-          await couponApi.createCoupon({ code: couponCode }, preventGlobalLoading);
+          await couponApi.applyCoupon({ code: couponCode }, preventGlobalLoading);
         }
       }
 

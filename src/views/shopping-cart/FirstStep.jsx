@@ -62,7 +62,7 @@ function FirstStep({ productImages, handleSwitchStep }) {
   }
 
   // 套用優惠券
-  async function handleCreateCoupon(code) {
+  async function handleApplyCoupon(code) {
     if (code.trim() === '') {
       setCouponStatus({ isLoading: false, message: '未輸入優惠券代碼', type: 'error' });
       return;
@@ -72,7 +72,7 @@ function FirstStep({ productImages, handleSwitchStep }) {
       // pending 狀態
       setCouponStatus({ isLoading: true, message: '驗證中...', type: null });
       // 呼叫 API
-      const response = await couponApi.createCoupon({ code }, true);
+      const response = await couponApi.applyCoupon({ code }, true);
       await dispatch(fetchCarts(true)).unwrap();
       // 等待購物車更新完成後再顯示成功訊息
       setCouponStatus({ isLoading: false, message: response.message, type: 'success' });
@@ -234,7 +234,7 @@ function FirstStep({ productImages, handleSwitchStep }) {
                   size="md"
                   className="text-nowrap ms-4"
                   disabled={carts.length === 0 || couponStatus.isLoading}
-                  onClick={() => handleCreateCoupon(coupon)}
+                  onClick={() => handleApplyCoupon(coupon)}
                 >
                   確認
                 </Button>
