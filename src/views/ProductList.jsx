@@ -6,6 +6,7 @@ import { Accordion, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
+import Pagination from '../components/Pagination';
 import ProductCard from '../components/ProductCard';
 import { getProducts } from '../slice/product/guestProductSlice';
 
@@ -53,7 +54,11 @@ const menuItem = [
 
 export default function ProductList() {
   const dispatch = useDispatch();
-  const productList = useSelector(state => state.guestProduct.productList);
+  const { productList, currentPage, totalPages } = useSelector(state => state.guestProduct);
+
+  const onPageChange = page => {
+    dispatch(getProducts({ page }));
+  };
 
   useEffect(() => {
     dispatch(getProducts());
@@ -286,43 +291,12 @@ export default function ProductList() {
 
           {/* <!-- pagination --> */}
           <nav aria-label="Page" className="py-6 py-lg-10">
-            <ul className="pagination justify-content-end">
-              <li className="page-item me-4">
-                <a className="page-link p-0 border-0 rounded-circle">
-                  <span className="material-symbols-rounded p-2 text-neutral-700"> chevron_left </span>
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-white bg-primary" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  ...
-                </a>
-              </li>
-              <li className="page-item me-4">
-                <a className="page-link border-0 rounded-circle fs-7 w-40 text-center text-neutral-700" href="#">
-                  20
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link p-0 border-0 rounded-circle text-neutral-700" href="#">
-                  <span className="material-symbols-rounded p-2"> chevron_right </span>
-                </a>
-              </li>
-            </ul>
+            <Pagination
+              className="justify-content-end"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={page => onPageChange(page)}
+            />
           </nav>
         </main>
       </div>
