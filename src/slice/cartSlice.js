@@ -11,12 +11,12 @@ export const fetchCarts = createAsyncThunk('cart/fetchCarts', async (preventGlob
   }
 });
 // 新增產品到購物車並重新取得購物車列表
-export const createAndRefetchCarts = createAsyncThunk(
-  'cart/createAndRefetchCarts',
+export const addAndRefetchCarts = createAsyncThunk(
+  'cart/addAndRefetchCarts',
   async ({ data, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
     try {
       // 新增產品到購物車
-      await cartApi.createCart(data, preventGlobalLoading);
+      await cartApi.addToCart(data, preventGlobalLoading);
 
       // 新增產品的 ID
       const productId = data.product_id;
@@ -123,8 +123,8 @@ const cartSlice = createSlice({
           }
         }
       })
-      // createAndRefetchCarts
-      .addCase(createAndRefetchCarts.fulfilled, state => {
+      // addAndRefetchCarts
+      .addCase(addAndRefetchCarts.fulfilled, state => {
         state.isLoading = false;
       })
       // updateAndRefetchCarts
@@ -148,19 +148,16 @@ const cartSlice = createSlice({
         state.couponCode = '';
         state.loadingItems = {};
       })
-      // 全域 loading 開始 (fetchCarts, createAndRefetchCarts, deleteCarts)
-      .addMatcher(isAnyOf(fetchCarts.pending, createAndRefetchCarts.pending, deleteCarts.pending), state => {
+      // 全域 loading 開始 (fetchCarts, addAndRefetchCarts, deleteCarts)
+      .addMatcher(isAnyOf(fetchCarts.pending, addAndRefetchCarts.pending, deleteCarts.pending), state => {
         state.isLoading = true;
         state.error = null;
       })
       // 全域操作失敗，清除全域 loading 狀態並記錄錯誤
-      .addMatcher(
-        isAnyOf(fetchCarts.rejected, createAndRefetchCarts.rejected, deleteCarts.rejected),
-        (state, action) => {
-          state.isLoading = false;
-          state.error = action.payload;
-        },
-      )
+      .addMatcher(isAnyOf(fetchCarts.rejected, addAndRefetchCarts.rejected, deleteCarts.rejected), (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       // 單項操作完成，清除該項目的 loading 狀態
       .addMatcher(isAnyOf(updateAndRefetchCarts.fulfilled, deleteAndRefetchCarts.fulfilled), (state, action) => {
         const cartId = action.meta.arg.id;

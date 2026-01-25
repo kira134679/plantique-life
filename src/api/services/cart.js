@@ -5,7 +5,7 @@ export const cartApi = {
   // 取得購物車列表
   fetchCarts: preventGlobalLoading => guestClient.get(`${GUEST_API_PATH}/cart`, { preventGlobalLoading }),
   // 新增產品到購物車
-  createCart: (data, preventGlobalLoading) =>
+  addToCart: (data, preventGlobalLoading) =>
     guestClient.post(`${GUEST_API_PATH}/cart`, { data }, { preventGlobalLoading }),
   // 更新購物車產品資訊
   updateCart: (id, data, preventGlobalLoading) =>
