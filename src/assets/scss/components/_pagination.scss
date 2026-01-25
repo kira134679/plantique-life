@@ -1,0 +1,39 @@
+.custom-pagination {
+  &.disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.4;
+  }
+
+  .disabled-break {
+    pointer-events: none;
+  }
+
+  .page-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+    border-radius: 50%;
+    user-select: none;
+  }
+
+  .page-nav-link {
+    &:focus {
+      background-color: transparent;
+    }
+    &:focus-visible {
+      background-color: $primary-50;
+      outline: revert;
+    }
+    &:hover:focus {
+      background-color: $primary-50;
+    }
+    &:active {
+      color: $primary-600;
+    }
+    &:active:focus {
+      background-color: $primary-50;
+    }
+  }
+}
