@@ -43,45 +43,6 @@ import productAddImg02 from 'assets/images/products/img_product_add_02.png';
 import productAddImg03 from 'assets/images/products/img_product_add_03.png';
 import productAddImg04 from 'assets/images/products/img_product_add_04.png';
 import productAddImg05 from 'assets/images/products/img_product_add_05.png';
-// 優惠券資料
-const couponMenu = [
-  {
-    type: 'amount',
-    name: '入會首購金 250 元',
-    discount: 250,
-    minimumSpend: 250,
-    date: '2025.07.01 ~ 2025.12.31',
-    code: 'aaaaaa',
-    state: '',
-  },
-  {
-    type: 'amount',
-    name: '好友分享禮 150 元',
-    discount: 150,
-    minimumSpend: 150,
-    date: '2025.07.01 ~ 2025.12.31',
-    code: 'A7X9Q2',
-    state: '',
-  },
-  {
-    type: 'amount',
-    name: '官方好友禮 50 元',
-    discount: 50,
-    minimumSpend: 50,
-    date: '2025.07.01 ~ 2025.12.31',
-    code: 'M3T8kz',
-    state: '',
-  },
-  {
-    type: 'amount',
-    name: '滿 5000 折 500',
-    discount: 500,
-    minimumSpend: 5000,
-    date: '2025.07.01 ~ 2025.12.31',
-    code: 'bbbbbb',
-    state: '',
-  },
-];
 // 付款資料
 const orderInfo = {
   cart: [
@@ -159,24 +120,28 @@ function ShoppingCart() {
   // 儲存 Nav.Link 元素的 refs
   const navLinkRefs = useRef([null, null, null]);
 
-  // 切換 step 函式 (對應原 JS 的 switchStep)
+  // 切換 step 函式
   const switchStep = async (currentIndex, targetIndex, isForward = true) => {
     // 避免重複觸發
     if (isTransitioning.current) return;
     isTransitioning.current = true;
 
-    await scrollToTop({ waitForComplete: true }); // 等滾動完成
+    // 等滾動完成
+    await scrollToTop({ waitForComplete: true });
 
     const currentEl = navLinkRefs.current[currentIndex];
 
+    // 返回一個 Promise，等待動畫結束
     await new Promise(resolve => {
       let resolved = false;
 
+      // 處理動畫結束的函式
       const handleEnd = () => {
+        // 防止多次調用 (transitionend / timeout)
         if (resolved) return;
         resolved = true;
 
-        // 更新狀態
+        // 更新目標 step 的狀態，改為 active (觸發動畫)
         setStepStates(prev => {
           const newStates = [...prev];
           // 目標添加 step-active
@@ -190,11 +155,12 @@ function ShoppingCart() {
       };
 
       // 監聽 transitionend
+      // once: true 確保只觸發一次
       if (currentEl) {
         currentEl.addEventListener('transitionend', handleEnd, { once: true });
       }
 
-      // 移除當前的 step-active (觸發動畫)
+      // 移除當前 step 的 active 狀態，改為 completed (觸發動畫)
       setStepStates(prev => {
         const newStates = [...prev];
         newStates[currentIndex] = isForward ? 'step-completed' : '';
@@ -215,8 +181,9 @@ function ShoppingCart() {
     isTransitioning.current = false;
   };
   // 給子組件使用的換頁方法
-  const handleSwitchStep = (targetIndex, isForward) => {
-    switchStep(activeTab, targetIndex, isForward);
+  // 加上 async/await 以確保切換完成後再進行後續動作
+  const handleSwitchStep = async (targetIndex, isForward) => {
+    await switchStep(activeTab, targetIndex, isForward);
   };
 
   useEffect(() => {
@@ -248,8 +215,6 @@ function ShoppingCart() {
         <Tab.Content className="py-12 py-lg-15">
           <Tab.Pane eventKey={stepInfo[0].step.name}>
             <FirstStep
-              couponMenu={couponMenu}
-              orderInfo={orderInfo}
               productImages={{
                 productAddImg02,
                 productAddImg03,
