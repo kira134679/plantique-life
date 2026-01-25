@@ -62,6 +62,13 @@ export const deleteAndRefetchCarts = createAsyncThunk(
       await cartApi.deleteCart(id, preventGlobalLoading);
       // 再重新取得購物車資料
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
+
+      // 如果購物車內沒有商品，則清除優惠券代碼
+      const carts = response.data.carts;
+      if (carts.length === 0) {
+        dispatch(setcouponCode(''));
+      }
+
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -89,6 +96,11 @@ const cartSlice = createSlice({
     isLoading: false, // 這是「整台購物車」的讀取狀態
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
     error: null,
+  },
+  reducers: {
+    setcouponCode: (state, action) => {
+      state.couponCode = action.payload;
+    },
   },
   // Handle async thunks here
   extraReducers: builder => {
@@ -162,6 +174,9 @@ const cartSlice = createSlice({
       });
   },
 });
+
+// Export actions
+export const { setcouponCode } = cartSlice.actions;
 
 // Selectors
 export const selectHasItemLoading = state => Object.values(state.cart.loadingItems).some(status => status);
