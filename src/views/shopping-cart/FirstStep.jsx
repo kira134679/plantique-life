@@ -72,10 +72,12 @@ function FirstStep({ productImages, handleSwitchStep }) {
       // pending 狀態
       setCouponStatus({ isLoading: true, message: '驗證中...', type: null });
       // 呼叫 API
-      const response = await couponApi.applyCoupon({ code }, true);
-      await dispatch(fetchCarts(true)).unwrap();
+      const couponRes = await couponApi.applyCoupon({ code }, true);
+      const cartsRes = await dispatch(fetchCarts(true)).unwrap();
+      // 組合優惠券訊息
+      const couponMsg = `${couponRes.message} (${cartsRes.data.carts[0].coupon.title})`;
       // 等待購物車更新完成後再顯示成功訊息
-      setCouponStatus({ isLoading: false, message: response.message, type: 'success' });
+      setCouponStatus({ isLoading: false, message: couponMsg, type: 'success' });
       setCoupon('');
     } catch (error) {
       setCouponStatus({ isLoading: false, message: error, type: 'error' });
