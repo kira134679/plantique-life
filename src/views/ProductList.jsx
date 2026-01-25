@@ -1,23 +1,13 @@
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import productImg1 from 'assets/images/products/img_product_01.png';
-import productImg2 from 'assets/images/products/img_product_02.png';
-import productImg3 from 'assets/images/products/img_product_03.png';
-import productImg4 from 'assets/images/products/img_product_04.png';
-import productImg5 from 'assets/images/products/img_product_05.png';
-import productImg7 from 'assets/images/products/img_product_07.png';
-import productImg8 from 'assets/images/products/img_product_08.png';
-import productImg9 from 'assets/images/products/img_product_09.png';
-import productImg10 from 'assets/images/products/img_product_10.png';
-import productImg11 from 'assets/images/products/img_product_11.png';
-import productImg12 from 'assets/images/products/img_product_12.png';
-import productImg13 from 'assets/images/products/img_product_13.png';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
+import { getProducts } from '../slice/product/guestProductSlice';
 
 const events = [
   {
@@ -46,93 +36,6 @@ const events = [
   },
 ];
 
-const products = [
-  {
-    alt: '雪夜之森',
-    image: productImg7,
-    tag: '質感精選',
-    title: '雪夜之森',
-    price: 'NT$2,400',
-  },
-  {
-    alt: '植語時光',
-    image: productImg8,
-    tag: '質感精選',
-    title: '植語時光',
-    price: 'NT$3,000',
-  },
-  {
-    alt: '異國風情',
-    image: productImg10,
-    tag: '質感精選',
-    title: '異國風情',
-    price: 'NT$3,500',
-  },
-  {
-    alt: '森語花信',
-    image: productImg9,
-    tag: '質感精選',
-    title: '森語花信',
-    price: 'NT$3,500',
-  },
-  {
-    alt: '垂綠星河',
-    image: productImg11,
-    tag: '質感精選',
-    title: '垂綠星河',
-    price: 'NT$3,600',
-  },
-  {
-    alt: '綠庭物語',
-    image: productImg12,
-    tag: '質感精選',
-    title: '綠庭物語',
-    price: 'NT$2,400',
-  },
-  {
-    alt: '荒原綠影',
-    image: productImg13,
-    tag: '質感精選',
-    title: '荒原綠影',
-    price: 'NT$2,400',
-  },
-  {
-    alt: '泡泡森林',
-    image: productImg1,
-    tag: '質感精選',
-    title: '泡泡森林',
-    price: 'NT$6,200',
-  },
-  {
-    alt: '向陽而生',
-    image: productImg2,
-    tag: '質感精選',
-    title: '向陽而生',
-    price: 'NT$7,200',
-  },
-  {
-    alt: '暮光角落',
-    image: productImg3,
-    tag: '質感精選',
-    title: '暮光角落',
-    price: 'NT$7,500',
-  },
-  {
-    alt: '雲深處靜',
-    image: productImg4,
-    tag: '質感精選',
-    title: '雲深處靜',
-    price: 'NT$6,600',
-  },
-  {
-    alt: '玉露女王',
-    image: productImg5,
-    tag: '質感精選',
-    title: '玉露女王',
-    price: 'NT$5,200',
-  },
-];
-
 const menuItem = [
   { label: '全部', path: '/products' },
   { label: '植栽單品', path: '/products?category=item' },
@@ -149,6 +52,13 @@ const menuItem = [
 ];
 
 export default function ProductList() {
+  const dispatch = useDispatch();
+  const productList = useSelector(state => state.guestProduct.productList);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
   return (
     <>
       <div className="news">
@@ -271,16 +181,16 @@ export default function ProductList() {
 
           {/* <!-- 手機版products --> */}
           <div className="row d-lg-none">
-            {products.map((item, idx) => {
+            {productList.map(product => {
               return (
-                <div className="col-6 mb-6" key={idx}>
+                <div className="col-6 mb-6" key={product.id}>
                   <ProductCard
-                    title={item.title}
-                    image={item.image}
-                    alt={item.alt}
-                    tag={item.tag}
-                    originPrice={item.originPrice}
-                    price={item.price}
+                    title={product.title}
+                    image={product.imageUrl}
+                    alt={product.title}
+                    tag={product.category}
+                    originPrice={product.origin_price}
+                    price={product.price}
                   />
                 </div>
               );
@@ -355,16 +265,16 @@ export default function ProductList() {
 
                 {/* <!-- 產品列表 --> */}
                 <div className="row">
-                  {products.map((item, idx) => {
+                  {productList.map(product => {
                     return (
-                      <div className="col-4 mb-6" key={idx}>
+                      <div className="col-4 mb-6" key={product.id}>
                         <ProductCard
-                          title={item.title}
-                          image={item.image}
-                          alt={item.alt}
-                          tag={item.tag}
-                          originPrice={item.originPrice}
-                          price={item.price}
+                          title={product.title}
+                          image={product.imageUrl}
+                          alt={product.title}
+                          tag={product.category}
+                          originPrice={product.origin_price}
+                          price={product.price}
                         />
                       </div>
                     );
