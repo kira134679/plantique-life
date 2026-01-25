@@ -2,6 +2,7 @@ import logo from 'assets/images/logo-white-en-lg.svg';
 import facebookIcon from 'assets/images/sns/facebook.svg';
 import igIcon from 'assets/images/sns/ig.svg';
 import lineIcon from 'assets/images/sns/line.svg';
+import { Link } from 'react-router';
 
 export default function Footer() {
   return (
@@ -64,9 +65,9 @@ export default function Footer() {
                     </a>
                   </li>
                   <li>
-                    <a className="link-white site-map-link" href="article-list.html">
+                    <Link className="link-white site-map-link" to={'/articles'}>
                       植藝生活
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
