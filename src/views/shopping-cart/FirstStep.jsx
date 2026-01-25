@@ -66,6 +66,13 @@ function FirstStep({ productImages, handleSwitchStep }) {
     if (code.trim() === '') {
       setCouponStatus({ isLoading: false, message: '未輸入優惠券代碼', type: 'error' });
       return;
+    } else if (!/^[A-Z0-9]{8,}$/.test(code)) {
+      setCouponStatus({
+        isLoading: false,
+        message: '優惠券代碼格式不符 (只允許大寫英數字且最少要 8 碼)',
+        type: 'error',
+      });
+      return;
     }
 
     try {
