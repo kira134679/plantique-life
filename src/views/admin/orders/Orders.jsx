@@ -1,177 +1,14 @@
+import { adminOrderApi } from '@/api';
 import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
 import { timestampToDate } from '@/utils/utils';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import OrderDatePicker from './OrderDatePicker';
 import OrderDetailOffcanvas from './OrderDetailOffcanvas';
 
 const orderTabs = ['全部訂單', '未付款', '已付款'];
-// 資料庫內容
-const orderData = [
-  {
-    create_at: 1766326015,
-    id: '-Oh0E0QZ1LpUoQBYhWrb',
-    is_paid: false,
-    message: '單項商品測試',
-    products: {
-      '-Oh0E0Ty_nLEqHz2eSMa': {
-        final_total: 800,
-        id: '-Oh0E0Ty_nLEqHz2eSMa',
-        product: {
-          category: 'yy',
-          content: 'zz',
-          description: 'zz',
-          id: '-OgziyzKyFJO2-IhIvDJ',
-          imageUrl:
-            'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-          is_enabled: 1,
-          origin_price: 1000,
-          price: 800,
-          title: 'xx',
-          unit: '個',
-        },
-        product_id: '-OgziyzKyFJO2-IhIvDJ',
-        qty: 1,
-        total: 800,
-      },
-    },
-    total: 800,
-    user: {
-      address: '桃園市青埔路',
-      email: 'testB@example.com',
-      name: '測試人員B',
-      tel: '0987654321',
-    },
-    num: 1,
-  },
-  {
-    create_at: 1766312208,
-    id: '-Oh-PLVLBuF8RcyqWJ--',
-    is_paid: false,
-    message: '這是測試訂單',
-    products: {
-      '-Oh-PLWdlE1Aw5MygTfy': {
-        final_total: 800,
-        id: '-Oh-PLWdlE1Aw5MygTfy',
-        product: {
-          category: 'yy',
-          content: 'zz',
-          description: 'zz',
-          id: '-OgziyzKyFJO2-IhIvDJ',
-          imageUrl:
-            'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-          is_enabled: 1,
-          origin_price: 1000,
-          price: 800,
-          title: 'xx',
-          unit: '個',
-        },
-        product_id: '-OgziyzKyFJO2-IhIvDJ',
-        qty: 1,
-        total: 800,
-      },
-      '-Oh-PLWeljPQKyxYEEf4': {
-        final_total: 1500,
-        id: '-Oh-PLWeljPQKyxYEEf4',
-        product: {
-          category: '測試分類',
-          content: '測試的說明',
-          description: '測試的描述',
-          id: '-Ogz5dvvNFiLDY2gcyXC',
-          imageUrl:
-            'https://images.unsplash.com/photo-1516550135131-fe3dcb0bedc7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=621e8231a4e714c2e85f5acbbcc6a730&auto=format&fit=crop&w=1352&q=80',
-          imagesUrl: [
-            'https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80',
-            'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-            'https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1948&q=80',
-            'https://images.unsplash.com/photo-1617093727343-374698b1b08d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-            'https://images.unsplash.com/photo-1511914265872-c40672604a80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80',
-          ],
-          is_enabled: 1,
-          origin_price: 1000,
-          price: 500,
-          title: '測試的產品',
-          unit: '單位',
-        },
-        product_id: '-Ogz5dvvNFiLDY2gcyXC',
-        qty: 3,
-        total: 1500,
-      },
-    },
-    total: 2300,
-    user: {
-      address: '台北市中央路',
-      email: 'test@example.com',
-      name: '測試人員',
-      tel: '0912345678',
-    },
-    num: 2,
-  },
-  {
-    create_at: 1766300899,
-    id: '-OgzjCYAYYxlgdv5X8sL',
-    is_paid: true,
-    message: '包含兩個商品的測試訂單',
-    num: 3,
-    products: {
-      '-OgzjCZfnXJkzx_27H96': {
-        final_total: 500,
-        id: '-OgzjCZfnXJkzx_27H96',
-        product: {
-          category: '測試分類',
-          content: '測試的說明',
-          description: '測試的描述',
-          id: '-Ogz5dvvNFiLDY2gcyXC',
-          imageUrl:
-            'https://images.unsplash.com/photo-1516550135131-fe3dcb0bedc7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=621e8231a4e714c2e85f5acbbcc6a730&auto=format&fit=crop&w=1352&q=80',
-          imagesUrl: [
-            'https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1924&q=80',
-            'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-            'https://images.unsplash.com/photo-1517331156700-3c241d2b4d83?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1948&q=80',
-            'https://images.unsplash.com/photo-1617093727343-374698b1b08d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-            'https://images.unsplash.com/photo-1511914265872-c40672604a80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80',
-          ],
-          is_enabled: 1,
-          origin_price: 1000,
-          price: 500,
-          title: '測試的產品',
-          unit: '單位',
-        },
-        product_id: '-Ogz5dvvNFiLDY2gcyXC',
-        qty: 1,
-        total: 500,
-      },
-      '-OgzjCZfnXJkzx_27H97': {
-        final_total: 800,
-        id: '-OgzjCZfnXJkzx_27H97',
-        product: {
-          category: 'yy',
-          content: 'zz',
-          description: 'zz',
-          id: '-OgziyzKyFJO2-IhIvDJ',
-          imageUrl:
-            'https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-          is_enabled: 1,
-          origin_price: 1000,
-          price: 800,
-          title: 'xx',
-          unit: '個',
-        },
-        product_id: '-OgziyzKyFJO2-IhIvDJ',
-        qty: 1,
-        total: 800,
-      },
-    },
-    total: 1300,
-    user: {
-      address: '台北市測試路200號',
-      email: 'multi@example.com',
-      name: '多商品測試人員',
-      tel: '0912345679',
-    },
-  },
-];
 
 function Orders() {
   // 訂單詳情側邊欄
@@ -182,6 +19,47 @@ function Orders() {
 
   // 日期區間選擇
   const [dateRange, setDateRange] = useState([null, null]);
+
+  // 訂單列表
+  const [orders, setOrders] = useState(null);
+  const [pagination, setPagination] = useState({});
+
+  const fetchOrders = async (page = 1) => {
+    try {
+      const response = await adminOrderApi.fetchOrders(page);
+      setOrders(response.orders);
+      setPagination(response.pagination);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleDeleteOrder = async orderId => {
+    try {
+      await adminOrderApi.deleteOrder(orderId);
+      toast.success(`訂單 ${orderId} 已刪除`);
+      await fetchOrders(pagination.current_page);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleDeleteOrders = async () => {
+    try {
+      await adminOrderApi.deleteOrders();
+      toast.success('所有訂單已刪除');
+      await fetchOrders(1);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  // 初始化時取得訂單列表
+  useEffect(() => {
+    (async () => {
+      await fetchOrders();
+    })();
+  }, []);
 
   return (
     <div className="d-flex flex-column admin-orders-container">
@@ -207,7 +85,13 @@ function Orders() {
           <Button type="button" variant="outline-neutral" shape="circle" size="sm" className="border-0 ms-1">
             <span className="custom-btn-icon material-symbols-rounded">search</span>
           </Button>
-          <Button type="button" variant="outline-danger" className="ms-auto">
+          <Button
+            type="button"
+            variant="outline-danger"
+            className="ms-auto"
+            disabled={!orders?.length}
+            onClick={handleDeleteOrders}
+          >
             刪除全部訂單
           </Button>
         </div>
@@ -239,55 +123,82 @@ function Orders() {
               </tr>
             </thead>
             <tbody>
-              {orderData.map(order => (
-                <tr key={order.id} className="fs-sm">
-                  <td>{order.id}</td>
-                  <td>{order.user.name}</td>
-                  <td>{order.user.email}</td>
-                  <td className="text-end">{`NT$${order.total.toLocaleString()}`}</td>
-                  <td className="text-center">
-                    {
-                      <span
-                        className={clsx(
-                          'fs-xs fs-lg-sm px-2 px-lg-3 py-1',
-                          order.is_paid ? 'text-primary bg-primary-100' : 'text-danger bg-danger-100',
-                        )}
+              {orders &&
+                orders.map(order => (
+                  <tr key={order.id} className="fs-sm">
+                    <td>{order.id}</td>
+                    <td>{order.user.purchaserName}</td>
+                    <td>{order.user.purchaserEmail}</td>
+                    <td className="text-end">{`NT$${order.total.toLocaleString()}`}</td>
+                    <td className="text-center">
+                      {
+                        <span
+                          className={clsx(
+                            'fs-xs fs-lg-sm px-2 px-lg-3 py-1',
+                            order.is_paid ? 'text-primary bg-primary-100' : 'text-danger bg-danger-100',
+                          )}
+                        >
+                          {order.is_paid ? '已付款' : '未付款'}
+                        </span>
+                      }
+                    </td>
+                    <td>{timestampToDate(order.create_at)}</td>
+                    <td className="d-flex justify-content-center gap-2 py-5">
+                      <Button
+                        type="button"
+                        variant="outline-neutral"
+                        shape="circle"
+                        size="sm"
+                        onClick={() => {
+                          setOrderDetail(order);
+                          setDraftOrder({
+                            editable: false,
+                            userName: order.user.name,
+                            userAddress: order.user.address,
+                            createDate: new Date(order.create_at * 1000),
+                            isPaid: order.is_paid,
+                          });
+                          setOrderDetailShow(true);
+                        }}
                       >
-                        {order.is_paid ? '已付款' : '未付款'}
-                      </span>
-                    }
-                  </td>
-                  <td>{timestampToDate(order.create_at)}</td>
-                  <td className="d-flex justify-content-center gap-2 py-5">
-                    <Button
-                      type="button"
-                      variant="outline-neutral"
-                      shape="circle"
-                      size="sm"
-                      onClick={() => {
-                        setOrderDetail(order);
-                        setDraftOrder({
-                          editable: false,
-                          userName: order.user.name,
-                          userAddress: order.user.address,
-                          createDate: new Date(order.create_at * 1000),
-                        });
-                        setOrderDetailShow(true);
-                      }}
-                    >
-                      <span className="custom-btn-icon material-symbols-rounded">visibility</span>
-                    </Button>
-                    <Button type="button" variant="outline-danger" shape="circle" size="sm">
-                      <span className="custom-btn-icon material-symbols-rounded">delete</span>
-                    </Button>
+                        <span className="custom-btn-icon material-symbols-rounded">visibility</span>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline-danger"
+                        shape="circle"
+                        size="sm"
+                        onClick={() => handleDeleteOrder(order.id)}
+                      >
+                        <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              {orders === null && (
+                <tr>
+                  <td colSpan="7" className="text-center">
+                    <div className="text-neutral-500 py-15">載入中...</div>
                   </td>
                 </tr>
-              ))}
+              )}
+              {orders && orders.length === 0 && (
+                <tr>
+                  <td colSpan="7" className="text-center">
+                    <div className="text-neutral-500 py-15">目前沒有訂單資料</div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
-      <Pagination />
+      <Pagination
+        currentPage={pagination.current_page || 0}
+        totalPages={pagination.total_pages || 0}
+        onPageChange={fetchOrders}
+        className="justify-content-end mb-6"
+      />
       {orderDetail && draftOrder && (
         <OrderDetailOffcanvas
           orderDetail={orderDetail}
@@ -295,6 +206,7 @@ function Orders() {
           setOrderDetailShow={setOrderDetailShow}
           draftOrder={draftOrder}
           setDraftOrder={setDraftOrder}
+          fetchOrders={() => fetchOrders(pagination.current_page)}
         />
       )}
     </div>

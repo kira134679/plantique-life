@@ -19,3 +19,36 @@
 .admin-orders-product-img {
   height: 100px;
 }
+
+.admin-orders-is-paid-container {
+  width: 134px;
+}
+.admin-orders-is-paid-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: rgba($primary, 0.5);
+}
+.admin-orders-is-paid-radio {
+  & + label {
+    cursor: pointer;
+    color: $neutral-300;
+  }
+  &:checked + label {
+    color: $white;
+    background-color: $primary;
+    border-color: $primary !important;
+  }
+  &:disabled + label {
+    cursor: not-allowed;
+    color: $neutral-300;
+    background-color: $neutral-200;
+    border-color: $neutral-300 !important;
+  }
+  &:disabled:checked + label {
+    color: $neutral-400;
+    background-color: $neutral-300;
+  }
+}
