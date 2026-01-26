@@ -52,3 +52,45 @@
     background-color: $neutral-300;
   }
 }
+
+.admin-orders-delete-dropdown {
+  .dropdown-toggle::after {
+    display: none;
+  }
+  .dropdown-menu.show {
+    display: flex;
+  }
+  .dropdown-menu.show::before,
+  .dropdown-menu.show::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: 15px;
+    border: 5px solid;
+  }
+  // 當 Dropdown.Menu 在 Toggle 下方時（預設位置）
+  .dropdown-menu.show[data-popper-placement^='bottom'] {
+    margin-top: 4px;
+  }
+  .dropdown-menu.show[data-popper-placement^='bottom']::before {
+    top: -12px;
+    border-color: transparent transparent $danger-100 transparent;
+  }
+  .dropdown-menu.show[data-popper-placement^='bottom']::after {
+    top: -9px;
+    border-color: transparent transparent #fff transparent;
+  }
+  // 當 Dropdown.Menu 在 Toggle 上方時（空間不足時自動調整）
+  .dropdown-menu.show[data-popper-placement^='top'] {
+    margin-bottom: 4px;
+  }
+  .dropdown-menu.show[data-popper-placement^='top']::before {
+    bottom: -12px;
+    border-color: $danger-100 transparent transparent transparent;
+  }
+  .dropdown-menu.show[data-popper-placement^='top']::after {
+    bottom: -9px;
+    border-color: #fff transparent transparent transparent;
+  }
+}

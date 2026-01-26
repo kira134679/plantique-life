@@ -4,6 +4,7 @@ import Pagination from '@/components/Pagination';
 import { timestampToDate } from '@/utils/utils';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
 import toast from 'react-hot-toast';
 import ConfirmModal from './ConfirmModal';
 import OrderDatePicker from './OrderDatePicker';
@@ -80,6 +81,12 @@ function Orders() {
   };
 
   const handleDeleteOrders = async () => {
+    // 調用 confirmModal，Promise 會在這裡「暫停」，等待用戶操作
+    const result = await openConfirmModal('確定要刪除所有訂單嗎？');
+    if (!result) {
+      return;
+    }
+    // 確認後，刪除所有訂單
     try {
       await adminOrderApi.deleteOrders();
       toast.success('所有訂單已刪除');
@@ -198,15 +205,23 @@ function Orders() {
                       >
                         <span className="custom-btn-icon material-symbols-rounded">visibility</span>
                       </Button>
-                      <Button
-                        type="button"
-                        variant="outline-danger"
-                        shape="circle"
-                        size="sm"
-                        onClick={() => handleDeleteOrder(order.id)}
-                      >
-                        <span className="custom-btn-icon material-symbols-rounded">delete</span>
-                      </Button>
+                      <Dropdown className="admin-orders-delete-dropdown">
+                        <Dropdown.Toggle variant="" className="custom-btn-outline-danger custom-btn-circle-sm">
+                          <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu align="end" className="border-danger-100 gap-2 border-2 shadow-sm p-3">
+                          <Dropdown.Item as={Button} bsPrefix="custom-btn-outline-neutral">
+                            取消
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            as={Button}
+                            bsPrefix="custom-btn-outline-danger"
+                            onClick={() => handleDeleteOrder(order.id)}
+                          >
+                            確認刪除
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </td>
                   </tr>
                 ))}
