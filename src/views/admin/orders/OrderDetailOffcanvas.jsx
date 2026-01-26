@@ -1,5 +1,6 @@
 import { adminOrderApi } from '@/api';
 import Button from '@/components/Button';
+import { useEffect, useMemo, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import toast from 'react-hot-toast';
 import OrderDatePicker from './OrderDatePicker';
@@ -11,9 +12,11 @@ function OrderDetailOffcanvas({
   draftOrder,
   setDraftOrder,
   fetchOrders,
+  openConfirmModal,
 }) {
   // 安全解構，避免 draftOrder 為 null 時報錯
   const { editable = false, userName = '', userAddress = '', createDate = null, isPaid = false } = draftOrder || {};
+  const [hasChanged, setHasChanged] = useState(false);
 
   const handleDraftOrderChange = (key, value) => {
     setDraftOrder(prev => ({
@@ -23,7 +26,14 @@ function OrderDetailOffcanvas({
   };
 
   // 關閉側邊欄
-  const handleOffcanvasClose = () => {
+  const handleOffcanvasClose = async (skipCheck = false) => {
+    if (!skipCheck && hasChanged) {
+      // 調用 openConfirmModal，Promise 會在這裡「暫停」，等待用戶操作
+      const result = await openConfirmModal('有未儲存的變更，確定要離開嗎？');
+      if (!result) {
+        return;
+      }
+    }
     setOrderDetailShow(false);
     setDraftOrder({
       editable: false,
@@ -32,6 +42,7 @@ function OrderDetailOffcanvas({
       createDate: null,
       isPaid: false,
     });
+    setHasChanged(false);
   };
 
   const handleSaveDraftOrder = async () => {
@@ -48,12 +59,39 @@ function OrderDetailOffcanvas({
         },
       });
       toast.success('訂單資訊已儲存');
-      handleOffcanvasClose();
+      setHasChanged(false);
+      handleOffcanvasClose(true); // 跳過檢查，因為已經儲存了
       await fetchOrders();
     } catch (error) {
       toast.error(error);
     }
   };
+
+  // 計算是否有變更
+  const computedHasChanged = useMemo(() => {
+    if (!orderDetailShow) return false;
+    return (
+      userName !== orderDetail.user.name ||
+      userAddress !== orderDetail.user.address ||
+      createDate?.getTime() / 1000 !== orderDetail.create_at ||
+      isPaid !== orderDetail.is_paid
+    );
+  }, [
+    userName,
+    userAddress,
+    createDate,
+    isPaid,
+    orderDetail.create_at,
+    orderDetail.is_paid,
+    orderDetail.user.address,
+    orderDetail.user.name,
+    orderDetailShow,
+  ]);
+
+  // 同步 computedHasChanged 到狀態
+  useEffect(() => {
+    setHasChanged(computedHasChanged);
+  }, [computedHasChanged]);
 
   return (
     <Offcanvas show={orderDetailShow} onHide={handleOffcanvasClose} placement="end" className="admin-orders-offcanvas">
@@ -451,10 +489,17 @@ function OrderDetailOffcanvas({
         </section>
       </Offcanvas.Body>
       <div className="d-flex justify-content-end gap-2 p-4">
-        <Button type="button" variant="outline-neutral" shape="pill" size="sm" onClick={handleOffcanvasClose}>
+        <Button type="button" variant="outline-neutral" shape="pill" size="sm" onClick={() => handleOffcanvasClose()}>
           取消
         </Button>
-        <Button type="button" variant="filled-primary" shape="pill" size="sm" onClick={handleSaveDraftOrder}>
+        <Button
+          type="button"
+          variant="filled-primary"
+          shape="pill"
+          size="sm"
+          onClick={handleSaveDraftOrder}
+          disabled={!hasChanged}
+        >
           儲存
         </Button>
       </div>

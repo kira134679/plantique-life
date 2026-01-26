@@ -3,8 +3,9 @@ import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
 import { timestampToDate } from '@/utils/utils';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import ConfirmModal from './ConfirmModal';
 import OrderDatePicker from './OrderDatePicker';
 import OrderDetailOffcanvas from './OrderDetailOffcanvas';
 
@@ -23,6 +24,40 @@ function Orders() {
   // 訂單列表
   const [orders, setOrders] = useState(null);
   const [pagination, setPagination] = useState({});
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalMessage, setConfirmModalMessage] = useState('');
+  const confirmModalResolveRef = useRef(null);
+
+  // 確認 Modal，回傳 Promise，讓呼叫者可以等待結果
+  const openConfirmModal = message => {
+    return new Promise(resolve => {
+      // 將 resolve 函數存儲到 ref 中
+      confirmModalResolveRef.current = resolve;
+      setConfirmModalMessage(message);
+      setShowConfirmModal(true);
+    });
+  };
+  // Modal 確認按鈕點擊事件
+  const handleConfirmModalAccept = () => {
+    if (confirmModalResolveRef.current) {
+      // 調用 resolve(true)，完成 Promise 並返回 true
+      confirmModalResolveRef.current(true);
+      confirmModalResolveRef.current = null;
+    }
+    setShowConfirmModal(false);
+    setConfirmModalMessage('');
+  };
+  // Modal 取消按鈕點擊事件
+  const handleConfirmModalClose = () => {
+    if (confirmModalResolveRef.current) {
+      // 調用 resolve(false)，完成 Promise 並返回 false
+      confirmModalResolveRef.current(false);
+      confirmModalResolveRef.current = null;
+    }
+    setShowConfirmModal(false);
+    setConfirmModalMessage('');
+  };
 
   const fetchOrders = async (page = 1) => {
     try {
@@ -207,8 +242,15 @@ function Orders() {
           draftOrder={draftOrder}
           setDraftOrder={setDraftOrder}
           fetchOrders={() => fetchOrders(pagination.current_page)}
+          openConfirmModal={openConfirmModal}
         />
       )}
+      <ConfirmModal
+        show={showConfirmModal}
+        message={confirmModalMessage}
+        onAccept={handleConfirmModalAccept}
+        onClose={handleConfirmModalClose}
+      />
     </div>
   );
 }
