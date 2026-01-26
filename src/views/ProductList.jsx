@@ -1,10 +1,11 @@
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import { Fragment, useEffect } from 'react';
+import clsx from 'clsx';
+import { Fragment, useEffect, useState } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router';
+import { NavLink, useSearchParams } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import Pagination from '../components/Pagination';
 import ProductCard from '../components/ProductCard';
@@ -38,16 +39,31 @@ const events = [
 ];
 
 const menuItem = [
-  { label: '全部', path: '/products' },
-  { label: '植栽單品', path: '/products?category=item' },
-  { label: '療癒組盆', path: '/products?category=bundle' },
-  { label: '客製禮盒', path: '/products?category=giftbox' },
+  { label: '全部', category: null, productType: null, path: '/products' },
+  { label: '植栽單品', category: '植栽單品', productType: null, path: '/products?category=植栽單品' },
+  { label: '療癒組盆', category: '療癒組盆', productType: null, path: '/products?category=療癒組盆' },
+  { label: '客製禮盒', category: '客製禮盒', productType: null, path: '/products?category=客製禮盒' },
   {
     label: '配件商品',
     children: [
-      { label: '土壤', path: '/products?category=merchandise&product_type=soil' },
-      { label: '盆器', path: '/products?category=merchandise&product_type=pots' },
-      { label: '裝飾物', path: '/products?category=merchandise&product_type=accessories' },
+      {
+        label: '土壤',
+        category: '配件商品',
+        productType: '土壤',
+        path: '/products?category=配件商品&product_type=土壤',
+      },
+      {
+        label: '盆器',
+        category: '配件商品',
+        productType: '盆器',
+        path: '/products?category=配件商品&product_type=盆器',
+      },
+      {
+        label: '裝飾物',
+        category: '配件商品',
+        productType: '裝飾物',
+        path: '/products?category=配件商品&product_type=裝飾物',
+      },
     ],
   },
 ];
@@ -56,13 +72,36 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const { productList, currentPage, totalPages } = useSelector(state => state.guestProduct);
 
+  const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category');
+  const productType = searchParams.get('product_type');
+
+  const mobileDropdownLabel = () => {
+    if (category === null) return '全部';
+
+    if (productType) return productType;
+
+    return category;
+  };
+
   const onPageChange = page => {
-    dispatch(getProducts({ page }));
+    setPage(page);
+  };
+
+  const isActiveCategory = item => {
+    if (item.category === null) return !category;
+
+    if (item.productType) return category === item.category && productType === item.productType;
+
+    return category === item.category && !productType;
   };
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    dispatch(getProducts({ page, category, productType }));
+  }, [dispatch, page, category, productType]);
 
   return (
     <>
@@ -126,9 +165,13 @@ export default function ProductList() {
           {/* <!-- 手機版category --> */}
           <div className="row align-items-center mb-6 d-lg-none">
             <div className="col-6">
-              <Dropdown autoClose="outside">
+              <Dropdown
+                autoClose="outside"
+                show={mobileDropdownShow}
+                onToggle={nextShow => setMobileDropdownShow(nextShow)}
+              >
                 <Dropdown.Toggle variant={null} bsPrefix="form-select text-start py-4 rounded-0 border-0 border-bottom">
-                  全部
+                  {mobileDropdownLabel()}
                 </Dropdown.Toggle>
                 <Dropdown.Menu as="ul" className="dropdown-menu w-100 mt-3 rounded-0 p-3 border-0 dropdown-menu-shadow">
                   {menuItem.map((item, idx) => {
@@ -148,7 +191,13 @@ export default function ProductList() {
                                   <li key={item.path}>
                                     <NavLink
                                       to={item.path}
-                                      className={`d-block border-0 pt-5 pb-0 px-0 fs-sm text-neutral-400`}
+                                      onClick={() => setMobileDropdownShow(false)}
+                                      className={() =>
+                                        clsx([
+                                          'd-block border-0 pt-5 pb-0 px-0 fs-sm',
+                                          isActiveCategory(item) ? 'text-primary' : 'text-neutral-400',
+                                        ])
+                                      }
                                     >
                                       {item.label}
                                     </NavLink>
@@ -161,7 +210,16 @@ export default function ProductList() {
                       </li>
                     ) : (
                       <li className="border-bottom" key={item.path}>
-                        <NavLink to={item.path} className="d-block fw-medium py-5 px-3 text-neutral-700">
+                        <NavLink
+                          to={item.path}
+                          onClick={() => setMobileDropdownShow(false)}
+                          className={() =>
+                            clsx([
+                              'd-block fw-medium py-5 px-3',
+                              isActiveCategory(item) ? 'text-primary' : 'text-neutral-700',
+                            ])
+                          }
+                        >
                           {item.label}
                         </NavLink>
                       </li>
@@ -186,20 +244,26 @@ export default function ProductList() {
 
           {/* <!-- 手機版products --> */}
           <div className="row d-lg-none">
-            {productList.map(product => {
-              return (
-                <div className="col-6 mb-6" key={product.id}>
-                  <ProductCard
-                    title={product.title}
-                    image={product.imageUrl}
-                    alt={product.title}
-                    tag={product.category}
-                    originPrice={product.origin_price}
-                    price={product.price}
-                  />
-                </div>
-              );
-            })}
+            {productList && productList.length > 0 ? (
+              productList.map(product => {
+                return (
+                  <div className="col-6 mb-6" key={product.id}>
+                    <ProductCard
+                      title={product.title}
+                      image={product.imageUrl}
+                      alt={product.title}
+                      tag={product.category}
+                      originPrice={product.origin_price}
+                      price={product.price}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col">
+                <p className="text-center text-neutral-400 py-8">沒有符合條件的商品。</p>
+              </div>
+            )}
           </div>
 
           {/* <!-- 電腦版 --> */}
@@ -224,7 +288,12 @@ export default function ProductList() {
                                   <li key={item.path}>
                                     <NavLink
                                       to={item.path}
-                                      className="d-block border-0 pt-5 pb-0 px-0 fs-8 text-neutral-400 accessories-item"
+                                      className={() =>
+                                        clsx([
+                                          'd-block border-0 pt-5 pb-0 px-0 fs-8',
+                                          isActiveCategory(item) ? 'text-primary' : 'text-neutral-400 accessories-item',
+                                        ])
+                                      }
                                     >
                                       {item.label}
                                     </NavLink>
@@ -237,7 +306,15 @@ export default function ProductList() {
                       </li>
                     ) : (
                       <li className="border-bottom" key={idx}>
-                        <NavLink to={item.path} className={`d-block fs-6 fw-medium p-6 text-neutral-700`}>
+                        <NavLink
+                          to={item.path}
+                          className={() =>
+                            clsx([
+                              'd-block fs-6 fw-medium p-6',
+                              isActiveCategory(item) ? 'text-primary' : 'text-neutral-700',
+                            ])
+                          }
+                        >
                           {item.label}
                         </NavLink>
                       </li>
@@ -270,20 +347,26 @@ export default function ProductList() {
 
                 {/* <!-- 產品列表 --> */}
                 <div className="row">
-                  {productList.map(product => {
-                    return (
-                      <div className="col-4 mb-6" key={product.id}>
-                        <ProductCard
-                          title={product.title}
-                          image={product.imageUrl}
-                          alt={product.title}
-                          tag={product.category}
-                          originPrice={product.origin_price}
-                          price={product.price}
-                        />
-                      </div>
-                    );
-                  })}
+                  {productList && productList.length > 0 ? (
+                    productList.map(product => {
+                      return (
+                        <div className="col-4 mb-6" key={product.id}>
+                          <ProductCard
+                            title={product.title}
+                            image={product.imageUrl}
+                            alt={product.title}
+                            tag={product.category}
+                            originPrice={product.origin_price}
+                            price={product.price}
+                          />
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="col">
+                      <p className="text-center text-neutral-400 py-8">沒有符合條件的商品。</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
