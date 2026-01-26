@@ -1,3 +1,7 @@
+.admin-orders-container {
+  min-height: calc(100vh - 80px);
+}
+
 .admin-orders-daypicker {
   min-width: 230px;
 }
@@ -6,4 +10,12 @@
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
+}
+
+.admin-orders-offcanvas {
+  --bs-offcanvas-width: 800px;
+}
+
+.admin-orders-product-img {
+  height: 100px;
 }
