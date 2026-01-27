@@ -1,5 +1,6 @@
-import { guestOrderApi } from '@/api';
+import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
+import { fetchCarts } from '@/slice/cartSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import IMask from 'imask';
@@ -9,7 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { IMaskInput } from 'react-imask';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
 // 運費
@@ -91,6 +92,7 @@ const ubnSchema = {
 };
 
 function SecondStep({ handleSwitchStep, setOrderInfo }) {
+  const dispatch = useDispatch();
   // 用於追蹤 Modal 關閉後是否要換頁
   const shouldSwitchAfterClose = useRef(false);
   // 控制 Modal 顯示與否
@@ -256,6 +258,38 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
     }
   };
 
+  // 處理信用卡付款（獨立方法，確保錯誤不會中斷流程）
+  const processCreditCardPayment = async orderId => {
+    try {
+      const payResponse = await payApi.createPayment(orderId);
+      return payResponse.success;
+    } catch (error) {
+      // 付款失敗時記錄錯誤但不中斷流程
+      // 使用 Infinity 避免自動消失
+      toast(
+        t => (
+          <div className="d-flex align-items-center gap-3">
+            <span className="material-symbols-rounded bg-danger text-white rounded-circle p-1">close</span>
+            <div>
+              <span>信用卡付款處理失敗，請稍後查看訂單狀態</span>
+              <br />
+              <span className="text-danger fs-sm">{error}</span>
+            </div>
+            <span
+              className="material-symbols-rounded"
+              onClick={() => toast.dismiss(t.id)}
+              style={{ cursor: 'pointer' }}
+            >
+              close
+            </span>
+          </div>
+        ),
+        { duration: Infinity },
+      );
+      return false;
+    }
+  };
+
   // 確認送出：設定 flag，關閉 Modal 後會觸發換頁
   const handleConfirmSubmit = async () => {
     // 建立訂單
@@ -281,19 +315,31 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
         },
         message: orderData.message,
       };
-      const res = await guestOrderApi.createOrder(apiData);
-      setOrderInfo({
-        orderId: res.orderId,
+      const orderResponse = await guestOrderApi.createOrder(apiData);
+
+      // 建立 orderInfo 基礎物件
+      const orderInfo = {
+        orderId: orderResponse.orderId,
         email: recipientEmail,
         // 是否轉帳付款
         isTransfer: paymentMethod === '轉帳',
         // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59) (timestamp)
-        transferDeadline: new Date(res.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
-      });
+        transferDeadline: new Date(orderResponse.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
+      };
+
+      // 只有信用卡一次付清才會有 isPaid 欄位
+      // 使用獨立方法處理，確保即使付款失敗也不會中斷流程
+      if (paymentMethod === '信用卡一次付清') {
+        orderInfo.isPaid = await processCreditCardPayment(orderResponse.orderId);
+      }
+
+      setOrderInfo(orderInfo);
 
       // 設定 flag，關閉 Modal 後會觸發換頁
       shouldSwitchAfterClose.current = true;
       handleCloseConfirmModal();
+      // 更新購物車資訊
+      dispatch(fetchCarts(false));
     } catch (error) {
       toast.error(error);
     }
