@@ -16,8 +16,6 @@ function Orders() {
   // 訂單詳情側邊欄
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderDetailShow, setOrderDetailShow] = useState(false);
-  // 編輯狀態與草稿訂單資料
-  const [draftOrder, setDraftOrder] = useState(null);
 
   // 日期區間選擇
   const [dateRange, setDateRange] = useState([null, null]);
@@ -193,13 +191,6 @@ function Orders() {
                         size="sm"
                         onClick={() => {
                           setOrderDetail(order);
-                          setDraftOrder({
-                            editable: false,
-                            userName: order.user.name,
-                            userAddress: order.user.address,
-                            createDate: new Date(order.create_at * 1000),
-                            isPaid: order.is_paid,
-                          });
                           setOrderDetailShow(true);
                         }}
                       >
@@ -249,13 +240,11 @@ function Orders() {
         onPageChange={fetchOrders}
         className="justify-content-end mb-6"
       />
-      {orderDetail && draftOrder && (
+      {orderDetail && (
         <OrderDetailOffcanvas
           orderDetail={orderDetail}
           orderDetailShow={orderDetailShow}
           setOrderDetailShow={setOrderDetailShow}
-          draftOrder={draftOrder}
-          setDraftOrder={setDraftOrder}
           fetchOrders={() => fetchOrders(pagination.current_page)}
           openConfirmModal={openConfirmModal}
         />

@@ -1,33 +1,38 @@
 import { adminOrderApi } from '@/api';
 import Button from '@/components/Button';
-import { useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import OrderDatePicker from './OrderDatePicker';
 
-function OrderDetailOffcanvas({
-  orderDetail,
-  orderDetailShow,
-  setOrderDetailShow,
-  draftOrder,
-  setDraftOrder,
-  fetchOrders,
-  openConfirmModal,
-}) {
-  // 安全解構，避免 draftOrder 為 null 時報錯
-  const { editable = false, userName = '', userAddress = '', createDate = null, isPaid = false } = draftOrder || {};
-  const [hasChanged, setHasChanged] = useState(false);
+function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow, fetchOrders, openConfirmModal }) {
+  const [editable, setEditable] = useState(false);
 
-  const handleDraftOrderChange = (key, value) => {
-    setDraftOrder(prev => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  const {
+    register,
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors, isDirty },
+  } = useForm({
+    defaultValues: {
+      userName: '',
+      userAddress: '',
+      createDate: null,
+      isPaid: false,
+    },
+  });
+
+  const userName = useWatch({ control, name: 'userName' });
+  const userAddress = useWatch({ control, name: 'userAddress' });
+  const createDate = useWatch({ control, name: 'createDate' });
+  const isPaid = useWatch({ control, name: 'isPaid' });
 
   // 關閉側邊欄
   const handleOffcanvasClose = async (skipCheck = false) => {
-    if (!skipCheck && hasChanged) {
+    if (!skipCheck && isDirty) {
       // 調用 openConfirmModal，Promise 會在這裡「暫停」，等待用戶操作
       const result = await openConfirmModal('有未儲存的變更，確定要離開嗎？');
       if (!result) {
@@ -35,31 +40,23 @@ function OrderDetailOffcanvas({
       }
     }
     setOrderDetailShow(false);
-    setDraftOrder({
-      editable: false,
-      userName: '',
-      userAddress: '',
-      createDate: null,
-      isPaid: false,
-    });
-    setHasChanged(false);
+    setEditable(false);
   };
 
-  const handleSaveDraftOrder = async () => {
+  const handleSaveOrder = async () => {
     try {
       await adminOrderApi.updateOrder(orderDetail.id, {
         ...orderDetail,
         // 修改內容
-        is_paid: draftOrder.isPaid,
-        create_at: draftOrder.createDate.getTime() / 1000,
+        is_paid: isPaid,
+        create_at: createDate.getTime() / 1000,
         user: {
           ...orderDetail.user,
-          name: draftOrder.userName,
-          address: draftOrder.userAddress,
+          name: userName,
+          address: userAddress,
         },
       });
       toast.success('訂單資訊已儲存');
-      setHasChanged(false);
       handleOffcanvasClose(true); // 跳過檢查，因為已經儲存了
       await fetchOrders();
     } catch (error) {
@@ -67,31 +64,17 @@ function OrderDetailOffcanvas({
     }
   };
 
-  // 計算是否有變更
-  const computedHasChanged = useMemo(() => {
-    if (!orderDetailShow) return false;
-    return (
-      userName !== orderDetail.user.name ||
-      userAddress !== orderDetail.user.address ||
-      createDate?.getTime() / 1000 !== orderDetail.create_at ||
-      isPaid !== orderDetail.is_paid
-    );
-  }, [
-    userName,
-    userAddress,
-    createDate,
-    isPaid,
-    orderDetail.create_at,
-    orderDetail.is_paid,
-    orderDetail.user.address,
-    orderDetail.user.name,
-    orderDetailShow,
-  ]);
-
-  // 同步 computedHasChanged 到狀態
+  // 初始化表單
   useEffect(() => {
-    setHasChanged(computedHasChanged);
-  }, [computedHasChanged]);
+    if (orderDetailShow && orderDetail) {
+      reset({
+        userName: orderDetail.user?.name || '',
+        userAddress: orderDetail.user?.address || '',
+        createDate: orderDetail.create_at ? new Date(orderDetail.create_at * 1000) : null,
+        isPaid: orderDetail.is_paid || false,
+      });
+    }
+  }, [orderDetail, orderDetailShow, reset]);
 
   return (
     <Offcanvas show={orderDetailShow} onHide={handleOffcanvasClose} placement="end" className="admin-orders-offcanvas">
@@ -105,7 +88,7 @@ function OrderDetailOffcanvas({
               shape="circle"
               size="sm"
               className="admin-orders-button border-0 ms-auto me-2"
-              onClick={() => handleDraftOrderChange('editable', !editable)}
+              onClick={() => setEditable(!editable)}
             >
               <span className="custom-btn-icon material-symbols-rounded">{editable ? 'lock_open_right' : 'lock'}</span>
             </Button>
@@ -132,14 +115,23 @@ function OrderDetailOffcanvas({
                   下單日期
                 </label>
                 <div className="col-8">
-                  <OrderDatePicker
-                    id="orderDate"
-                    selectsRange={false}
-                    date={createDate}
-                    setDate={date => handleDraftOrderChange('createDate', date)}
-                    disabled={!editable}
-                    includeTime={true}
+                  <Controller
+                    control={control}
+                    rules={{ required: { value: true, message: '請選擇下單日期' } }}
+                    name="createDate"
+                    render={({ field }) => (
+                      <OrderDatePicker
+                        id="orderDate"
+                        selectsRange={false}
+                        date={field.value}
+                        setDate={field.onChange}
+                        disabled={!editable}
+                        includeTime={true}
+                        className={errors.createDate && 'is-invalid'}
+                      />
+                    )}
                   />
+                  {errors.createDate && <div className="fs-sm text-danger mt-1">{errors.createDate.message}</div>}
                 </div>
               </div>
             </div>
@@ -208,11 +200,11 @@ function OrderDetailOffcanvas({
                   <input
                     type="text"
                     disabled={!editable}
-                    className="form-control"
+                    className={clsx('form-control', errors.userName && 'is-invalid')}
                     id="userName"
-                    value={userName}
-                    onChange={e => handleDraftOrderChange('userName', e.target.value)}
+                    {...register('userName', { required: { value: true, message: '請輸入姓名' } })}
                   />
+                  {errors.userName && <div className="fs-sm text-danger mt-1">{errors.userName.message}</div>}
                 </div>
               </div>
             </div>
@@ -255,11 +247,11 @@ function OrderDetailOffcanvas({
               <input
                 type="text"
                 disabled={!editable}
-                className="form-control"
+                className={clsx('form-control', errors.userAddress && 'is-invalid')}
                 id="userAddress"
-                value={userAddress}
-                onChange={e => handleDraftOrderChange('userAddress', e.target.value)}
+                {...register('userAddress', { required: { value: true, message: '請輸入地址' } })}
               />
+              {errors.userAddress && <div className="fs-sm text-danger mt-1">{errors.userAddress.message}</div>}
             </div>
           </div>
         </section>
@@ -352,30 +344,38 @@ function OrderDetailOffcanvas({
                 <span className="col-4 col-form-label text-nowrap">是否已付款</span>
                 <div className="col-8 d-flex align-items-center">
                   <div className="admin-orders-is-paid-container position-relative">
-                    <input
-                      type="radio"
-                      id="isPaidFalse"
-                      value="false"
-                      checked={!isPaid}
-                      className="visually-hidden admin-orders-is-paid-radio"
-                      onChange={() => handleDraftOrderChange('isPaid', false)}
-                      disabled={!editable}
+                    <Controller
+                      control={control}
+                      name="isPaid"
+                      render={({ field }) => (
+                        <>
+                          <input
+                            type="radio"
+                            id="isPaidFalse"
+                            value="false"
+                            checked={!field.value}
+                            className="visually-hidden admin-orders-is-paid-radio"
+                            onChange={() => field.onChange(false)}
+                            disabled={!editable}
+                          />
+                          <label htmlFor="isPaidFalse" className="border border-end-0 rounded-start px-2 py-1">
+                            未付款
+                          </label>
+                          <input
+                            type="radio"
+                            id="isPaidTrue"
+                            value="true"
+                            checked={field.value}
+                            className="visually-hidden admin-orders-is-paid-radio"
+                            onChange={() => field.onChange(true)}
+                            disabled={!editable}
+                          />
+                          <label htmlFor="isPaidTrue" className="border border-start-0 rounded-end px-2 py-1">
+                            已付款
+                          </label>
+                        </>
+                      )}
                     />
-                    <label htmlFor="isPaidFalse" className="border border-end-0 rounded-start px-2 py-1">
-                      未付款
-                    </label>
-                    <input
-                      type="radio"
-                      id="isPaidTrue"
-                      value="true"
-                      checked={isPaid}
-                      className="visually-hidden admin-orders-is-paid-radio"
-                      onChange={() => handleDraftOrderChange('isPaid', true)}
-                      disabled={!editable}
-                    />
-                    <label htmlFor="isPaidTrue" className="border border-start-0 rounded-end px-2 py-1">
-                      已付款
-                    </label>
                   </div>
                 </div>
               </div>
@@ -498,8 +498,8 @@ function OrderDetailOffcanvas({
           variant="filled-primary"
           shape="pill"
           size="sm"
-          onClick={handleSaveDraftOrder}
-          disabled={!hasChanged}
+          onClick={handleSubmit(handleSaveOrder)}
+          disabled={!isDirty}
         >
           儲存
         </Button>
