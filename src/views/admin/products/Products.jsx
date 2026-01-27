@@ -16,6 +16,7 @@ function Products() {
   const {
     products,
     pagination: { current_page, total_pages },
+    errors: { fetch: fetchingError },
   } = useSelector(state => state.product);
 
   // --- Local State ---
@@ -64,6 +65,11 @@ function Products() {
     dispatch(fetchProducts({ page: 1 }));
   }, [dispatch]);
 
+  // --- View State Logic ---
+  const isFetchingError = !!fetchingError;
+  const isNormalProducts = !isFetchingError && total_pages > 0;
+  const hasNoProducts = !isFetchingError && total_pages === 0;
+
   return (
     <>
       <div className="py-13">
@@ -105,22 +111,50 @@ function Products() {
             </thead>
             {/* 表格內容*/}
             <tbody>
-              {products.map(product => (
-                <ProductRow key={product.id} product={product} openDeleteModal={openDeleteModal} />
-              ))}
+              {isFetchingError && (
+                <tr>
+                  <td colSpan="5" className="border-0 py-6 text-center">
+                    <div className="py-8 d-flex flex-column gap-4 align-items-center">
+                      <span className="material-symbols-rounded d-block fs-1 text-danger">cancel</span>
+                      <h3 className="h5 text-neutral-400">取得商品列表錯誤</h3>
+                      <p className="text-neutral-400">錯誤說明：{fetchingError}</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {hasNoProducts && (
+                <tr>
+                  <td colSpan="5" className="border-0 py-6 text-center">
+                    <div className="py-8">
+                      <img
+                        src="https://storage.googleapis.com/vue-course-api.appspot.com/plantique-life/1769535353095.png"
+                        alt="目前沒有商品"
+                        className="mb-6 no-product-placeholder object-fit-cover"
+                      />
+                      <h3 className="h5 text-neutral-400">目前沒有商品</h3>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {isNormalProducts &&
+                products.map(product => (
+                  <ProductRow key={product.id} product={product} openDeleteModal={openDeleteModal} />
+                ))}
             </tbody>
           </table>
         </section>
         {/* 頁碼 */}
-        <div className="pb-10">
-          <p className="text-end text-neutral-400 mb-8">每頁顯示 10 列，總共 {total_pages} 頁</p>
-          <Pagination
-            currentPage={current_page}
-            totalPages={total_pages}
-            onPageChange={handlePageChange}
-            className="justify-content-end"
-          />
-        </div>
+        {!!total_pages && total_pages > 0 && (
+          <div className="pb-10">
+            <p className="text-end text-neutral-400 mb-8">每頁顯示 10 列，總共 {total_pages} 頁</p>
+            <Pagination
+              currentPage={current_page}
+              totalPages={total_pages}
+              onPageChange={handlePageChange}
+              className="justify-content-end"
+            />
+          </div>
+        )}
       </div>
       {/* Modal */}
       <Modal show={modalShow} onHide={handleDeleteCancel} contentClassName="rounded-0" size="sm" centered>
