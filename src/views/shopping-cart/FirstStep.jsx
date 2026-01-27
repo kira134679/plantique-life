@@ -1,4 +1,4 @@
-import { couponApi } from '@/api';
+import { guestCouponApi } from '@/api';
 import Button from '@/components/Button';
 import ProductCard from '@/components/ProductCard';
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
@@ -79,7 +79,7 @@ function FirstStep({ productImages, handleSwitchStep }) {
       // pending 狀態
       setCouponStatus({ isLoading: true, message: '驗證中...', type: null });
       // 呼叫 API
-      const couponRes = await couponApi.applyCoupon({ code }, true);
+      const couponRes = await guestCouponApi.applyCoupon({ code }, true);
       const cartsRes = await dispatch(fetchCarts(true)).unwrap();
       // 組合優惠券訊息
       const couponMsg = `${couponRes.message} (${cartsRes.data.carts[0].coupon.title})`;

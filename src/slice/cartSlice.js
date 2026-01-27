@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { cartApi, couponApi } from '../api';
+import { cartApi, guestCouponApi } from '../api';
 
 // 取得購物車列表
 export const fetchCarts = createAsyncThunk('cart/fetchCarts', async (preventGlobalLoading, { rejectWithValue }) => {
@@ -26,7 +26,7 @@ export const addAndRefetchCarts = createAsyncThunk(
       if (couponCode) {
         const isProductInCart = carts.some(cartItem => cartItem.product?.id === productId);
         if (!isProductInCart) {
-          await couponApi.applyCoupon({ code: couponCode }, preventGlobalLoading);
+          await guestCouponApi.applyCoupon({ code: couponCode }, preventGlobalLoading);
         }
       }
 
