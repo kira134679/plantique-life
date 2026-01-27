@@ -264,6 +264,8 @@ export default function Home() {
                           </p>
                           <div className="d-flex justify-content-end">
                             <Button
+                              as={Link}
+                              to="/articles"
                               variant="link-primary"
                               href={item.link}
                               shape="link"
