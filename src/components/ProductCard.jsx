@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import Button from './Button';
 
 export default function ProductCard({ title, image, alt, tag, originPrice, price, ...props }) {
+  const [isFav, setIsFav] = useState(false);
+
   return (
     <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
       <div className="position-relative overflow-hidden product-card-img-height">
@@ -10,7 +13,13 @@ export default function ProductCard({ title, image, alt, tag, originPrice, price
           alt={alt || ''}
         />
         <div className="position-absolute favorite-btn">
-          <Button type="button" variant="fav" data-bs-toggle="button">
+          <Button
+            type="button"
+            variant="fav"
+            data-bs-toggle="button"
+            className={`${isFav ? 'active' : ''}`}
+            onClick={() => setIsFav(prev => !prev)}
+          >
             <span className="custom-btn-icon material-symbols-rounded"> favorite </span>
           </Button>
         </div>
