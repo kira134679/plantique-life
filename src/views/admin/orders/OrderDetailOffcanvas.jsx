@@ -138,6 +138,7 @@ function OrderDetailOffcanvas({
                     date={createDate}
                     setDate={date => handleDraftOrderChange('createDate', date)}
                     disabled={!editable}
+                    includeTime={true}
                   />
                 </div>
               </div>
