@@ -9,12 +9,6 @@ import titleLg from 'assets/images/index/img_title_lg.svg';
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import productImg1 from 'assets/images/products/img_product_01.png';
-import productImg2 from 'assets/images/products/img_product_02.png';
-import productImg3 from 'assets/images/products/img_product_03.png';
-import productImg4 from 'assets/images/products/img_product_04.png';
-import productImg5 from 'assets/images/products/img_product_05.png';
-import productImg6 from 'assets/images/products/img_product_06.png';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +19,7 @@ import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
 import { getArticles } from '../slice/article/guestArticleSlice';
 import { timestampToDate } from '../utils/utils';
+import axios from 'axios';
 
 const events = [
   {
@@ -80,55 +75,6 @@ const category = [
   },
 ];
 
-const products = [
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg1,
-    tag: '質感精選',
-    title: '泡泡森林',
-    originPrice: '6666',
-    price: 'NT$ 6,200',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg2,
-    tag: '質感精選',
-    title: '向陽而生',
-    originPrice: '',
-    price: 'NT$ 7,280',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg3,
-    tag: '質感精選',
-    title: '暮光角落',
-    originPrice: '',
-    price: 'NT$ 7,500',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg4,
-    tag: '質感精選',
-    title: '雲深處靜',
-    originPrice: '',
-    price: 'NT$ 6,600',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg5,
-    tag: '質感精選',
-    title: '玉露女王',
-    price: 'NT$ 5,200',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg6,
-    tag: '質感精選',
-    title: '玉扇食生',
-    price: 'NT$ 4,600',
-  },
-];
-
 const columnTabs = [
   { name: '全部', displayName: '全部' },
   { name: '養護指南', displayName: '#養護指南' },
@@ -137,11 +83,26 @@ const columnTabs = [
 ];
 
 const MAX_ARTICLES_DISPLAY_COUNT = 4;
+const API_BASE = import.meta.env.VITE_BASE_URL;
+const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function Home() {
   const [activeColumnTab, setActiveColumnTab] = useState('全部');
   const dispatch = useDispatch();
   const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/api/${API_PATH}/products/all`);
+        setProducts(res.data.products.slice(0, 6));
+      } catch (error) {
+        alert('取得產品失敗');
+      }
+    };
+    getProducts();
+  }, []);
 
   useEffect(() => {
     dispatch(getArticles());
@@ -415,11 +376,12 @@ export default function Home() {
                 {products.map((item, idx) => (
                   <SwiperSlide key={idx} className="swiper-slide-prouct">
                     <ProductCard
+                      id={item.id}
                       title={item.title}
-                      image={item.image}
+                      imageUrl={item.imageUrl}
                       alt={item.alt}
-                      tag={item.tag}
-                      originPrice={item.originPrice}
+                      tag="質感精選"
+                      origin_price={item.origin_price}
                       price={item.price}
                     />
                   </SwiperSlide>

@@ -1,14 +1,15 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import Button from './Button';
 
-export default function ProductCard({ title, image, alt, tag, originPrice, price, ...props }) {
+export default function ProductCard({ id, title, imageUrl, alt, tag, origin_price, price, ...props }) {
   const [isFav, setIsFav] = useState(false);
 
   return (
     <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
       <div className="position-relative overflow-hidden product-card-img-height">
         <img
-          src={image}
+          src={imageUrl}
           className="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
           alt={alt || ''}
         />
@@ -34,15 +35,15 @@ export default function ProductCard({ title, image, alt, tag, originPrice, price
         <div className="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
           <div className="d-flex flex-column justify-content-between">
             <h5 className="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
-              <a href="#" className="stretched-link text-decoration-none text-neutral-700">
+              <Link to={`/products/${id}`} className="stretched-link text-decoration-none text-neutral-700">
                 {title}
-              </a>
+              </Link>
             </h5>
             <div className="d-flex flex-column flex-xl-row align-items-baseline">
               <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{price}</p>
-              {originPrice && (
+              {origin_price && (
                 <p className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
-                  {originPrice}
+                  {origin_price}
                 </p>
               )}
             </div>
