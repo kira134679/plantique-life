@@ -226,7 +226,7 @@ export default function Home() {
                           <div className="d-flex justify-content-end">
                             <Button
                               as={Link}
-                              to="/articles"
+                              to={`/articles/${item.idx}`}
                               variant="link-primary"
                               href={item.link}
                               shape="link"
@@ -381,7 +381,7 @@ export default function Home() {
                       imageUrl={item.imageUrl}
                       alt={item.alt}
                       tag="質感精選"
-                      origin_price={item.origin_price}
+                      originPrice={item.origin_price}
                       price={item.price}
                     />
                   </SwiperSlide>

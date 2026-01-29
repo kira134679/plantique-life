@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import Button from './Button';
 
-export default function ProductCard({ id, title, imageUrl, alt, tag, origin_price, price, ...props }) {
+export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, ...props }) {
   const [isFav, setIsFav] = useState(false);
 
   return (
@@ -17,7 +17,6 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, origin_pric
           <Button
             type="button"
             variant="fav"
-            data-bs-toggle="button"
             className={`${isFav ? 'active' : ''}`}
             onClick={() => setIsFav(prev => !prev)}
           >
@@ -41,9 +40,9 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, origin_pric
             </h5>
             <div className="d-flex flex-column flex-xl-row align-items-baseline">
               <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{price}</p>
-              {origin_price && (
+              {originPrice && (
                 <p className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
-                  {origin_price}
+                  {originPrice}
                 </p>
               )}
             </div>
