@@ -89,6 +89,9 @@
       min-width: 28px;
     }
   }
+  button:disabled.deleting-button {
+    opacity: 1;
+  }
 }
 .checkout-list {
   .cart-product-img {
