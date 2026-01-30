@@ -36,7 +36,7 @@ function Products() {
     products,
     pagination: { current_page, total_pages },
     errors: { fetch: fetchingError },
-  } = useSelector(state => state.product);
+  } = useSelector(state => state.adminProduct);
 
   // --- Router ---
   const [searchParams, setSearchParams] = useSearchParams();

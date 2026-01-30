@@ -13,7 +13,7 @@ function ProductRow({ product, openDeleteModal }) {
   const dispatch = useDispatch();
   const {
     pagination: { current_page },
-  } = useSelector(state => state.product);
+  } = useSelector(state => state.adminProduct);
 
   // --- Event Handlers ---
   const handleStatusSelect = async eventKey => {
@@ -61,10 +61,7 @@ function ProductRow({ product, openDeleteModal }) {
       <td>
         <div>
           <Dropdown className="checkout-dropdown min-w-5rem" onSelect={eventKey => handleStatusSelect(eventKey)}>
-            <Dropdown.Toggle
-              className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-              id="product-status"
-            >
+            <Dropdown.Toggle className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8">
               {product.is_enabled ? '啟用' : '停用'}
             </Dropdown.Toggle>
             <Dropdown.Menu className="w-100">
