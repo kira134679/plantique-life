@@ -55,7 +55,7 @@ function Products() {
     [setModalShow, setDeleteId],
   );
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteModalConfirm = async () => {
     setModalShow(false);
     try {
       await dispatch(deleteProduct(deleteId)).unwrap();
@@ -76,7 +76,7 @@ function Products() {
     }
   };
 
-  const handleDeleteCancel = () => {
+  const handleDeleteModalCancel = () => {
     setModalShow(false);
     setDeleteId(null);
   };
@@ -235,7 +235,7 @@ function Products() {
         )}
       </div>
       {/* Modal */}
-      <Modal show={modalShow} onHide={handleDeleteCancel} contentClassName="rounded-0" size="sm" centered>
+      <Modal show={modalShow} onHide={handleDeleteModalCancel} contentClassName="rounded-0" size="sm" centered>
         <Modal.Header closeButton className="border-bottom-0 p-6">
           <Modal.Title className="h5 text-primary">刪除商品</Modal.Title>
         </Modal.Header>
@@ -251,7 +251,7 @@ function Products() {
             size="sm"
             shape="square"
             className="bg-neutral-400 m-0"
-            onClick={handleDeleteCancel}
+            onClick={handleDeleteModalCancel}
           >
             取消
           </Button>
@@ -261,7 +261,7 @@ function Products() {
             size="sm"
             shape="square"
             className="m-0"
-            onClick={handleDeleteConfirm}
+            onClick={handleDeleteModalConfirm}
           >
             確定
           </Button>
