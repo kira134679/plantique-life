@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useSearchParams } from 'react-router';
 
@@ -15,6 +15,8 @@ function OrderList() {
   const [orders, setOrders] = useState(null);
   const [pagination, setPagination] = useState({});
 
+  const skipNextFetchRef = useRef(false);
+
   // 取得訂單資料
   const fetchOrders = useCallback(
     async (page = 1) => {
@@ -26,6 +28,9 @@ function OrderList() {
         // 如果有收到不同的 current_page，則更新 URL 的 page 參數
         const resCurrentPage = response.pagination?.current_page;
         if (page !== resCurrentPage && resCurrentPage > 0) {
+          // 修改 searchParams 會造成 useEffect 重新執行，導致重複呼叫 API (fetchOrders)
+          // 設定 skipNextFetchRef.current 為 true，跳過下一次的 useEffect
+          skipNextFetchRef.current = true;
           // 用回傳的 current_page 更新 URL 的 page 參數
           setSearchParams(
             prev => {
@@ -49,6 +54,12 @@ function OrderList() {
 
   // 依 URL 的 page 參數取得訂單資料
   useEffect(() => {
+    // 如果 skipNextFetchRef.current 為 true，則跳過 useEffect 執行
+    if (skipNextFetchRef.current) {
+      skipNextFetchRef.current = false;
+      return;
+    }
+
     // searchParams.keys() 回傳 iterator 物件，使用 ... 展開成陣列，再使用 some 找出是否有非 page 的參數
     const hasNonPageParam = [...searchParams.keys()].some(key => key !== 'page');
     // 如果有非 page 的參數，僅保留 page 參數
