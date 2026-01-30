@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import ReactPaginate from 'react-paginate';
 import { scrollToTop } from '../utils/scroll';
 
@@ -28,7 +29,7 @@ const Pagination = ({
       pageRangeDisplayed={pageRange} //目前頁數與其前後頁共需顯示幾個頁碼
       marginPagesDisplayed={marginPages} //頁碼頭尾至少需顯示幾個頁碼
       // 樣式設定
-      containerClassName={`pagination custom-pagination gap-4 ${className}`}
+      containerClassName={clsx('pagination custom-pagination gap-4', className)}
       pageClassName="page-item"
       pageLinkClassName="page-link"
       previousClassName="page-item"
