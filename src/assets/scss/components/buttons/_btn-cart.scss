@@ -1,0 +1,32 @@
+@use 'sass:map';
+
+.custom-btn-cart {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $neutral-700,
+    $hover-background: $primary-50,
+    $hover-border: transparent,
+    $hover-color: $neutral-700,
+    $active-background: $primary-100,
+    $active-border: transparent,
+    $active-color: $neutral-700,
+    $disabled-background: rgba($white, 0.4),
+    $disabled-border: transparent,
+    $disabled-color: $white
+  );
+  border-width: 0;
+  & > .custom-btn-icon {
+    display: block;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .custom-btn-social {
+    @include button-size(
+      $padding-y: map.get($spacers, 3),
+      $padding-x: map.get($spacers, 3),
+      $font-size: $font-size-base,
+      $border-radius: 50%
+    );
+  }
+}

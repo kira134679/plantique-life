@@ -92,6 +92,10 @@ export default function ProductList() {
     });
   };
 
+  const handleAddToCart = productId => {
+    // TODO: 將商品加入購物車
+  };
+
   useEffect(() => {
     dispatch(getNews());
   }, [dispatch]);
@@ -242,6 +246,7 @@ export default function ProductList() {
                       tag={product.category}
                       originPrice={product.origin_price}
                       price={product.price}
+                      onAddToCart={handleAddToCart}
                     />
                   </div>
                 );
@@ -344,6 +349,7 @@ export default function ProductList() {
                             tag={product.category}
                             originPrice={product.origin_price}
                             price={product.price}
+                            onAddToCart={handleAddToCart}
                           />
                         </div>
                       );
