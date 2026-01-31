@@ -3,9 +3,10 @@ import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
 import { timestampToDate } from '@/utils/utils';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import toast from 'react-hot-toast';
+import { useSearchParams } from 'react-router';
 import ConfirmModal from './ConfirmModal';
 import OrderDatePicker from './OrderDatePicker';
 import OrderDetailOffcanvas from './OrderDetailOffcanvas';
@@ -13,6 +14,9 @@ import OrderDetailOffcanvas from './OrderDetailOffcanvas';
 const orderTabs = ['全部訂單', '未付款', '已付款'];
 
 function Orders() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const skipNextFetchRef = useRef(false);
+
   // 訂單詳情側邊欄
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderDetailShow, setOrderDetailShow] = useState(false);
@@ -58,15 +62,34 @@ function Orders() {
     setConfirmModalMessage('');
   };
 
-  const fetchOrders = async (page = 1) => {
-    try {
-      const response = await adminOrderApi.fetchOrders(page);
-      setOrders(response.orders);
-      setPagination(response.pagination);
-    } catch (error) {
-      toast.error(error);
-    }
-  };
+  const fetchOrders = useCallback(
+    async (page = 1) => {
+      try {
+        const response = await adminOrderApi.fetchOrders(page);
+        setOrders(response.orders);
+        setPagination(response.pagination);
+
+        const resCurrentPage = response.pagination?.current_page;
+        if (page !== resCurrentPage && resCurrentPage > 0) {
+          // 修改 searchParams 會造成 useEffect 重新執行，導致重複呼叫 API (fetchOrders)
+          // 設定 skipNextFetchRef.current 為 true，跳過下一次的 useEffect
+          skipNextFetchRef.current = true;
+          // 用回傳的 current_page 更新 URL 的 page 參數
+          setSearchParams(
+            prev => {
+              const next = new URLSearchParams(prev);
+              next.set('page', resCurrentPage.toString());
+              return next;
+            },
+            { replace: true },
+          );
+        }
+      } catch (error) {
+        toast.error(error);
+      }
+    },
+    [setSearchParams],
+  );
 
   const handleDeleteOrder = async orderId => {
     try {
@@ -94,12 +117,52 @@ function Orders() {
     }
   };
 
+  // 處理分頁按鈕點擊事件
+  // 更新 URL 的 page 參數去觸發 useEffect，不直接使用 fetchOrders
+  const handlePageChange = page => setSearchParams({ page });
+
   // 初始化時取得訂單列表
   useEffect(() => {
-    (async () => {
-      await fetchOrders();
-    })();
-  }, []);
+    if (skipNextFetchRef.current) {
+      skipNextFetchRef.current = false;
+      return;
+    }
+
+    // searchParams.keys() 回傳 iterator 物件，使用 ... 展開成陣列，再使用 some 找出是否有非 page 的參數
+    const hasNonPageParam = [...searchParams.keys()].some(key => key !== 'page');
+    // 如果有非 page 的參數，僅保留 page 參數
+    if (hasNonPageParam) {
+      setSearchParams(
+        prev => {
+          const page = prev.get('page');
+          return page ? { page } : {};
+        },
+        { replace: true },
+      );
+      return; // 直接 return，觸發下一次 useEffect
+    }
+
+    // 取得 page 參數
+    const currentPage = searchParams.get('page');
+
+    // 如果 page 參數不存在，則取得第一頁的訂單資料
+    if (currentPage === null) {
+      (async () => await fetchOrders(1))();
+      return;
+    }
+
+    // 將 page 參數轉換為數字
+    const pageNum = Number(currentPage);
+
+    // 如果 pageNum 不是數值，或不是整數，或小於 1，則清除 page 參數
+    if (Number.isNaN(pageNum) || !Number.isInteger(pageNum) || pageNum < 1) {
+      setSearchParams({}, { replace: true });
+      return; // 直接 return，觸發下一次 useEffect
+    }
+
+    // 依 pageNum 呼叫 API 取得訂單資料
+    (async () => await fetchOrders(pageNum))();
+  }, [searchParams, fetchOrders, setSearchParams]);
 
   return (
     <div className="d-flex flex-column admin-orders-container">
@@ -237,7 +300,7 @@ function Orders() {
       <Pagination
         currentPage={pagination.current_page || 0}
         totalPages={pagination.total_pages || 0}
-        onPageChange={fetchOrders}
+        onPageChange={handlePageChange}
         className="justify-content-end mb-6"
       />
       {orderDetail && (
