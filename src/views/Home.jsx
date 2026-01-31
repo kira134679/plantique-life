@@ -9,7 +9,7 @@ import titleLg from 'assets/images/index/img_title_lg.svg';
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
@@ -19,7 +19,7 @@ import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
 import { getArticles } from '../slice/article/guestArticleSlice';
 import { timestampToDate } from '../utils/utils';
-import axios from 'axios';
+import { getProducts } from '../slice/product/guestProductSlice';
 
 const events = [
   {
@@ -83,26 +83,12 @@ const columnTabs = [
 ];
 
 const MAX_ARTICLES_DISPLAY_COUNT = 4;
-const API_BASE = import.meta.env.VITE_BASE_URL;
-const API_PATH = import.meta.env.VITE_API_PATH;
 
 export default function Home() {
   const [activeColumnTab, setActiveColumnTab] = useState('全部');
   const dispatch = useDispatch();
   const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/api/${API_PATH}/products/all`);
-        setProducts(res.data.products.slice(0, 6));
-      } catch (error) {
-        alert('取得產品失敗');
-      }
-    };
-    getProducts();
-  }, []);
+  const { productList: products } = useSelector(state => state.guestProduct);
 
   useEffect(() => {
     dispatch(getArticles());
@@ -113,6 +99,21 @@ export default function Home() {
       .filter(article => (activeColumnTab === '全部' ? true : article.tag.includes(activeColumnTab)))
       .slice(0, MAX_ARTICLES_DISPLAY_COUNT);
   }, [activeColumnTab, articleList]);
+
+  //render recommend
+  const randomRef = useRef([]);
+  const randomProducts = randomRef.current;
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (products.length > 0 && randomRef.current.length === 0) {
+      const randomSequence = [...products].sort(() => Math.random() - 0.5);
+      randomRef.current = randomSequence.slice(0, 6);
+    }
+  }, [products]);
 
   return (
     <>
@@ -373,7 +374,7 @@ export default function Home() {
                 }}
                 className="productSwiper"
               >
-                {products.map((item, idx) => (
+                {randomProducts.map((item, idx) => (
                   <SwiperSlide key={idx} className="swiper-slide-prouct">
                     <ProductCard
                       id={item.id}
