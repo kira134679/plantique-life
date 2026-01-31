@@ -24,3 +24,7 @@
 .product-card:hover .product-card-img {
   transform: scale(1.1);
 }
+
+.product-card-cart {
+  z-index: 10;
+}
