@@ -76,5 +76,5 @@ export const productApi = {
    *   }
    * }>}
    */
-  getProductById: (productId, config = {}) => guestClient.get(`${GUEST_API_PATH}/products/${productId}`, config),
+  getProductById: (productId, config = {}) => guestClient.get(`${GUEST_API_PATH}/product/${productId}`, config),
 };
