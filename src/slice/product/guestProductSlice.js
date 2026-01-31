@@ -10,6 +10,17 @@ export const getProducts = createAsyncThunk('guestProduct/getProducts', async (p
   }
 });
 
+export const getProductById = createAsyncThunk(
+  'guestProduct/getProductById',
+  async ({ productId, ...config }, { rejectWithValue }) => {
+    try {
+      return await guestProductApi.getProductById(productId, config);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const productSlice = createSlice({
   name: 'guestProduct',
   initialState: {
