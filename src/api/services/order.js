@@ -6,14 +6,14 @@ export const guestOrderApi = {
   // 建立訂單
   createOrder: data => guestClient.post(`${GUEST_API_PATH}/order`, { data }),
   // 取得所有訂單
-  fetchOrders: () => guestClient.get(`${GUEST_API_PATH}/orders`),
+  fetchOrders: (page = 1) => guestClient.get(`${GUEST_API_PATH}/orders`, { params: { page } }),
   // 取得指定 ID 訂單
   fetchOrderById: orderId => guestClient.get(`${GUEST_API_PATH}/order/${orderId}`),
 };
 
 export const adminOrderApi = {
   // 取得訂單列表
-  fetchOrders: (page = 1) => adminClient.get(`${ADMIN_API_PATH}/orders?page=${page}`),
+  fetchOrders: (page = 1) => adminClient.get(`${ADMIN_API_PATH}/orders`, { params: { page } }),
   // 更新訂單資訊
   updateOrder: (id, data) => adminClient.put(`${ADMIN_API_PATH}/order/${id}`, { data }),
   // 刪除訂單
