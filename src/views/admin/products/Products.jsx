@@ -47,13 +47,10 @@ function Products() {
   const [pageError, setPageError] = useState(null);
 
   // --- Event Handlers ---
-  const openDeleteModal = useCallback(
-    id => {
-      setModalShow(true);
-      setDeleteId(id);
-    },
-    [setModalShow, setDeleteId],
-  );
+  const openDeleteModal = useCallback(id => {
+    setModalShow(true);
+    setDeleteId(id);
+  }, []);
 
   const handleDeleteModalConfirm = async () => {
     setModalShow(false);
