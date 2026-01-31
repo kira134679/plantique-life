@@ -1,0 +1,30 @@
+.member-container {
+  min-height: calc(100vh - 556px);
+  @include media-breakpoint-up(md) {
+    min-height: calc(100vh - 489px);
+  }
+}
+
+.member-nav-container {
+  border-bottom: 1px solid $neutral-200;
+  @include media-breakpoint-up(md) {
+    border-bottom: none;
+  }
+}
+.member-nav-link {
+  transition:
+    color 0.3s,
+    border-bottom-color 0.3s;
+  &:hover,
+  &.active {
+    color: $primary !important;
+    border-bottom: 2px solid $primary;
+  }
+  @include media-breakpoint-up(md) {
+    &,
+    &:hover,
+    &.active {
+      border-bottom: 1px solid $neutral-200;
+    }
+  }
+}

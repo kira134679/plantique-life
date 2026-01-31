@@ -11,6 +11,7 @@
 // layout
 @import './layout/header';
 @import './layout/footer';
+@import './layout/member';
 @import './layout/admin/sidemenu';
 
 // components
@@ -35,5 +36,6 @@
 @import 'assets/scss/shopping-cart';
 @import 'assets/scss/article';
 @import 'assets/scss/article-detail';
+@import 'assets/scss/pages/member/order-list';
 @import 'assets/scss/pages/admin/product-and-coupon';
 @import 'assets/scss/pages/admin/orders';
