@@ -1,10 +1,10 @@
-import { productApi } from '@/api/services/product';
+import { guestProductApi } from '@/api/services/product';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 
 export const getProducts = createAsyncThunk('guestProduct/getProducts', async (params, { rejectWithValue }) => {
   try {
-    return await productApi.getProducts(params);
+    return await guestProductApi.getProducts(params);
   } catch (error) {
     return rejectWithValue(error);
   }

@@ -2,7 +2,7 @@ import adminClient from '../clients/adminClient';
 import guestClient from '../clients/guestClient';
 import { ADMIN_API_PATH, GUEST_API_PATH } from '../core/constants';
 
-export const productApi = {
+export const guestProductApi = {
   /**
    * 取得所有商品資料。
    * @returns {Promise<{
