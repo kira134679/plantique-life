@@ -222,12 +222,8 @@ export default function ProductList() {
             {/* <!-- 手機版toggle --> */}
             <div className="col-6">
               <div className="d-flex text-center justify-content-around py-2">
-                <a href="#" className="d-block w-50 fs-sm fw-medium text-primary">
-                  最新
-                </a>
-                <a href="#" className="d-block w-50 fs-sm fw-medium text-primary-400 border-start">
-                  熱門
-                </a>
+                <span className="d-block w-50 fs-sm fw-medium text-primary">最新</span>
+                <span className="d-block w-50 fs-sm fw-medium text-primary-400 border-start">熱門</span>
               </div>
             </div>
           </div>
@@ -317,12 +313,8 @@ export default function ProductList() {
               <div className="col-9">
                 <div className="d-flex gap-6 mb-6">
                   <div className="d-flex text-center justify-content-around w-100 py-3">
-                    <a href="#" className="d-block w-50 fs-8 fw-medium text-primary">
-                      最新商品
-                    </a>
-                    <a href="#" className="d-block w-50 fs-8 fw-medium text-primary-400 border-start">
-                      熱門商品
-                    </a>
+                    <span className="d-block w-50 fs-8 fw-medium text-primary">最新商品</span>
+                    <span className="d-block w-50 fs-8 fw-medium text-primary-400 border-start">熱門商品</span>
                   </div>
                   <form className="position-relative w-100">
                     <span className="material-symbols-rounded align-bottom position-absolute top-50 start-0 translate-middle-y ps-4 text-primary">
