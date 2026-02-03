@@ -95,7 +95,7 @@ function About() {
                 如果您有品牌合作、活動策劃、媒體採訪…等需求，都歡迎與我們隨時聯絡。
               </p>
               <p className="fs-sm fs-lg-8 text-center text-lg-start">
-                請寄至 <a href="mailto:PlantiqueLife@gmail.com">PlantiqueLife@gmail.com</a>
+                請寄至 <a href="mailto:plantique.life@gmail.com">plantique.life@gmail.com</a>
                 <br />
                 我們將盡速與您聯繫。
               </p>
