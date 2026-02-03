@@ -71,14 +71,14 @@ export default function Navbar() {
           <Link className="d-none d-lg-block w-lg-30" to="/">
             <img src={logoLg} alt="Plantique Life 植感生活" />
           </Link>
-          <Link className="d-lg-none" to="/">
+          <Link className="d-lg-none" to="/" onClick={handleCloseMemberMenu}>
             <img src={logoSm} alt="Plantique Life 植感生活" />
           </Link>
           {/* <!-- 網頁版導覽列連結  --> */}
           <div className="d-none d-lg-flex justify-content-center w-lg-40">
             <ul className="navbar-nav">
               <li>
-                <Link className="custom-nav-link" to="#">
+                <Link className="custom-nav-link" to="/about">
                   關於品牌
                 </Link>
               </li>
@@ -191,7 +191,7 @@ export default function Navbar() {
             <Offcanvas.Body className="d-lg-none text-center bg-white p-0">
               <ul className="navbar-nav p-6 gap-3">
                 <li>
-                  <Link className="custom-nav-link" href="#">
+                  <Link className="custom-nav-link" to="/about" onClick={handleCloseMemberMenu}>
                     關於品牌
                   </Link>
                 </li>
@@ -201,12 +201,12 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/products">
+                  <Link className="custom-nav-link" to="/products" onClick={handleCloseMemberMenu}>
                     植感商品
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/articles">
+                  <Link className="custom-nav-link" to="/articles" onClick={handleCloseMemberMenu}>
                     植藝專欄
                   </Link>
                 </li>
