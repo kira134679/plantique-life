@@ -46,4 +46,8 @@ export const productSlice = createSlice({
   },
 });
 
+export const selectProductList = state => state.guestProduct.productList;
+export const selectCurrentPage = state => state.guestProduct.currentPage;
+export const selectTotalPage = state => state.guestProduct.totalPages;
+
 export default productSlice.reducer;
