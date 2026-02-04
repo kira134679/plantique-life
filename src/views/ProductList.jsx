@@ -1,42 +1,15 @@
-import newsImg1 from 'assets/images/news/img_news_01.png';
-import newsImg2 from 'assets/images/news/img_news_02.png';
-import newsImg3 from 'assets/images/news/img_news_03.png';
+import { getNews } from '@/slice/news/guestNewsSlice';
 import clsx from 'clsx';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useSearchParams } from 'react-router';
+import { Autoplay, EffectFade, Pagination as SwiperPagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import Breadcrumb from '../components/Breadcrumb';
 import Pagination from '../components/Pagination';
 import ProductCard from '../components/ProductCard';
 import { getProducts } from '../slice/product/guestProductSlice';
-
-const events = [
-  {
-    title: '送禮不只月餅\n中秋綠意禮盒預購中！',
-    description: '結合優雅設計與療癒綠意。\n這個秋天，送出專屬於你的植感心意！',
-    image: newsImg1,
-    link: '#',
-    start_at: '2025/08/01',
-    end_at: '2025/09/20',
-  },
-  {
-    title: '本月打卡活動開跑！\n# 我的療癒角落，抽盆器好禮！',
-    description: '迷你多肉，輕鬆點綴辦公桌。\n在忙碌與螢幕之間，留一點空間給綠意。',
-    image: newsImg2,
-    link: '#',
-    start_at: '2025/08/01',
-    end_at: '2025/08/30',
-  },
-  {
-    title: '新會員募集中！\n加入即享首購金 250 元',
-    description: '結合優雅設計與療癒綠意。\n這個秋天，送出專屬於你的植感心意！',
-    image: newsImg3,
-    link: '#',
-    start_at: '2025/07/01',
-    end_at: '2025/12/31',
-  },
-];
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -69,8 +42,9 @@ const menuItem = [
 ];
 
 export default function ProductList() {
-  const dispatch = useDispatch();
   const { productList, currentPage, totalPages } = useSelector(state => state.guestProduct);
+  const newsList = useSelector(state => state.guestNews.newsList);
+  const dispatch = useDispatch();
 
   const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
   const [page, setPage] = useState(1);
@@ -101,47 +75,43 @@ export default function ProductList() {
 
   useEffect(() => {
     dispatch(getProducts({ page, category, productType }));
+    dispatch(getNews());
   }, [dispatch, page, category, productType]);
 
   return (
     <>
-      <div className="news">
-        <div className="swiper">
-          <div className="swiper-wrapper">
-            {events.map((item, idx) => {
-              return (
-                <div className="swiper-slide" key={idx}>
-                  <div className="news-card w-100 position-relative d-lg-flex">
-                    <div className="news-card-img-box h-100">
-                      <img className="object-fit-cover w-100 h-100" src={item.image} alt={item.title} />
-                    </div>
-                    <div className="news-card-text bg-white bg-opacity-60 px-3 px-lg-10 pt-6 pt-lg-10 pt-xxl-15 position-absolute">
-                      <p className="mb-2 mb-lg-3 fs-7 fs-lg-6 fw-bold lh-sm text-primary noto-serif-tc">NEWS</p>
-                      <h2 className="mb-lg-3 fs-4 fs-lg-3 fw-bold">
-                        {item.title.split('\n').map((line, idx, arr) => (
-                          <Fragment key={idx}>
-                            {line}
-                            {idx < arr.length - 1 && <br />}
-                          </Fragment>
-                        ))}
-                      </h2>
-                      <p className="text-neutral-400 d-none d-lg-block">
-                        {item.description.split('\n').map((line, idx, arr) => (
-                          <Fragment key={idx}>
-                            {line}
-                            {idx < arr.length - 1 && <br />}
-                          </Fragment>
-                        ))}
-                      </p>
-                    </div>
+      {newsList && newsList.length > 0 ? (
+        <div className="container-fluid px-0">
+          <Swiper
+            modules={[Autoplay, EffectFade, SwiperPagination]}
+            className="news-swiper"
+            effect={'fade'}
+            slidesPerView={1}
+            loop={newsList.length > 1}
+            autoplay={{ delay: 5300 }}
+            pagination={{
+              el: '.swiper-pagination',
+              clickable: true,
+            }}
+          >
+            {newsList.map((item, idx) => (
+              <SwiperSlide key={idx}>
+                <div className="news-card w-100 position-relative d-lg-flex">
+                  <div className="news-card-img-box h-100">
+                    <img className="object-fit-cover w-100 h-100" src={item.image} alt={item.title} />
+                  </div>
+                  <div className="news-card-text flex-grow-1 bg-white bg-opacity-60 bg-opacity-lg-100 px-3 px-lg-10 pt-6 pt-lg-10 pt-xxl-15 position-absolute">
+                    <p className="mb-2 mb-lg-3 fs-7 fs-lg-6 fw-bold lh-sm text-primary noto-serif-tc">NEWS</p>
+                    <h2 className="mb-lg-3 fs-4 fs-lg-3 fw-bold text-prewrap">{item.title}</h2>
+                    <p className="text-neutral-400 d-none d-lg-block text-prewrap">{item.description}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-          <div className="swiper-pagination"></div>
+              </SwiperSlide>
+            ))}
+            <div className="swiper-pagination d-flex justify-content-center justify-content-lg-start"></div>
+          </Swiper>
         </div>
-      </div>
+      ) : null}
 
       <div className="container">
         <div className="py-4 py-lg-6">
