@@ -27,17 +27,15 @@ export const productSlice = createSlice({
     productList: [],
     currentPage: 0,
     totalPages: 0,
-    currentCategory: '',
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getProducts.fulfilled, (state, { payload }) => {
       const { products, pagination } = payload;
-      const { total_pages, current_page, category } = pagination;
+      const { total_pages, current_page } = pagination;
       state.productList = products;
       state.currentPage = current_page;
       state.totalPages = total_pages;
-      state.currentCategory = category;
     });
 
     builder.addCase(getProducts.rejected, (_, { payload }) => {
