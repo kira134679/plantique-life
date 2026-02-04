@@ -1,4 +1,3 @@
-import { getNews } from '@/slice/news/guestNewsSlice';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
@@ -6,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useSearchParams } from 'react-router';
 import { Autoplay, EffectFade, Pagination as SwiperPagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Breadcrumb from '../components/Breadcrumb';
-import Pagination from '../components/Pagination';
-import ProductCard from '../components/ProductCard';
-import { getProducts } from '../slice/product/guestProductSlice';
+
+import Breadcrumb from '@/components/Breadcrumb';
+import Pagination from '@/components/Pagination';
+import ProductCard from '@/components/ProductCard';
+import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
+import { getProducts, selectCurrentPage, selectProductList, selectTotalPage } from '@/slice/product/guestProductSlice';
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -41,51 +42,72 @@ const menuItem = [
   },
 ];
 
+const getMobileDropdownLabel = (category, productType) => {
+  if (category === null) return '全部';
+
+  if (productType) return productType;
+
+  return category;
+};
+
+const isActiveCategory = (item, category, productType) => {
+  if (item.category === null) return item.category === category;
+
+  if (item.productType) return category === item.category && productType === item.productType;
+
+  return category === item.category && !productType;
+};
+
 export default function ProductList() {
-  const { productList, currentPage, totalPages } = useSelector(state => state.guestProduct);
-  const newsList = useSelector(state => state.guestNews.newsList);
+  const newsList = useSelector(selectNewsList);
+
+  const productList = useSelector(selectProductList);
+  const currentPage = useSelector(selectCurrentPage);
+  const totalPages = useSelector(selectTotalPage);
+
+  const hasProducts = productList?.length > 0;
+  const hasNews = newsList?.length > 0;
+
   const dispatch = useDispatch();
 
-  const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
-  const [page, setPage] = useState(1);
-
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category');
   const productType = searchParams.get('product_type');
+  const pageStr = searchParams.get('page');
 
-  const mobileDropdownLabel = () => {
-    if (category === null) return '全部';
+  const mobileDropdownLabel = getMobileDropdownLabel(category, productType);
+  const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
 
-    if (productType) return productType;
+  const onPageChange = targetPage => {
+    setSearchParams(prev => {
+      const newSearchParams = new URLSearchParams(prev);
 
-    return category;
-  };
+      if (targetPage > 1) {
+        newSearchParams.set('page', String(targetPage));
+      } else {
+        newSearchParams.delete('page');
+      }
 
-  const onPageChange = page => {
-    setPage(page);
-  };
-
-  const isActiveCategory = item => {
-    if (item.category === null) return !category;
-
-    if (item.productType) return category === item.category && productType === item.productType;
-
-    return category === item.category && !productType;
+      return newSearchParams;
+    });
   };
 
   useEffect(() => {
-    dispatch(getProducts({ page, category, productType }));
     dispatch(getNews());
-  }, [dispatch, page, category, productType]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getProducts({ page: pageStr ? Number(pageStr) : undefined, category, productType }));
+  }, [dispatch, pageStr, category, productType]);
 
   return (
     <>
-      {newsList && newsList.length > 0 ? (
+      {hasNews ? (
         <div className="container-fluid px-0">
           <Swiper
             modules={[Autoplay, EffectFade, SwiperPagination]}
             className="news-swiper"
-            effect={'fade'}
+            effect="fade"
             slidesPerView={1}
             loop={newsList.length > 1}
             autoplay={{ delay: 5300 }}
@@ -135,13 +157,9 @@ export default function ProductList() {
           {/* <!-- 手機版category --> */}
           <div className="row align-items-center mb-6 d-lg-none">
             <div className="col-6">
-              <Dropdown
-                autoClose="outside"
-                show={mobileDropdownShow}
-                onToggle={nextShow => setMobileDropdownShow(nextShow)}
-              >
+              <Dropdown autoClose="outside" show={mobileDropdownShow} onToggle={show => setMobileDropdownShow(show)}>
                 <Dropdown.Toggle variant={null} bsPrefix="form-select text-start py-4 rounded-0 border-0 border-bottom">
-                  {mobileDropdownLabel()}
+                  {mobileDropdownLabel}
                 </Dropdown.Toggle>
                 <Dropdown.Menu as="ul" className="dropdown-menu w-100 mt-3 rounded-0 p-3 border-0 dropdown-menu-shadow">
                   {menuItem.map((item, idx) => {
@@ -165,7 +183,9 @@ export default function ProductList() {
                                       className={() =>
                                         clsx([
                                           'd-block border-0 pt-5 pb-0 px-0 fs-sm',
-                                          isActiveCategory(item) ? 'text-primary' : 'text-neutral-400',
+                                          isActiveCategory(item, category, productType)
+                                            ? 'text-primary'
+                                            : 'text-neutral-400',
                                         ])
                                       }
                                     >
@@ -186,7 +206,7 @@ export default function ProductList() {
                           className={() =>
                             clsx([
                               'd-block fw-medium py-5 px-3',
-                              isActiveCategory(item) ? 'text-primary' : 'text-neutral-700',
+                              isActiveCategory(item, category, productType) ? 'text-primary' : 'text-neutral-700',
                             ])
                           }
                         >
@@ -214,7 +234,7 @@ export default function ProductList() {
 
           {/* <!-- 手機版products --> */}
           <div className="row d-lg-none">
-            {productList && productList.length > 0 ? (
+            {hasProducts ? (
               productList.map(product => {
                 return (
                   <div className="col-6 mb-6" key={product.id}>
@@ -261,7 +281,9 @@ export default function ProductList() {
                                       className={() =>
                                         clsx([
                                           'd-block border-0 pt-5 pb-0 px-0 fs-8',
-                                          isActiveCategory(item) ? 'text-primary' : 'text-neutral-400 accessories-item',
+                                          isActiveCategory(item, category, productType)
+                                            ? 'text-primary'
+                                            : 'text-neutral-400 accessories-item',
                                         ])
                                       }
                                     >
@@ -281,7 +303,7 @@ export default function ProductList() {
                           className={() =>
                             clsx([
                               'd-block fs-6 fw-medium p-6',
-                              isActiveCategory(item) ? 'text-primary' : 'text-neutral-700',
+                              isActiveCategory(item, category, productType) ? 'text-primary' : 'text-neutral-700',
                             ])
                           }
                         >
@@ -317,7 +339,7 @@ export default function ProductList() {
 
                 {/* <!-- 產品列表 --> */}
                 <div className="row">
-                  {productList && productList.length > 0 ? (
+                  {hasProducts ? (
                     productList.map(product => {
                       return (
                         <div className="col-4 mb-6" key={product.id}>
