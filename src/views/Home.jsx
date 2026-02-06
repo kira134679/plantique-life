@@ -9,7 +9,7 @@ import titleLg from 'assets/images/index/img_title_lg.svg';
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
@@ -101,18 +101,15 @@ export default function Home() {
   }, [activeColumnTab, articleList]);
 
   //render recommend
-  const randomRef = useRef([]);
-  const randomProducts = randomRef.current;
-
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (products.length > 0 && randomRef.current.length === 0) {
-      const randomSequence = [...products].sort(() => Math.random() - 0.5);
-      randomRef.current = randomSequence.slice(0, 6);
-    }
+  const randomProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    // eslint-disable-next-line react-hooks/purity
+    const randomSequence = [...products].sort(() => Math.random() - 0.5);
+    return randomSequence.slice(0, 6);
   }, [products]);
 
   return (
