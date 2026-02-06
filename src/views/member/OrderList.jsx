@@ -129,7 +129,7 @@ function OrderList() {
                 <Button
                   as={Link}
                   to={`/member/orders/${order.id}`}
-                  state={{ order }}
+                  state={{ orderDetail: order, page: searchParams.get('page'), fromOrderList: true }}
                   type="button"
                   variant="filled-primary"
                   shape="pill"
