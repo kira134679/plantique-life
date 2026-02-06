@@ -10,23 +10,32 @@ export const getProducts = createAsyncThunk('guestProduct/getProducts', async (p
   }
 });
 
+export const getProductById = createAsyncThunk(
+  'guestProduct/getProductById',
+  async ({ productId, ...config }, { rejectWithValue }) => {
+    try {
+      return await guestProductApi.getProductById(productId, config);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const productSlice = createSlice({
   name: 'guestProduct',
   initialState: {
     productList: [],
     currentPage: 0,
     totalPages: 0,
-    currentCategory: '',
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getProducts.fulfilled, (state, { payload }) => {
       const { products, pagination } = payload;
-      const { total_pages, current_page, category } = pagination;
+      const { total_pages, current_page } = pagination;
       state.productList = products;
       state.currentPage = current_page;
       state.totalPages = total_pages;
-      state.currentCategory = category;
     });
 
     builder.addCase(getProducts.rejected, (_, { payload }) => {
@@ -34,5 +43,9 @@ export const productSlice = createSlice({
     });
   },
 });
+
+export const selectProductList = state => state.guestProduct.productList;
+export const selectCurrentPage = state => state.guestProduct.currentPage;
+export const selectTotalPages = state => state.guestProduct.totalPages;
 
 export default productSlice.reducer;
