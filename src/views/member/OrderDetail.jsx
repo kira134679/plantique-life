@@ -1,13 +1,16 @@
 import clsx from 'clsx';
 import { Fragment, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
 import { guestOrderApi } from '@/api';
 import Button from '@/components/Button';
+import { addAndRefetchCarts } from '@/slice/cartSlice';
 
 function OrderDetail() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { state } = useLocation();
   const { orderId } = useParams();
 
@@ -25,11 +28,46 @@ function OrderDetail() {
   // coupon 資訊
   const [coupon, setCoupon] = useState(null);
 
+  // 是否正在新增訂單產品到購物車
+  const [addToCartLoading, setAddToCartLoading] = useState(false);
+
+  // 返回訂單列表
   const handleGoBack = () => {
     if (isFromOrderList) {
       navigate(-1); // 回到上一頁
     } else {
       navigate('/member/orders'); // 回到訂單列表頁
+    }
+  };
+
+  // 訂單產品加入購物車
+  const handleAddToCart = async () => {
+    // 取出訂單產品的 id 和 qty
+    const products = Object.values(orderDetail.products).map(product => ({
+      id: product.product.id,
+      qty: product.qty,
+    }));
+
+    // 新增多筆產品到購物車
+    const results = [];
+    setAddToCartLoading(true);
+    for (const product of products) {
+      try {
+        const response = await dispatch(
+          addAndRefetchCarts({ data: { product_id: product.id, qty: product.qty }, preventGlobalLoading: true }),
+        ).unwrap();
+        results.push({ status: 'fulfilled', value: response });
+      } catch (error) {
+        results.push({ status: 'rejected', reason: error });
+      }
+    }
+    setAddToCartLoading(false);
+    // 檢查結果
+    const failedItems = results.filter(r => r.status === 'rejected');
+    if (failedItems.length > 0) {
+      toast.error(`有 ${failedItems.length} 個產品加入購物車失敗`);
+    } else {
+      toast.success('產品加入購物車成功！');
     }
   };
 
@@ -231,18 +269,28 @@ function OrderDetail() {
           <p className="fs-sm fs-lg-8 text-neutral-400">統一編號：{orderDetail.user?.ubn}</p>
         )}
       </div>
+      {/* 再買一次按鈕 */}
       <div className="text-center mt-lg-6">
         <Button
-          as={Link}
-          to="/products"
           variant="filled-primary"
           shape="pill"
           size="lg"
-          leftIcon={true}
+          leftIcon={!addToCartLoading}
           iconName="shopping_cart"
           className="d-inline-flex"
+          onClick={handleAddToCart}
+          disabled={addToCartLoading}
         >
-          再買一次
+          {addToCartLoading ? (
+            <div className="d-flex align-items-center justify-content-center">
+              <div className="spinner-border spinner-border-sm text-white" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <span className="ms-2">加入購物車中...</span>
+            </div>
+          ) : (
+            '再買一次'
+          )}
         </Button>
       </div>
     </div>
