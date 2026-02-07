@@ -39,10 +39,10 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
               </Link>
             </h5>
             <div className="d-flex flex-column flex-xl-row align-items-baseline">
-              <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{`NT$${price}`}</p>
+              <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{`NT$${price.toLocaleString()}`}</p>
               {originPrice && (
                 <p className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
-                  {`$${originPrice}`}
+                  {`$${originPrice.toLocaleString()}`}
                 </p>
               )}
             </div>
