@@ -10,7 +10,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
-import { getProducts, selectCurrentPage, selectProductList, selectTotalPage } from '@/slice/product/guestProductSlice';
+import { getProducts, selectCurrentPage, selectProductList, selectTotalPages } from '@/slice/product/guestProductSlice';
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -63,7 +63,7 @@ export default function ProductList() {
 
   const productList = useSelector(selectProductList);
   const currentPage = useSelector(selectCurrentPage);
-  const totalPages = useSelector(selectTotalPage);
+  const totalPages = useSelector(selectTotalPages);
 
   const hasProducts = productList?.length > 0;
   const hasNews = newsList?.length > 0;
