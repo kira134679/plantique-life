@@ -21,6 +21,9 @@ export const guestNewsSlice = createSlice({
     builder.addCase(getNews.fulfilled, (state, { payload }) => {
       state.newsList = payload;
     });
+    builder.addCase(getNews.rejected, state => {
+      state.newsList = [];
+    });
   },
 });
 
