@@ -116,8 +116,8 @@ export default function ProductList() {
               clickable: true,
             }}
           >
-            {newsList.map((item, idx) => (
-              <SwiperSlide key={idx}>
+            {newsList.map(item => (
+              <SwiperSlide key={item.id}>
                 <div className="news-card w-100 position-relative d-lg-flex">
                   <div className="news-card-img-box h-100">
                     <img className="object-fit-cover w-100 h-100" src={item.image} alt={item.title} />
