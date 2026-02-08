@@ -264,11 +264,10 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
   // 處理信用卡付款（獨立方法，確保錯誤不會中斷流程）
   const processCreditCardPayment = async orderId => {
     try {
-      const payResponse = await payApi.createPayment(orderId);
-      return payResponse.success;
+      await payApi.createPayment(orderId);
     } catch (error) {
       // 付款失敗時記錄錯誤但不中斷流程
-      // 使用 Infinity 避免自動消失
+      // 使用 toast 顯示錯誤訊息，Infinity 避免自動消失
       toast(
         t => (
           <div className="d-flex align-items-center gap-3">
@@ -289,7 +288,6 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
         ),
         { duration: Infinity },
       );
-      return false;
     }
   };
 
@@ -330,10 +328,10 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
         transferDeadline: new Date(orderResponse.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
       };
 
-      // 只有信用卡一次付清才會有 isPaid 欄位
+      // 只有信用卡一次付清才呼叫付款 API
       // 使用獨立方法處理，確保即使付款失敗也不會中斷流程
       if (paymentMethod === '信用卡一次付清') {
-        orderInfo.isPaid = await processCreditCardPayment(orderResponse.orderId);
+        await processCreditCardPayment(orderResponse.orderId);
       }
 
       setOrderInfo(orderInfo);
