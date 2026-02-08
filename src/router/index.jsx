@@ -1,6 +1,6 @@
 import { createHashRouter } from 'react-router';
 import routes from './routes';
 
-const router = createHashRouter(routes);
+const createAppHashRouter = () => createHashRouter(routes);
 
-export default router;
+export default createAppHashRouter;
