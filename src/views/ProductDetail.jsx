@@ -4,10 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import productImg7 from 'assets/images/products/img_product_07.png';
 import productImg8 from 'assets/images/products/img_product_08.png';
 import productImg9 from 'assets/images/products/img_product_09.png';
-import productImg131 from 'assets/images/products/img_product_13-1.png';
 import productImg132 from 'assets/images/products/img_product_13-2.png';
 import productImg133 from 'assets/images/products/img_product_13-3.png';
-import productImg134 from 'assets/images/products/img_product_13-4.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
 import imgAddOn1 from 'assets/images/products/img_product_add_01.png';
 import imgAddOn2 from 'assets/images/products/img_product_add_02.png';
@@ -58,6 +56,8 @@ export default function ProductDetail() {
   const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
 
+  const hasImagesUrl = product.imagesUrl?.length > 0;
+
   return (
     <>
       <section className="py-8 py-lg-13">
@@ -82,18 +82,12 @@ export default function ProductDetail() {
                     clickable: true,
                   }}
                 >
-                  <SwiperSlide>
-                    <img src={productImg13} alt="img_product_13" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg131} alt="img_product_13-1" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg133} alt="img_product_13-3" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg134} alt="img_product_13-4" />
-                  </SwiperSlide>
+                  {hasImagesUrl &&
+                    product.imagesUrl.map((url, idx) => (
+                      <SwiperSlide>
+                        <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
+                      </SwiperSlide>
+                    ))}
                   <div className="swiper-pagination d-flex d-lg-none justify-content-center"></div>
                 </Swiper>
 
@@ -108,18 +102,12 @@ export default function ProductDetail() {
                     clickable: true,
                   }}
                 >
-                  <SwiperSlide>
-                    <img src={productImg13} alt="img_product_13" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg131} alt="img_product_13-1" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg133} alt="img_product_13-3" />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productImg134} alt="img_product_13-4" />
-                  </SwiperSlide>
+                  {hasImagesUrl &&
+                    product.imagesUrl.map((url, idx) => (
+                      <SwiperSlide>
+                        <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
+                      </SwiperSlide>
+                    ))}
                 </Swiper>
               </div>
             </div>
