@@ -1,8 +1,6 @@
 import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import 'swiper/css';
-
 import productImg7 from 'assets/images/products/img_product_07.png';
 import productImg8 from 'assets/images/products/img_product_08.png';
 import productImg9 from 'assets/images/products/img_product_09.png';
@@ -108,10 +106,6 @@ export default function ProductDetail() {
                   pagination={{
                     el: '.swiper-pagination',
                     clickable: true,
-                    className: 'swiper-pagination-bullet',
-                    renderBullet: function (className) {
-                      return `<span class="${className}"></span>`;
-                    },
                   }}
                 >
                   <SwiperSlide>
