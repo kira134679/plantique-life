@@ -69,6 +69,10 @@ function Articles() {
     };
   }, [articleList]);
 
+  const scrollToSection = ref => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <>
       {/*life section start*/}
@@ -102,14 +106,14 @@ function Articles() {
           <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
-            onClick={() => newsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => scrollToSection(newsRef)}
           >
             #最新消息
           </button>
           <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
-            onClick={() => curingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => scrollToSection(curingRef)}
           >
             #養護指南
           </button>
@@ -117,7 +121,7 @@ function Articles() {
             href="#succulent"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
-            onClick={() => succulentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => scrollToSection(succulentRef)}
           >
             #多肉圖鑑
           </button>
@@ -125,7 +129,7 @@ function Articles() {
             href="#life"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
-            onClick={() => lifeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            onClick={() => scrollToSection(lifeRef)}
           >
             #生活提案
           </button>
