@@ -11,13 +11,68 @@ import column09 from '../assets/images/articles/img_column_09.png';
 import column10 from '../assets/images/articles/img_column_10.png';
 
 import Button from '../components/Button';
-import { useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router';
+import { timestampToDate } from '@/utils/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getArticles } from '@/slice/article/guestArticleSlice';
+
+const ArticleCard = ({ article }) => (
+  <div className="col-lg-4 column-item">
+    <div className="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+      <img src={article.image} className="articaleCard-img-top object-fit-cover" alt={article.title} />
+      <div className="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+        <h4 className="card-title fs-7 fs-lg-6 text-neutral-700 m-0">{article.title}</h4>
+        <div className="d-flex flex-wrap gap-1">
+          {/* {article.tag.map((tag, idx) => (
+            <span
+              key={idx}
+              className="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+            >
+              # {tag}
+            </span>
+          ))} */}
+          <span className="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100">
+            # {article.tag}
+          </span>
+        </div>
+
+        <p className="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">{article.description}</p>
+        <div className="d-flex justify-content-between align-items-center">
+          <p className="fs-xs fs-lg-sm text-primary-500">{timestampToDate(article.create_at)}</p>
+          <Button
+            as={Link}
+            to={`/articles,${article.id}`}
+            className="d-flex justify-content-end"
+            variant="link-primary"
+            shape="link"
+            size="sm"
+            rightIcon
+            iconName="arrow_right_alt"
+          >
+            閱讀全文
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 function Articles() {
+  const dispatch = useDispatch();
+  const { articleList } = useSelector(state => state.guestArticle);
+
   const curingRef = useRef(null);
   const succulentRef = useRef(null);
   const lifeRef = useRef(null);
+
+  useEffect(() => {
+    dispatch(getArticles());
+  }, [dispatch]);
+
+  const displayArticles = useMemo(() => {
+    return articleList || [];
+  }, [articleList]);
 
   return (
     <>
@@ -72,6 +127,13 @@ function Articles() {
         </div>
       </div>
       {/*tags section end*/}
+
+      <h1>test</h1>
+      <div className="row gy-6">
+        {displayArticles.map(article => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
+      </div>
 
       {/*maintenance section start*/}
       <section className="column-section">
