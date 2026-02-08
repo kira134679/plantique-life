@@ -603,7 +603,7 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
                     {...register('purchaserName')}
                     type="text"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8',
+                      'form-control fs-sm fs-lg-8 checkout-form-control',
                       errors.purchaserName && 'is-invalid',
                       !errors.purchaserName && dirtyFields.purchaserName && 'is-valid',
                     )}
@@ -625,7 +625,7 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
                         inputRef={ref}
                         value={value}
                         className={clsx(
-                          'form-control fs-sm fs-lg-8',
+                          'form-control fs-sm fs-lg-8 checkout-form-control',
                           errors.purchaserPhone && 'is-invalid',
                           !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
                         )}
@@ -686,7 +686,7 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
                       {...register('recipientName')}
                       type="text"
                       className={clsx(
-                        'form-control fs-sm fs-lg-8',
+                        'form-control fs-sm fs-lg-8 checkout-form-control',
                         errors.recipientName && 'is-invalid',
                         !errors.recipientName && dirtyFields.recipientName && 'is-valid',
                       )}
@@ -709,7 +709,7 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
                           inputRef={ref}
                           value={value}
                           className={clsx(
-                            'form-control fs-sm fs-lg-8',
+                            'form-control fs-sm fs-lg-8 checkout-form-control',
                             errors.recipientPhone && 'is-invalid',
                             !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
                           )}

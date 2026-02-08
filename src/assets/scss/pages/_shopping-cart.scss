@@ -191,6 +191,9 @@
 }
 
 input.form-control {
+  &.checkout-form-control {
+    padding-right: 36px;
+  }
   &.cart-card-number {
     width: 230px;
   }
