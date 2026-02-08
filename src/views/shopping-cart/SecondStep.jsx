@@ -190,11 +190,14 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
       setValue('recipientName', purchaserName);
       setValue('recipientPhone', purchaserPhone);
       setValue('recipientEmail', purchaserEmail);
-      clearErrors('recipientName');
-      clearErrors('recipientPhone');
-      clearErrors('recipientEmail');
+      setTimeout(() => {
+        const resetOptions = { keepError: false, keepDirty: false, keepTouched: false, keepValues: true };
+        resetField('recipientName', resetOptions);
+        resetField('recipientPhone', resetOptions);
+        resetField('recipientEmail', resetOptions);
+      }, 0);
     }
-  }, [recipientChecked, purchaserName, purchaserPhone, purchaserEmail, setValue, clearErrors]);
+  }, [recipientChecked, purchaserName, purchaserPhone, purchaserEmail, setValue, clearErrors, resetField]);
 
   // 當選擇信用卡付款時，自動 focus 到卡號欄位
   useEffect(() => {
