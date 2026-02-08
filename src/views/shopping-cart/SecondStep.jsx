@@ -70,25 +70,25 @@ const recipientSchema = {
 const creditCardSchema = {
   cardNumber: z
     .string()
-    .regex(/^\d{4}(?:-\d{4}){3}$/, '卡號輸入錯誤')
-    .min(1, '未輸入信用卡號'),
+    .min(1, '未輸入信用卡號')
+    .regex(/^\d{4}(?:-\d{4}){3}$/, '卡號輸入錯誤'),
   cardExp: z
     .string()
-    .regex(/\d{2}\/\d{2}/, '有效期限輸入錯誤')
-    .min(1, '未輸入有效期限'),
-  cardCvc: z.string().regex(/\d{3}/, '末三碼輸入錯誤').min(1, '未輸入末三碼'),
+    .min(1, '未輸入有效期限')
+    .regex(/\d{2}\/\d{2}/, '有效期限輸入錯誤,'),
+  cardCvc: z.string().min(1, '未輸入末三碼').regex(/\d{3}/, '末三碼輸入錯誤'),
 };
 // 手機條碼
 const mobileBarcodeSchema = {
   mobileBarcode: z
     .string()
-    .length(8, '手機條碼輸入錯誤')
-    .regex(/^\/[0-9A-Z.\-+]{7}$/, '手機條碼輸入錯誤')
-    .min(1, '未輸入手機條碼'),
+    .min(1, '未輸入手機條碼')
+    .length(8, '手機條碼長度為 8')
+    .regex(/^\/[0-9A-Z.\-+]{7}$/, '手機條碼輸入錯誤'),
 };
 // 統一編號
 const ubnSchema = {
-  ubn: z.string().regex(/\d{8}/, '統一編號輸入錯誤').min(1, '未輸入統一編號'),
+  ubn: z.string().min(1, '未輸入統一編號').regex(/\d{8}/, '統一編號輸入錯誤'),
 };
 
 function SecondStep({ handleSwitchStep, setOrderInfo }) {
