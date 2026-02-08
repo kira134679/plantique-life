@@ -7,7 +7,6 @@
 
   @include media-breakpoint-up(lg) {
     height: 366px;
-    position: static !important;
   }
 
   .news-card-img-box {
@@ -37,74 +36,74 @@
   }
 }
 
-.swiper-pagination {
-  bottom: 24px !important;
+.news-swiper {
+  .swiper-pagination {
+    --swiper-pagination-bottom: 24px;
 
-  @include media-breakpoint-up(lg) {
-    width: auto !important;
-    bottom: 32px !important;
-    left: auto !important;
-    right: calc(32.5% - 160px);
+    @include media-breakpoint-up(lg) {
+      --swiper-pagination-bottom: 48px;
+      left: calc(67.5% + 2.5rem);
+    }
+    @include media-breakpoint-up(xl) {
+      --swiper-pagination-bottom: 60px;
+    }
   }
 
-  @include media-breakpoint-up(xl) {
-    bottom: 60px !important;
-  }
-}
-
-.swiper-pagination-bullet {
-  margin: 0 8px 0 0 !important;
-  width: 8px;
-  height: 4px;
-  border-radius: 1000px;
-  background-color: $primary-600;
-  opacity: 40%;
-  transition:
-    width 0.3s,
-    opacity 0.3s;
-  position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
+  .swiper-pagination-bullet {
+    margin: 0 8px 0 0;
+    width: 8px;
     height: 4px;
     border-radius: 1000px;
     background-color: $primary-600;
+    opacity: 40%;
+    transition:
+      width 0.3s,
+      opacity 0.3s;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 4px;
+      border-radius: 1000px;
+      background-color: $primary-600;
+    }
   }
-}
 
-.swiper-pagination-bullet-active {
-  --animation-duration: 5s;
-  opacity: 100%;
-  background-color: rgba($primary-600, 0.5);
-  width: 80px;
-  &::before {
-    animation: bullet-timeline calc(var(--animation-duration) + 0.3s) ease-out forwards;
+  .swiper-pagination-bullet-active {
+    --animation-duration: 5s;
+    opacity: 100%;
+    background-color: rgba($primary-600, 0.5);
+    width: 80px;
+    &::before {
+      animation: bullet-timeline calc(var(--animation-duration) + 0.3s) ease-out forwards;
+    }
+    &.restart::before {
+      animation: bullet-timeline-restart calc(var(--animation-duration) + 0.3s) ease-out forwards;
+    }
   }
-  &.restart::before {
-    animation: bullet-timeline-restart calc(var(--animation-duration) + 0.3s) ease-out forwards;
-  }
-}
-.swiper.is-paused .swiper-pagination-bullet-active::before {
-  animation-play-state: paused;
-}
 
-@keyframes bullet-timeline {
-  0% {
-    width: 0;
+  .swiper.is-paused .swiper-pagination-bullet-active::before {
+    animation-play-state: paused;
   }
-  100% {
-    width: 80px;
+
+  @keyframes bullet-timeline {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 80px;
+    }
   }
-}
-@keyframes bullet-timeline-restart {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 80px;
+  @keyframes bullet-timeline-restart {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 80px;
+    }
   }
 }
 
