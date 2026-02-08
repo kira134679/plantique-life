@@ -9,12 +9,6 @@ import titleLg from 'assets/images/index/img_title_lg.svg';
 import newsImg1 from 'assets/images/news/img_news_01.png';
 import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
-import productImg1 from 'assets/images/products/img_product_01.png';
-import productImg2 from 'assets/images/products/img_product_02.png';
-import productImg3 from 'assets/images/products/img_product_03.png';
-import productImg4 from 'assets/images/products/img_product_04.png';
-import productImg5 from 'assets/images/products/img_product_05.png';
-import productImg6 from 'assets/images/products/img_product_06.png';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +19,7 @@ import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
 import { getArticles } from '../slice/article/guestArticleSlice';
 import { timestampToDate } from '../utils/utils';
+import { getProducts } from '../slice/product/guestProductSlice';
 
 const events = [
   {
@@ -59,77 +54,24 @@ const category = [
     subTitle: '獨株盆栽，生活的慢光景',
     description: '每一株植物都擁有獨特姿態，不需繁複裝飾，就能為你的空間帶來療癒氣息，讓生活充滿生機。',
     image: categoryImg1,
-    link: 'product-list.html',
   },
   {
     title: '療 癒 組 盆',
     subTitle: '綠色風景，妝點專屬角落',
     description: '精心搭配的多肉組合，如同微型生態，讓你一次擁有豐富的綠意層次，創造屬於自己的心靈小天地。',
     image: categoryImg2,
-    link: 'product-list.html',
   },
   {
     title: '客 製 禮 盒',
     subTitle: '綠意心意，植感而生',
     description: '將這份溫柔的植感心意化作禮物，為重要的人客製專屬組合，傳達獨特而真摯的祝福。',
     image: categoryImg3,
-    link: 'product-list.html',
   },
   {
     title: '配 件 商 品',
     subTitle: '質感選物，植栽的日常絮語',
     description: '嚴選美觀又實用的質感配件，從花器到工具，讓你在照護植物的過程中，也能享受質感生活。',
     image: categoryImg4,
-    link: 'product-list.html',
-  },
-];
-
-const products = [
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg1,
-    tag: '質感精選',
-    title: '泡泡森林',
-    originPrice: '6666',
-    price: 'NT$ 6,200',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg2,
-    tag: '質感精選',
-    title: '向陽而生',
-    originPrice: '',
-    price: 'NT$ 7,280',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg3,
-    tag: '質感精選',
-    title: '暮光角落',
-    originPrice: '',
-    price: 'NT$ 7,500',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg4,
-    tag: '質感精選',
-    title: '雲深處靜',
-    originPrice: '',
-    price: 'NT$ 6,600',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg5,
-    tag: '質感精選',
-    title: '玉露女王',
-    price: 'NT$ 5,200',
-  },
-  {
-    alt: '多肉植物組合盆栽',
-    image: productImg6,
-    tag: '質感精選',
-    title: '玉扇食生',
-    price: 'NT$ 4,600',
   },
 ];
 
@@ -146,6 +88,7 @@ export default function Home() {
   const [activeColumnTab, setActiveColumnTab] = useState('全部');
   const dispatch = useDispatch();
   const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
+  const { productList: products } = useSelector(state => state.guestProduct);
 
   useEffect(() => {
     dispatch(getArticles());
@@ -156,6 +99,18 @@ export default function Home() {
       .filter(article => (activeColumnTab === '全部' ? true : article.tag.includes(activeColumnTab)))
       .slice(0, MAX_ARTICLES_DISPLAY_COUNT);
   }, [activeColumnTab, articleList]);
+
+  //render recommend
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  const randomProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+    // eslint-disable-next-line react-hooks/purity
+    const randomSequence = [...products].sort(() => Math.random() - 0.5);
+    return randomSequence.slice(0, 6);
+  }, [products]);
 
   return (
     <>
@@ -168,6 +123,8 @@ export default function Home() {
               <div className="d-flex flex-column justify-content-center" id="slogan">
                 <img src={titleLg} alt="標語:植一抹綠，讓心寧靜。從多肉開始的療癒時刻" className="mb-10" />
                 <Button
+                  as={Link}
+                  to="/products"
                   type="button"
                   variant="filled-primary"
                   shape="pill"
@@ -266,6 +223,8 @@ export default function Home() {
                           </p>
                           <div className="d-flex justify-content-end">
                             <Button
+                              as={Link}
+                              to={`/articles/${item.idx}`}
                               variant="link-primary"
                               href={item.link}
                               shape="link"
@@ -320,16 +279,16 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="category-col-3 d-flex d-lg-none justify-content-center">
-                            <a href={item.link} className="stretched-link">
+                            <Link to="/products" className="stretched-link">
                               <h3 className="vertical-lr fs-3 text-primary mx-0">{item.title}</h3>
-                            </a>
+                            </Link>
                           </div>
                         </div>
                         <div className="row">
                           <div className="col-lg-3 d-none d-lg-flex justify-content-center">
-                            <a href={item.link} className="stretched-link">
+                            <Link to="/products" className="stretched-link">
                               <h3 className="vertical-lr fs-3 fs-lg-2 text-primary mx-0">{item.title}</h3>
-                            </a>
+                            </Link>
                           </div>
                           <div className="col-lg-9 mt-lg-auto">
                             <h4 className="fs-7 fs-lg-6 text-neutral-700 mb-2 mb-lg-4">{item.subTitle}</h4>
@@ -368,6 +327,8 @@ export default function Home() {
             </hgroup>
             <div className="d-none d-md-block">
               <Button
+                as={Link}
+                to="/products"
                 type="button"
                 variant="outline-neutral"
                 shape="pill"
@@ -410,14 +371,15 @@ export default function Home() {
                 }}
                 className="productSwiper"
               >
-                {products.map((item, idx) => (
+                {randomProducts.map((item, idx) => (
                   <SwiperSlide key={idx} className="swiper-slide-prouct">
                     <ProductCard
+                      id={item.id}
                       title={item.title}
-                      image={item.image}
+                      imageUrl={item.imageUrl}
                       alt={item.alt}
-                      tag={item.tag}
-                      originPrice={item.originPrice}
+                      tag="質感精選"
+                      originPrice={item.origin_price}
                       price={item.price}
                     />
                   </SwiperSlide>
@@ -436,6 +398,8 @@ export default function Home() {
         </div>
         <div className="d-md-none d-flex justify-content-center">
           <Button
+            as={Link}
+            to="/products"
             type="button"
             variant="outline-neutral"
             shape="pill"
