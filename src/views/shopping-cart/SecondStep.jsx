@@ -106,6 +106,9 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
   const paymentToggleRef = useRef(null);
   const invoiceToggleRef = useRef(null);
 
+  // 控制是否需要驗證一次收件人欄位
+  const needValidateRecipientRef = useRef(false);
+
   // 從 Redux 取得購物車資料
   const { carts, total, finalTotal } = useSelector(state => state.cart);
 
@@ -120,7 +123,6 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
     formState: { errors, dirtyFields },
     setValue,
     setFocus,
-    clearErrors,
     reset,
     resetField,
     getValues,
@@ -187,17 +189,37 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
   // 當勾選「同訂購人資訊」時，持續同步訂購人資訊到收件人
   useEffect(() => {
     if (recipientChecked) {
-      setValue('recipientName', purchaserName);
-      setValue('recipientPhone', purchaserPhone);
-      setValue('recipientEmail', purchaserEmail);
-      setTimeout(() => {
-        const resetOptions = { keepError: false, keepDirty: false, keepTouched: false, keepValues: true };
-        resetField('recipientName', resetOptions);
-        resetField('recipientPhone', resetOptions);
-        resetField('recipientEmail', resetOptions);
-      }, 0);
+      // 原使用 setValue 方法，但因為 IMaskInput 的關係，會觸發驗證，因此改用 resetField 更改 defaultValue 的方式
+      resetField('recipientName', { defaultValue: purchaserName });
+      resetField('recipientPhone', { defaultValue: purchaserPhone });
+      resetField('recipientEmail', { defaultValue: purchaserEmail });
+    } else {
+      // 設定 flag 為 true，表示需要驗證一次收件人欄位
+      needValidateRecipientRef.current = true;
     }
-  }, [recipientChecked, purchaserName, purchaserPhone, purchaserEmail, setValue, clearErrors, resetField]);
+  }, [recipientChecked, purchaserName, purchaserPhone, purchaserEmail, resetField]);
+
+  useEffect(() => {
+    // 取消勾選「同訂購人資訊」時，需要驗證一次收件人欄位
+    if (!recipientChecked && needValidateRecipientRef.current) {
+      // 如果收件人資訊有值，則重新更新到收件人資訊
+      // 先清除 defaultValue，再設定值並觸發驗證
+      if (recipientName) {
+        resetField('recipientName', { defaultValue: '' });
+        setValue('recipientName', recipientName, { shouldValidate: true, shouldDirty: true });
+      }
+      if (recipientPhone) {
+        resetField('recipientPhone', { defaultValue: '' });
+        setValue('recipientPhone', recipientPhone, { shouldValidate: true, shouldDirty: true });
+      }
+      if (recipientEmail) {
+        resetField('recipientEmail', { defaultValue: '' });
+        setValue('recipientEmail', recipientEmail, { shouldValidate: true, shouldDirty: true });
+      }
+      // 驗證完成後，設定 flag 為 false，不再觸發該 effect 驗證
+      needValidateRecipientRef.current = false;
+    }
+  }, [recipientChecked, recipientName, recipientPhone, recipientEmail, resetField, setValue]);
 
   // 當選擇信用卡付款時，自動 focus 到卡號欄位
   useEffect(() => {
