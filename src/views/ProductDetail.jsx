@@ -15,6 +15,7 @@ import imgAddOn1 from 'assets/images/products/img_product_add_01.png';
 import imgAddOn2 from 'assets/images/products/img_product_add_02.png';
 import { useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
+import { useLoaderData } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
 
@@ -56,6 +57,7 @@ const products = [
 ];
 
 export default function ProductDetail() {
+  const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
 
   return (
