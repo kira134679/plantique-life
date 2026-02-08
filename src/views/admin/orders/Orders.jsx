@@ -17,6 +17,11 @@ function Orders() {
   const [searchParams, setSearchParams] = useSearchParams();
   const skipNextFetchRef = useRef(false);
 
+  // 為了讓 Dropdown 的選單可以脫離 Table 的 overflow 限制，設定為 Table 外層的 ref 作為 Dropdown 的邊界
+  const dropdownBoundaryRef = useRef(null);
+  // 儲存 dropdownBoundary
+  const [dropdownBoundary, setDropdownBoundary] = useState(null);
+
   // 訂單詳情側邊欄
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderDetailShow, setOrderDetailShow] = useState(false);
@@ -121,6 +126,13 @@ function Orders() {
   // 更新 URL 的 page 參數去觸發 useEffect，不直接使用 fetchOrders
   const handlePageChange = page => setSearchParams({ page });
 
+  // 確保 dropdownBoundaryRef 已經掛載，才設定 dropdownBoundary
+  useEffect(() => {
+    if (dropdownBoundaryRef.current) {
+      setDropdownBoundary(dropdownBoundaryRef.current);
+    }
+  }, []);
+
   // 初始化時取得訂單列表
   useEffect(() => {
     if (skipNextFetchRef.current) {
@@ -166,7 +178,7 @@ function Orders() {
 
   return (
     <div className="d-flex flex-column admin-orders-container">
-      <div className="flex-grow-1">
+      <div className="flex-grow-1" ref={dropdownBoundaryRef}>
         <h2 className="mb-8">訂單列表</h2>
         <ul className="list-unstyled d-flex mb-3">
           {orderTabs.map((tab, idx) => (
@@ -263,7 +275,22 @@ function Orders() {
                         <Dropdown.Toggle variant="" className="custom-btn-outline-danger custom-btn-circle-sm">
                           <span className="custom-btn-icon material-symbols-rounded">delete</span>
                         </Dropdown.Toggle>
-                        <Dropdown.Menu align="end" className="border-danger-100 gap-2 border-2 shadow-sm p-3">
+                        <Dropdown.Menu
+                          renderOnMount // 在渲染時就掛載選單，避免 popper 設定錯誤
+                          className="border-danger-100 gap-2 border-2 shadow-sm p-3"
+                          popperConfig={{
+                            strategy: 'fixed', // 讓選單脫離 Table 的 overflow 限制
+                            modifiers: [
+                              {
+                                name: 'flip', // 允許自動翻轉 (空間不夠自動往上)
+                                options: {
+                                  fallbackPlacements: ['bottom-end', 'top-end'],
+                                  boundary: dropdownBoundary, // 以 dropdownBoundary 為邊界
+                                },
+                              },
+                            ],
+                          }}
+                        >
                           <Dropdown.Item as={Button} bsPrefix="custom-btn-outline-neutral">
                             取消
                           </Dropdown.Item>
