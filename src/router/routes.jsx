@@ -15,6 +15,7 @@ import Admin from '../views/Admin.jsx';
 import CouponEdit from '../views/admin/coupons/CouponEdit.jsx';
 import Coupons from '../views/admin/coupons/Coupons.jsx';
 import Orders from '../views/admin/Orders.jsx';
+import ProductAdd from '../views/admin/products/ProductAdd.jsx';
 import ProductEdit from '../views/admin/products/ProductEdit.jsx';
 import Products from '../views/admin/products/Products.jsx';
 
@@ -49,7 +50,8 @@ const routes = [
             Component: () => <Outlet />,
             children: [
               { index: true, Component: Products },
-              { path: 'edit/:id?', Component: ProductEdit },
+              { path: 'add', Component: ProductAdd },
+              { path: 'edit/:id', Component: ProductEdit },
             ],
           },
           {
