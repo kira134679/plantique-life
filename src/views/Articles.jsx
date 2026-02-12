@@ -46,6 +46,12 @@ const ArticleCard = ({ article }) => (
   </div>
 );
 
+const EmptyState = ({ tag }) => (
+  <div className="col-12">
+    <p className="py-5 text-neutral-400">{`有關${tag}的文章正在努力撰寫中，敬請期待...`}</p>
+  </div>
+);
+
 function Articles() {
   const dispatch = useDispatch();
   const { articleList } = useSelector(state => state.guestArticle);
@@ -142,9 +148,11 @@ function Articles() {
               </div>
               {/*card*/}
               <div className="row gy-6">
-                {displayArticles.curing.map(article => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
+                {displayArticles.curing.length > 0 ? (
+                  displayArticles.curing.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="養護指南" />
+                )}
               </div>
             </div>
             {/* curing section end */}
@@ -159,12 +167,13 @@ function Articles() {
               </div>
               {/*card*/}
               <div className="row gy-6">
-                {displayArticles.succulent.map(article => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
+                {displayArticles.succulent.length > 0 ? (
+                  displayArticles.succulent.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="多肉圖鑑" />
+                )}
               </div>
             </div>
-
             {/*succulent section end*/}
 
             {/*life section start*/}
@@ -177,9 +186,11 @@ function Articles() {
               </div>
               {/*card*/}
               <div className="row gy-6">
-                {displayArticles.life.map(article => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
+                {displayArticles.life.length > 0 ? (
+                  displayArticles.life.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="生活提案" />
+                )}
               </div>
             </div>
             {/*life section end*/}
