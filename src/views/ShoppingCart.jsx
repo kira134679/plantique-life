@@ -36,79 +36,11 @@ const stepInfo = [
 import productImg07 from 'assets/images/products/img_product_07.png';
 import productImg08 from 'assets/images/products/img_product_08.png';
 import productImg09 from 'assets/images/products/img_product_09.png';
-import productImg11 from 'assets/images/products/img_product_11.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
-import productAddImg01 from 'assets/images/products/img_product_add_01.png';
 import productAddImg02 from 'assets/images/products/img_product_add_02.png';
 import productAddImg03 from 'assets/images/products/img_product_add_03.png';
 import productAddImg04 from 'assets/images/products/img_product_add_04.png';
 import productAddImg05 from 'assets/images/products/img_product_add_05.png';
-// 付款資料
-const orderInfo = {
-  cart: [
-    {
-      type: 'product',
-      name: '荒原綠影',
-      originalPrice: 2400,
-      salePrice: 2400,
-      count: 1,
-      image: {
-        src: productImg13,
-        position: '',
-      },
-    },
-    {
-      type: 'product',
-      name: '垂綠星河',
-      originalPrice: 3600,
-      salePrice: 3600,
-      count: 1,
-      image: {
-        src: productImg11,
-        position: '',
-      },
-    },
-    {
-      type: 'add-on',
-      name: '噴霧器',
-      originalPrice: 249,
-      salePrice: 129,
-      count: 1,
-      image: {
-        src: productAddImg01,
-        position: 'product-add1-position',
-      },
-    },
-  ],
-  subtotal: 0,
-  deliveryFee: 0,
-  discount: 0,
-  total: 0,
-  delivery: {
-    method: '黑貓宅配',
-  },
-  payment: {
-    method: '信用卡一次付清',
-    creditCardInfo: { number: ['1111', '2222', '3333', '4444'], exp: ['01', '28'], cvc: '123' },
-  },
-  purchaser: {
-    name: '王小明',
-    tel: '0912-345-678',
-    email: 'plantique@test.com',
-  },
-  recipient: {
-    name: '王小明',
-    tel: '0912-345-678',
-    email: 'plantique@test.com',
-    address: '台北市信義區松仁路100號',
-  },
-  invoice: {
-    method: '雲端載具',
-    mobileBarcode: '/ABC1234',
-    ubn: '12345678',
-  },
-  notes: '',
-};
 
 function ShoppingCart() {
   // 目前的 step 索引
@@ -119,6 +51,9 @@ function ShoppingCart() {
   const isTransitioning = useRef(false);
   // 儲存 Nav.Link 元素的 refs
   const navLinkRefs = useRef([null, null, null]);
+
+  // 紀錄訂單編號
+  const [orderInfo, setOrderInfo] = useState({});
 
   // 切換 step 函式
   const switchStep = async (currentIndex, targetIndex, isForward = true) => {
@@ -229,10 +164,10 @@ function ShoppingCart() {
             />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[1].step.name}>
-            <SecondStep orderInfo={orderInfo} handleSwitchStep={handleSwitchStep} />
+            <SecondStep handleSwitchStep={handleSwitchStep} setOrderInfo={setOrderInfo} />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[2].step.name}>
-            <ThirdStep />
+            <ThirdStep orderInfo={orderInfo} />
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
