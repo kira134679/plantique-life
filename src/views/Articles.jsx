@@ -50,7 +50,6 @@ function Articles() {
   const dispatch = useDispatch();
   const { articleList } = useSelector(state => state.guestArticle);
 
-  const newsRef = useRef(null);
   const curingRef = useRef(null);
   const succulentRef = useRef(null);
   const lifeRef = useRef(null);
@@ -62,7 +61,6 @@ function Articles() {
   const displayArticles = useMemo(() => {
     const list = articleList || [];
     return {
-      news: list.filter(item => item.tag?.includes('NEWS') && item.isPublic),
       curing: list.filter(item => item.tag?.includes('養護指南') && item.isPublic),
       succulent: list.filter(item => item.tag?.includes('多肉圖鑑') && item.isPublic),
       life: list.filter(item => item.tag?.includes('生活提案') && item.isPublic),
@@ -106,13 +104,6 @@ function Articles() {
           <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
-            onClick={() => scrollToSection(newsRef)}
-          >
-            #最新消息
-          </button>
-          <button
-            type="button"
-            className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
             onClick={() => scrollToSection(curingRef)}
           >
             #養護指南
@@ -141,23 +132,6 @@ function Articles() {
       <section className="column-section">
         <div className="container">
           <div className="mb-12 mb-md-15">
-            {/* NEWS section start */}
-            <div ref={newsRef} className="mb-8 mb-md-12 column-anchor">
-              {/*title*/}
-              <div className="mb-6">
-                <h2 className="fs-md-2 text-neutral-700">
-                  <span className="fs-7 text-primary align-top me-1">#</span>最新消息
-                </h2>
-              </div>
-              {/*card*/}
-              <div className="row gy-6">
-                {displayArticles.news.map(article => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
-            </div>
-            {/* NEWS section end */}
-
             {/* curing section start */}
             <div ref={curingRef} className="mb-8 mb-md-12 column-anchor">
               {/*title*/}
