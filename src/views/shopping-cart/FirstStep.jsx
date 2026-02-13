@@ -310,42 +310,46 @@ function FirstStep({ productImages, handleSwitchStep }) {
         <div className="row gx-3 gx-lg-6 gy-6">
           <div className="col-6 col-lg-3">
             <ProductCard
+              id={3}
               title={'天使環生長燈'}
-              image={productAddImg03}
+              imageUrl={productAddImg03}
               alt={'多肉植物組合盆栽'}
               tag={'加購價'}
-              originPrice={'NT$ 1,000'}
-              price={'NT$ 799'}
+              originPrice={1000}
+              price={799}
             />
           </div>
           <div className="col-6 col-lg-3">
             <ProductCard
+              id={4}
               title={'陶瓷盆器'}
-              image={productAddImg04}
+              imageUrl={productAddImg04}
               alt={'多肉植物組合盆栽'}
               tag={'加購價'}
-              originPrice={'NT$ 350'}
-              price={'NT$ 300'}
+              originPrice={350}
+              price={300}
             />
           </div>
           <div className="col-6 col-lg-3">
             <ProductCard
+              id={5}
               title={'園藝工具組'}
-              image={productAddImg05}
+              imageUrl={productAddImg05}
               alt={'多肉植物組合盆栽'}
               tag={'加購價'}
-              originPrice={'NT$ 650'}
-              price={'NT$ 500'}
+              originPrice={650}
+              price={500}
             />
           </div>
           <div className="col-6 col-lg-3">
             <ProductCard
+              id={2}
               title={'日本赤玉土'}
-              image={productAddImg02}
+              imageUrl={productAddImg02}
               alt={'多肉植物組合盆栽'}
               tag={'加購價'}
-              originPrice={'NT$ 5,900'}
-              price={'NT$ 3,500'}
+              originPrice={5900}
+              price={3500}
             />
           </div>
         </div>
@@ -368,38 +372,42 @@ function FirstStep({ productImages, handleSwitchStep }) {
           <div className="row gx-3 gx-lg-6 gy-6">
             <div className="col-6 col-lg-3">
               <ProductCard
+                id={7}
                 title={'雪夜之森'}
-                image={productImg07}
+                imageUrl={productImg07}
                 alt={'多肉植物組合盆栽'}
                 tag={'質感精選'}
-                price={'NT$ 2,400'}
+                price={2400}
               />
             </div>
             <div className="col-6 col-lg-3">
               <ProductCard
+                id={8}
                 title={'植語時光'}
-                image={productImg08}
+                imageUrl={productImg08}
                 alt={'多肉植物組合盆栽'}
                 tag={'質感精選'}
-                price={'NT$ 3,000'}
+                price={3000}
               />
             </div>
             <div className="col-6 col-lg-3">
               <ProductCard
+                id={13}
                 title={'荒原綠影'}
-                image={productImg13}
+                imageUrl={productImg13}
                 alt={'多肉植物組合盆栽'}
                 tag={'質感精選'}
-                price={'NT$ 2,400'}
+                price={2400}
               />
             </div>
             <div className="col-6 col-lg-3">
               <ProductCard
+                id={9}
                 title={'森語花信'}
-                image={productImg09}
+                imageUrl={productImg09}
                 alt={'多肉植物組合盆栽'}
                 tag={'質感精選'}
-                price={'NT$ 3,500'}
+                price={3500}
               />
             </div>
           </div>

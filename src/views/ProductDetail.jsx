@@ -22,32 +22,36 @@ const hasDiscount = true;
 
 const products = [
   {
+    id: 7,
     alt: '雪夜之森',
     image: productImg7,
     tag: '質感精選',
     title: '雪夜之森',
-    price: 'NT$2,400',
+    price: 2400,
   },
   {
+    id: 8,
     alt: '植語時光',
     image: productImg8,
     tag: '質感精選',
     title: '植語時光',
-    price: 'NT$3,000',
+    price: 3000,
   },
   {
+    id: 9,
     alt: '森語花信',
     image: productImg9,
     tag: '質感精選',
     title: '森語花信',
-    price: 'NT$3,500',
+    price: 3500,
   },
   {
+    id: 13,
     alt: '荒原綠影',
     image: productImg13,
     tag: '質感精選',
     title: '荒原綠影',
-    price: 'NT$2,400',
+    price: 2400,
   },
 ];
 
@@ -373,8 +377,9 @@ export default function ProductDetail() {
           {products.map((item, idx) => (
             <div className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size" key={idx}>
               <ProductCard
+                id={item.id}
                 title={item.title}
-                image={item.image}
+                imageUrl={item.image}
                 alt={item.alt}
                 tag={item.tag}
                 originPrice={item.originPrice}
