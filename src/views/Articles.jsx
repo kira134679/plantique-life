@@ -104,10 +104,7 @@ function Articles() {
 
       {/*tags section start*/}
       <div className="container">
-        <div
-          className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end mt-lg-15 mb-lg-12 flex-wrap"
-          id="column-filter"
-        >
+        <div className="d-flex gap-2 gap-lg-4 mt-12 mb-8 align-self-lg-end mt-lg-15 mb-lg-12 flex-wrap">
           <button
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
@@ -116,7 +113,6 @@ function Articles() {
             #養護指南
           </button>
           <button
-            href="#succulent"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
             onClick={() => scrollToSection(succulentRef)}
@@ -124,7 +120,6 @@ function Articles() {
             #多肉圖鑑
           </button>
           <button
-            href="#life"
             type="button"
             className="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
             onClick={() => scrollToSection(lifeRef)}
