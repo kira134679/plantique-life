@@ -1,6 +1,7 @@
 import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { paymentOptions } from '@/const/guestConst';
 import productImg7 from 'assets/images/products/img_product_07.png';
 import productImg8 from 'assets/images/products/img_product_08.png';
 import productImg9 from 'assets/images/products/img_product_09.png';
@@ -135,8 +136,9 @@ export default function ProductDetail() {
                   <div className="d-flex gap-lg-6">
                     <span>付款方式</span>
                     <ul className="d-flex flex-column">
-                      <li>全館滿 5,000 免運</li>
-                      <li>仙人掌系列買五送一</li>
+                      {paymentOptions.map(opts => (
+                        <li key={opts}>{opts}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
