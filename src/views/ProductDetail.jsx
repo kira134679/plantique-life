@@ -7,15 +7,11 @@ import productImg9 from 'assets/images/products/img_product_09.png';
 import productImg132 from 'assets/images/products/img_product_13-2.png';
 import productImg133 from 'assets/images/products/img_product_13-3.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
-import imgAddOn1 from 'assets/images/products/img_product_add_01.png';
-import imgAddOn2 from 'assets/images/products/img_product_add_02.png';
 import { useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
 import { useLoaderData } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
-
-const hasDiscount = true;
 
 const products = [
   {
@@ -144,71 +140,6 @@ export default function ProductDetail() {
                     </ul>
                   </div>
                 </div>
-
-                {/* <!-- add-on --> */}
-
-                <div>
-                  <span className="d-block fs-sm fs-lg-8 text-neutral-400 mb-3 mb-xl-6">加購商品</span>
-                  <ul className="list-unstyled d-flex flex-column gap-3 gap-lg-4">
-                    <li className="d-flex justify-content-between align-items-center gap-3 gap-lg-4">
-                      <div className="add-on-product">
-                        <img src={imgAddOn1} alt="" />
-                      </div>
-                      <div className="d-flex flex-column flex-xl-row justify-content-between align-items-lg-center gap-3 gap-lg-4 flex-grow-1">
-                        <div className="d-flex flex-column gap-1 gap-lg-2 flex-shrink-0">
-                          <h4 className="fs-7 text-neutral-700">噴霧器</h4>
-                          <p className="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
-                            NT$129
-                            {hasDiscount ? <s className="fs-sm fs-lg-8 text-neutral-400 ms-1 ms-lg-2">$249</s> : ''}
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
-                          <button
-                            type="button"
-                            className="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
-                          >
-                            <span className="material-symbols-rounded align-bottom"> remove </span>
-                          </button>
-                          <span className="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center add-on-counter">0</span>
-                          <button
-                            type="button"
-                            className="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
-                          >
-                            <span className="material-symbols-rounded align-bottom"> add_2 </span>
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="d-flex justify-content-between align-items-center gap-3 gap-lg-4">
-                      <div className="add-on-product">
-                        <img src={imgAddOn2} alt="" />
-                      </div>
-                      <div className="d-flex flex-column flex-xl-row justify-content-between align-items-lg-center gap-3 gap-lg-4 flex-grow-1">
-                        <div className="d-flex flex-column gap-1 gap-lg-2 flex-shrink-0">
-                          <h4 className="fs-7 text-neutral-700">日本赤玉土</h4>
-                          <p className="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">NT$300</p>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
-                          <button
-                            type="button"
-                            className="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
-                          >
-                            <span className="material-symbols-rounded align-bottom"> remove </span>
-                          </button>
-                          <span className="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center add-on-counter">0</span>
-                          <button
-                            type="button"
-                            className="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
-                          >
-                            <span className="material-symbols-rounded align-bottom"> add_2 </span>
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* <!-- add-to-cart --> */}
 
                 <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-3">
                   <div className="d-flex justify-content-lg-between align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mb-4 mb-lg-0">
