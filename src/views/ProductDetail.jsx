@@ -56,7 +56,8 @@ export default function ProductDetail() {
   const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
 
-  const hasImagesUrl = product.imagesUrl?.length > 0;
+  const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
+  const hasImagesToDisplay = displayImagesUrl.length > 0;
 
   return (
     <>
@@ -82,8 +83,8 @@ export default function ProductDetail() {
                     clickable: true,
                   }}
                 >
-                  {hasImagesUrl &&
-                    product.imagesUrl.map((url, idx) => (
+                  {hasImagesToDisplay &&
+                    displayImagesUrl.map((url, idx) => (
                       <SwiperSlide>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
@@ -102,8 +103,8 @@ export default function ProductDetail() {
                     clickable: true,
                   }}
                 >
-                  {hasImagesUrl &&
-                    product.imagesUrl.map((url, idx) => (
+                  {hasImagesToDisplay &&
+                    displayImagesUrl.map((url, idx) => (
                       <SwiperSlide>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
