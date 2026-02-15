@@ -1,7 +1,10 @@
 import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { paymentOptions } from '@/const/guestConst';
+import Button from '@/components/Button';
+import Counter from '@/components/Counter';
+import { MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
+import { addAndRefetchCarts } from '@/slice/cartSlice';
 import productImg7 from 'assets/images/products/img_product_07.png';
 import productImg8 from 'assets/images/products/img_product_08.png';
 import productImg9 from 'assets/images/products/img_product_09.png';
@@ -10,7 +13,9 @@ import productImg133 from 'assets/images/products/img_product_13-3.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
 import { useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
-import { useLoaderData } from 'react-router';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { useLoaderData, useNavigate } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
 
@@ -52,9 +57,33 @@ const products = [
 export default function ProductDetail() {
   const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
+  const [purchaseQty, setPurchaseQty] = useState(MIN_PRODUCT_PURCHASE_QTY);
+  const defaultPayload = { product_id: product.id, qty: MIN_PRODUCT_PURCHASE_QTY };
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
   const hasImagesToDisplay = displayImagesUrl.length > 0;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    try {
+      await dispatch(addAndRefetchCarts({ data: { ...defaultPayload, qty: purchaseQty } })).unwrap();
+      toast.success('已加入購物車');
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const buyNow = async () => {
+    try {
+      await dispatch(addAndRefetchCarts({ data: defaultPayload })).unwrap();
+      toast.success('已加入購物車');
+      navigate('/shopping-cart');
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <>
@@ -145,37 +174,37 @@ export default function ProductDetail() {
 
                 <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-3">
                   <div className="d-flex justify-content-lg-between align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mb-4 mb-lg-0">
-                    <div className="w-50 w-lg-auto d-flex justify-content-between align-items-center gap-1 gap-lg-2">
-                      <button
-                        type="button"
-                        className="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-shrink-0 flex-grow-0 btn-circle-lg"
-                      >
-                        <span className="material-symbols-rounded align-bottom"> remove </span>
-                      </button>
-                      <span className="noto-serif-tc fw-bold fs-6 lh-sm text-center product-counter">1</span>
-                      <button
-                        type="button"
-                        className="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-lg-shrink-0 btn-circle-lg"
-                      >
-                        <span className="material-symbols-rounded align-bottom"> add_2 </span>
-                      </button>
-                    </div>
+                    <Counter
+                      value={purchaseQty}
+                      min={MIN_PRODUCT_PURCHASE_QTY}
+                      max={MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT}
+                      onCountChange={setPurchaseQty}
+                    />
 
-                    <button
+                    <Button
                       type="button"
-                      className="w-50 w-lg-auto btn fs-lg-7 border border-2 border-neutral-200 rounded-pill d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                      variant="outline-neutral"
+                      shape="pill"
+                      size="lg"
+                      leftIcon={true}
+                      iconName="shopping_cart"
+                      className="w-50 w-lg-auto fs-lg-7 d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                      onClick={handleAddToCart}
                     >
-                      <span className="material-symbols-rounded me-2"> shopping_cart </span>
                       加入購物車
-                    </button>
+                    </Button>
                   </div>
 
-                  <button
+                  <Button
                     type="button"
-                    className="btn border-0 fs-lg-7 text-white bg-primary rounded-pill px-6 px-lg-7 py-3 py-lg-4 w-100 w-xl-auto flex-grow-1"
+                    variant="filled-primary"
+                    shape="pill"
+                    size="lg"
+                    className="fs-lg-7 px-6 px-lg-7 py-3 py-lg-4 w-100 w-xl-auto flex-grow-1"
+                    onClick={buyNow}
                   >
                     立即購買
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
