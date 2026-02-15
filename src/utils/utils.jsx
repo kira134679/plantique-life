@@ -15,3 +15,19 @@ export function clamp(value, min, max) {
 
   return value;
 }
+
+/**
+ * 安全解析 JSON 字串。
+ * 解析成功時回傳結果，失敗時回傳預設值。
+ *
+ * @param {string} jsonStr 要解析的 JSON 字串。
+ * @param {*} [fallback={}] 解析失敗時回傳的預設值。
+ * @returns {*} 解析後的資料，或是預設值 `fallback`。
+ */
+export function tryParseJson(jsonStr, fallback = {}) {
+  try {
+    return JSON.parse(jsonStr);
+  } catch {
+    return fallback;
+  }
+}
