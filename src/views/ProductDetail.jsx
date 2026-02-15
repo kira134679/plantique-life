@@ -128,7 +128,6 @@ export default function ProductDetail() {
 
                   <div className="d-flex justify-content-between align-items-center">
                     <h2 className="fs-5 fs-lg-4 text-neutral-700">荒原綠影</h2>
-                    <span className="fs-sm fs-lg-8 text-danger">剩餘 5 件</span>
                   </div>
 
                   <p className="noto-serif-tc fw-bold fs-5 fs-lg-4 lh-sm text-primary-700">NT$2,400</p>
