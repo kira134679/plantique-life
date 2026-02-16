@@ -17,7 +17,7 @@ export default function Counter({ variant = 'lg', value, min = 0, max = 99, onCo
 
   return (
     <div
-      className={clsx('d-flex justify-content-between align-items-center gap-1 gap-lg-2', isLarge && 'w-50 w-lg-auto')}
+      className={clsx('d-flex justify-content-between align-items-center gap-1 gap-lg-2 w-50 w-md-auto flex-grow-1')}
     >
       <Button
         type="button"

@@ -162,8 +162,8 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-3">
-                  <div className="d-flex justify-content-lg-between align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mb-4 mb-lg-0">
+                <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-4">
+                  <div className="d-flex align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mt-10 mb-4 mb-lg-0">
                     <Counter
                       value={purchaseQty}
                       min={MIN_PRODUCT_PURCHASE_QTY}
@@ -178,7 +178,7 @@ export default function ProductDetail() {
                       size="lg"
                       leftIcon={true}
                       iconName="shopping_cart"
-                      className="w-50 w-lg-auto fs-lg-7 d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                      className="w-50 fs-lg-7 d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4"
                       onClick={handleAddToCart}
                     >
                       加入購物車
@@ -190,7 +190,7 @@ export default function ProductDetail() {
                     variant="filled-primary"
                     shape="pill"
                     size="lg"
-                    className="fs-lg-7 px-6 px-lg-7 py-3 py-lg-4 w-100 w-xl-auto flex-grow-1"
+                    className="fs-lg-7 px-6 px-lg-7 py-3 py-lg-4 w-100"
                     onClick={buyNow}
                   >
                     立即購買
