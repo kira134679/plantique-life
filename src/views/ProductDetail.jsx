@@ -9,6 +9,7 @@ import {
   MIN_PRODUCT_PURCHASE_QTY,
   paymentOptions,
 } from '@/const/guestConst';
+import { care, notice } from '@/const/productDetailContents';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
 import { selectAllProducts } from '@/slice/product/guestProductSlice';
 import { tryParseJson } from '@/utils/utils';
@@ -280,8 +281,30 @@ export default function ProductDetail() {
                 </>
               )}
             </Tab.Pane>
-            <Tab.Pane eventKey="care">{/* 照顧方式 */}</Tab.Pane>
-            <Tab.Pane eventKey="notice">{/* 注意事項 */}</Tab.Pane>
+            <Tab.Pane eventKey="care">
+              <div className="container">
+                <div className="d-flex flex-column gap-6 gap-lg-8">
+                  {care.map(section => (
+                    <div className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
+                      <h6 className="text-primary">{section.subtitle}</h6>
+                      <p className="text-neutral-500">{section.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Tab.Pane>
+            <Tab.Pane eventKey="notice">
+              <div className="container">
+                <div className="d-flex flex-column gap-6 gap-lg-8">
+                  {notice.map(section => (
+                    <div className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
+                      <h6 className="text-primary">{section.subtitle}</h6>
+                      <p className="text-neutral-500">{section.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
       </section>
