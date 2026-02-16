@@ -3,65 +3,44 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import Button from '@/components/Button';
 import Counter from '@/components/Counter';
-import { MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
+import {
+  MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT,
+  MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT,
+  MIN_PRODUCT_PURCHASE_QTY,
+  paymentOptions,
+} from '@/const/guestConst';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { selectAllProducts } from '@/slice/product/guestProductSlice';
 import { tryParseJson } from '@/utils/utils';
-import productImg7 from 'assets/images/products/img_product_07.png';
-import productImg8 from 'assets/images/products/img_product_08.png';
-import productImg9 from 'assets/images/products/img_product_09.png';
-import productImg13 from 'assets/images/products/img_product_13.png';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
-
-const products = [
-  {
-    id: 7,
-    alt: '雪夜之森',
-    image: productImg7,
-    tag: '質感精選',
-    title: '雪夜之森',
-    price: 2400,
-  },
-  {
-    id: 8,
-    alt: '植語時光',
-    image: productImg8,
-    tag: '質感精選',
-    title: '植語時光',
-    price: 3000,
-  },
-  {
-    id: 9,
-    alt: '森語花信',
-    image: productImg9,
-    tag: '質感精選',
-    title: '森語花信',
-    price: 3500,
-  },
-  {
-    id: 13,
-    alt: '荒原綠影',
-    image: productImg13,
-    tag: '質感精選',
-    title: '荒原綠影',
-    price: 2400,
-  },
-];
 
 export default function ProductDetail() {
   const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
   const [purchaseQty, setPurchaseQty] = useState(MIN_PRODUCT_PURCHASE_QTY);
   const defaultPayload = { product_id: product.id, qty: MIN_PRODUCT_PURCHASE_QTY };
+  const allProducts = useSelector(selectAllProducts);
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
   const { ...intro } = tryParseJson(product.description);
   const { ...contents } = tryParseJson(product.content);
+  const relatedProducts = useMemo(() => {
+    const allProductsExcludeSelf = allProducts.filter(p => p.id !== product.id);
+    const otherSameCategoryProducts = allProductsExcludeSelf.filter(p => p.category === product.category);
+
+    if (otherSameCategoryProducts.length >= MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT) {
+      return otherSameCategoryProducts.slice(-MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT);
+    } else {
+      const remainCountToPickup = MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT - otherSameCategoryProducts.length;
+      return otherSameCategoryProducts.concat(allProductsExcludeSelf.slice(-remainCountToPickup));
+    }
+  }, [allProducts, product]);
 
   const hasImagesToDisplay = displayImagesUrl.length > 0;
   const isOnSale = product.price < product.origin_price;
@@ -311,16 +290,16 @@ export default function ProductDetail() {
         <p className="text-neutral-400 fs-7 mb-8 mb-lg-10 section-decoration-line-both overflow-hidden">相關商品</p>
         {/* <!-- 相關商品卡片 --> */}
         <div className="row px-6px px-lg-0">
-          {products.map((item, idx) => (
-            <div className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size" key={idx}>
+          {relatedProducts.map(product => (
+            <div className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size" key={product.id}>
               <ProductCard
-                id={item.id}
-                title={item.title}
-                imageUrl={item.image}
-                alt={item.alt}
-                tag={item.tag}
-                originPrice={item.originPrice}
-                price={item.price}
+                id={product.id}
+                title={product.title}
+                imageUrl={product.imageUrl}
+                alt={product.title}
+                tag={product.category}
+                originPrice={product.origin_price}
+                price={product.price}
               />
             </div>
           ))}

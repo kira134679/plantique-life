@@ -1,3 +1,5 @@
+import { getAllProducts } from '@/slice/product/guestProductSlice.js';
+import store from '@/store/index.js';
 import App from '../App';
 import RequireAuth from '../components/RequireAuth.jsx';
 import ArticleDetail from '../views/ArticleDetail';
@@ -26,6 +28,10 @@ const routes = [
     path: '/',
     Component: App,
     handle: { breadcrumb: () => '首頁' },
+    HydrateFallback: () => null,
+    loader: () => {
+      store.dispatch(getAllProducts());
+    },
     children: [
       { index: true, Component: Home },
       {
