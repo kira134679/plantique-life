@@ -5,11 +5,10 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import { MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { tryParseJson } from '@/utils/utils';
 import productImg7 from 'assets/images/products/img_product_07.png';
 import productImg8 from 'assets/images/products/img_product_08.png';
 import productImg9 from 'assets/images/products/img_product_09.png';
-import productImg132 from 'assets/images/products/img_product_13-2.png';
-import productImg133 from 'assets/images/products/img_product_13-3.png';
 import productImg13 from 'assets/images/products/img_product_13.png';
 import { useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
@@ -61,6 +60,9 @@ export default function ProductDetail() {
   const defaultPayload = { product_id: product.id, qty: MIN_PRODUCT_PURCHASE_QTY };
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
+  const { ...intro } = tryParseJson(product.description);
+  const { ...contents } = tryParseJson(product.content);
+
   const hasImagesToDisplay = displayImagesUrl.length > 0;
   const isOnSale = product.price < product.origin_price;
 
@@ -112,7 +114,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide>
+                      <SwiperSlide key={url}>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
                     ))}
@@ -132,7 +134,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide>
+                      <SwiperSlide key={url}>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
                     ))}
@@ -145,7 +147,9 @@ export default function ProductDetail() {
 
                 <div className="d-flex flex-column gap-1 gap-xl-3">
                   <div className="d-flex justify-content-between align-items-center">
-                    <span className="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span>
+                    <span className="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">
+                      {product.category}
+                    </span>
                     <button type="button" className="btn bg-transparent border-0 p-0">
                       <span className="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
                         favorite
@@ -154,7 +158,7 @@ export default function ProductDetail() {
                   </div>
 
                   <div className="d-flex justify-content-between align-items-center">
-                    <h2 className="fs-5 fs-lg-4 text-neutral-700">荒原綠影</h2>
+                    <h2 className="fs-5 fs-lg-4 text-neutral-700">{product.title}</h2>
                   </div>
 
                   <div className="d-flex align-items-end">
@@ -263,58 +267,39 @@ export default function ProductDetail() {
                 <div className="row align-items-center">
                   <div className="card border-0 col-lg-6">
                     <div className="card-body px-0 py-3 p-lg-6">
-                      <h3 className="card-title h4 text-neutral-700">荒原綠影</h3>
-                      <p className="card-text text-neutral-400">
-                        以三款仙人掌組成的荒漠組盆。我們精心挑選各式仙人掌，它們身形各異，有的高聳挺拔，有的嬌小圓潤，有的則滿佈刺毛，每一株都是荒野中的獨立角色。
-                      </p>
+                      <h3 className="card-title h4 text-neutral-700">{intro.title}</h3>
+                      <p className="fs-sm text-primary mb-2">{intro.enName}</p>
+                      <p className="card-text text-neutral-400 text-prewrap">{intro.description}</p>
                     </div>
                   </div>
-                  <img className="d-lg-block d-none col-lg-6" src={productImg133} alt="product_13-3" />
+                  <img className="d-lg-block d-none col-lg-6" src={product.imageUrl} alt={`${product.title}_主圖`} />
                 </div>
               </div>
-              <img className="d-block d-lg-none mb-6 w-100" src={productImg133} alt="product_13-3" />
+              <img className="d-block d-lg-none mb-6 w-100" src={product.imageUrl} alt={`${product.title}_主圖`} />
               {/* <!-- 組盆內容 --> */}
-              <div className="container">
-                <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
-                <div className="row align-items-center py-6 py-lg-40">
-                  <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
-                    <div className="card-body px-0 py-3 p-lg-6">
-                      <h3 className="card-title h4 text-neutral-700">白烏帽子</h3>
-                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                        Opuntia microdasys var. albispina
-                      </h6>
-                      <p className="card-text text-neutral-400">
-                        掌狀莖覆滿白色細緻絨毛狀刺座，外觀柔和卻兼具仙人掌的堅韌特性，是造型獨特且充滿可愛感的品種。
-                      </p>
+              {contents.bundle?.length > 0 && (
+                <>
+                  <div className="container">
+                    <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
+                    <div className="row align-items-center py-6 py-lg-40 gap-3 gap-lg-0">
+                      {contents.bundle.map((content, idx) => (
+                        <div key={idx} className="card border-0 col-xl-4">
+                          <div className="card-body px-0 py-3 p-lg-6">
+                            <h3 className="card-title h4 text-neutral-700">{content.title}</h3>
+                            <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                              {content.enName}
+                            </h6>
+                            <p className="card-text text-neutral-400 text-prewrap">{content.description}:</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="card border-0 col-xl-4 mb-3 mb-lg-0">
-                    <div className="card-body px-0 py-3 p-lg-6">
-                      <h3 className="card-title h4 text-neutral-700">緋牡丹錦</h3>
-                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                        Gymnocalycium mihanovichii var. ufriedrichii
-                      </h6>
-                      <p className="card-text text-neutral-400">
-                        以鮮紅、橙黃、粉紫等錦斑色澤聞名，宛如一朵小小的彩色牡丹，鮮豔奪目，是觀賞價值極高的仙人掌種類。
-                      </p>
-                    </div>
+                  <div className="custom-container-lg">
+                    <img className="d-block w-100" src={contents.imageUrl} alt={`${product.title}_副圖`} />
                   </div>
-                  <div className="card border-0 col-xl-4">
-                    <div className="card-body px-0 py-3 p-lg-6">
-                      <h3 className="card-title h4 text-neutral-700">熊童子</h3>
-                      <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                        Cotyledon tomentosa
-                      </h6>
-                      <p className="card-text text-neutral-400">
-                        圓潤厚實的葉片覆有細絨毛，葉尖呈爪狀，宛如小熊的掌心，造型療癒，深受多肉愛好者喜愛。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="custom-container-lg">
-                <img className="d-block" src={productImg132} alt="product_13-2" />
-              </div>
+                </>
+              )}
             </Tab.Pane>
             <Tab.Pane eventKey="care">{/* 照顧方式 */}</Tab.Pane>
             <Tab.Pane eventKey="notice">{/* 注意事項 */}</Tab.Pane>
