@@ -62,6 +62,7 @@ export default function ProductDetail() {
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
   const hasImagesToDisplay = displayImagesUrl.length > 0;
+  const isOnSale = product.price < product.origin_price;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -156,7 +157,12 @@ export default function ProductDetail() {
                     <h2 className="fs-5 fs-lg-4 text-neutral-700">荒原綠影</h2>
                   </div>
 
-                  <p className="noto-serif-tc fw-bold fs-5 fs-lg-4 lh-sm text-primary-700">NT$2,400</p>
+                  <div className="d-flex align-items-end">
+                    <p className="noto-serif-tc fw-bold fs-5 fs-lg-4 lh-sm text-primary-700">{`NT$${product.price.toLocaleString()}`}</p>
+                    {isOnSale && (
+                      <s className="fs-sm fs-lg-8 text-neutral-400 ms-1 ms-lg-2">{`$${product.origin_price.toLocaleString()}`}</s>
+                    )}
+                  </div>
                 </div>
 
                 {/* <!-- payment --> */}
