@@ -2,17 +2,28 @@ import { clamp } from '@/utils/utils';
 import { clsx } from 'clsx';
 import Button from './Button';
 
-export default function Counter({ variant = 'lg', value, min = 0, max = 99, onCountChange }) {
+export default function Counter({ variant = 'lg', value, min = 0, max, onCountChange }) {
   const isLarge = variant === 'lg';
-  const isMax = value >= max;
+  const hasMax = Number.isFinite(max);
+  const isMax = hasMax && value >= max;
   const isMin = value <= min;
 
   const handleDecrease = () => {
-    onCountChange(prevCount => clamp(prevCount - 1, min, max));
+    if (hasMax) {
+      onCountChange(prevCount => clamp(prevCount - 1, min, max));
+      return;
+    }
+
+    onCountChange(prevCount => Math.max(min, prevCount - 1));
   };
 
   const handleIncrease = () => {
-    onCountChange(prevCount => clamp(prevCount + 1, min, max));
+    if (hasMax) {
+      onCountChange(prevCount => clamp(prevCount + 1, min, max));
+      return;
+    }
+
+    onCountChange(prevCount => Math.max(min, prevCount + 1));
   };
 
   return (

@@ -3,12 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import Button from '@/components/Button';
 import Counter from '@/components/Counter';
-import {
-  MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT,
-  MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT,
-  MIN_PRODUCT_PURCHASE_QTY,
-  paymentOptions,
-} from '@/const/guestConst';
+import { MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
 import { care, notice } from '@/const/productDetailContents';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
 import { selectAllProducts } from '@/slice/product/guestProductSlice';
@@ -164,12 +159,7 @@ export default function ProductDetail() {
 
                 <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-4">
                   <div className="d-flex align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mt-10 mb-4 mb-lg-0">
-                    <Counter
-                      value={purchaseQty}
-                      min={MIN_PRODUCT_PURCHASE_QTY}
-                      max={MAX_PURCHASE_QTY_ONE_TIME_PER_PRODUCT}
-                      onCountChange={setPurchaseQty}
-                    />
+                    <Counter value={purchaseQty} min={MIN_PRODUCT_PURCHASE_QTY} onCountChange={setPurchaseQty} />
 
                     <Button
                       type="button"
