@@ -110,7 +110,11 @@ export default function ProductDetail() {
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
                       <SwiperSlide key={url}>
-                        <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
+                        <img
+                          className="h-100 w-100 object-fit-cover"
+                          src={`${url}`}
+                          alt={`${product.title}_${idx + 1}`}
+                        />
                       </SwiperSlide>
                     ))}
                 </Swiper>
