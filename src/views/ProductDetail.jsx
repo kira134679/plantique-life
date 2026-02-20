@@ -274,8 +274,8 @@ export default function ProductDetail() {
             <Tab.Pane eventKey="care">
               <div className="container">
                 <div className="d-flex flex-column gap-6 gap-lg-8">
-                  {care.map(section => (
-                    <div className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
+                  {care.map((section, idx) => (
+                    <div key={idx} className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
                       <h6 className="text-primary">{section.subtitle}</h6>
                       <p className="text-neutral-500">{section.content}</p>
                     </div>
@@ -286,8 +286,8 @@ export default function ProductDetail() {
             <Tab.Pane eventKey="notice">
               <div className="container">
                 <div className="d-flex flex-column gap-6 gap-lg-8">
-                  {notice.map(section => (
-                    <div className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
+                  {notice.map((section, idx) => (
+                    <div key={idx} className="d-flex flex-column gap-3 gap-lg-4 text-prewrap">
                       <h6 className="text-primary">{section.subtitle}</h6>
                       <p className="text-neutral-500">{section.content}</p>
                     </div>
