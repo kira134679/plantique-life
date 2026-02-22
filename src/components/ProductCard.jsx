@@ -5,6 +5,8 @@ import Button from './Button';
 export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, onAddToCart, ...props }) {
   const [isFav, setIsFav] = useState(false);
 
+  const isOnSale = price < originPrice;
+
   return (
     <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
       <div className="position-relative overflow-hidden product-card-img-height">
@@ -40,7 +42,7 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
             </h5>
             <div className="d-flex flex-column flex-xl-row align-items-baseline">
               <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{`NT$${price.toLocaleString()}`}</p>
-              {originPrice && (
+              {isOnSale && (
                 <p className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
                   {`$${originPrice.toLocaleString()}`}
                 </p>
