@@ -27,9 +27,7 @@ export default function Counter({ variant = 'lg', value, min = 0, max, onCountCh
   };
 
   return (
-    <div
-      className={clsx('d-flex justify-content-between align-items-center gap-1 gap-lg-2 w-50 w-md-auto flex-grow-1')}
-    >
+    <div className="d-flex justify-content-between align-items-center gap-1 gap-lg-2 w-50 w-md-auto flex-grow-1">
       <Button
         type="button"
         variant="outline-neutral"
