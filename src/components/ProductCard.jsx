@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import Button from './Button';
 
-export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, ...props }) {
+export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, onAddToCart, ...props }) {
   const [isFav, setIsFav] = useState(false);
 
   return (
@@ -47,9 +47,16 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
               )}
             </div>
           </div>
-          <button type="button" className="btn bg-transparent border-0 p-0 product-card-cart">
-            <span className="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
-          </button>
+          <Button
+            type="button"
+            variant="cart"
+            shape="circle"
+            size="md"
+            className="product-card-cart"
+            onClick={onAddToCart}
+          >
+            <span className="material-symbols-rounded custom-btn-icon"> shopping_cart </span>
+          </Button>
         </div>
       </div>
     </div>
