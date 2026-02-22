@@ -24,8 +24,8 @@ export default function ProductDetail() {
   const allProducts = useSelector(selectAllProducts);
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
-  const { ...intro } = tryParseJson(product.description);
-  const { ...contents } = tryParseJson(product.content);
+  const intro = tryParseJson(product.description);
+  const contents = tryParseJson(product.content);
   const relatedProducts = useMemo(() => {
     const allProductsExcludeSelf = allProducts.filter(p => p.id !== product.id);
     const otherSameCategoryProducts = allProductsExcludeSelf.filter(p => p.category === product.category);
