@@ -1,20 +1,22 @@
 import Cookies from 'js-cookie';
 import { hideLoading, showLoading } from '../../slice/loadingSlice';
 
-export function attachAuthHandler(instance) {
+export function attachAuthHandler(instance, options = {}) {
+  const { prefix = '', tokenKey = 'auth_token' } = typeof options === 'string' ? { prefix: options } : options;
+
   instance.interceptors.request.use(config => {
-    const token = Cookies.get('auth_token');
+    const token = Cookies.get(tokenKey);
 
     if (token) {
       config.headers = config.headers ?? {};
-      config.headers.Authorization = `${token}`;
+      config.headers.Authorization = prefix ? `${prefix} ${token}` : `${token}`;
     }
 
     return config;
   });
 }
 
-export function attachLoadingHandler(instance, store) {
+export function attachLoadingHandler(instance, store, useMessageField = true) {
   instance.interceptors.request.use(
     config => {
       if (config?.preventGlobalLoading !== true) {
@@ -43,7 +45,7 @@ export function attachLoadingHandler(instance, store) {
         store.dispatch(hideLoading());
       }
 
-      return Promise.reject(error.response?.data?.message || error.message);
+      return Promise.reject((useMessageField ? error.response?.data?.message : error.response?.data) || error.message);
     },
   );
 }
