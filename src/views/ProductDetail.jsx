@@ -263,7 +263,7 @@ export default function ProductDetail() {
                             <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
                               {content.enName}
                             </h6>
-                            <p className="card-text text-neutral-400 text-prewrap">{content.description}:</p>
+                            <p className="card-text text-neutral-400 text-prewrap">{content.description}</p>
                           </div>
                         </div>
                       ))}
