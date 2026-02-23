@@ -20,7 +20,6 @@ export default function ProductDetail() {
   const { product } = useLoaderData().productData;
   const [thumbSwiper, setThumbSwiper] = useState(null);
   const [purchaseQty, setPurchaseQty] = useState(MIN_PRODUCT_PURCHASE_QTY);
-  const defaultPayload = { product_id: product.id, qty: MIN_PRODUCT_PURCHASE_QTY };
   const allProducts = useSelector(selectAllProducts);
 
   const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
@@ -44,22 +43,26 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleAddToCart = async () => {
+  const processAddToCart = async () => {
     try {
-      await dispatch(addAndRefetchCarts({ data: { ...defaultPayload, qty: purchaseQty } })).unwrap();
+      await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty: purchaseQty } })).unwrap();
       toast.success('已加入購物車');
+      return { success: true };
     } catch (error) {
       toast.error(error);
+      return { success: false };
     }
   };
 
+  const handleAddToCart = async () => {
+    await processAddToCart();
+  };
+
   const buyNow = async () => {
-    try {
-      await dispatch(addAndRefetchCarts({ data: defaultPayload })).unwrap();
-      toast.success('已加入購物車');
+    const { success } = await processAddToCart();
+
+    if (success) {
       navigate('/shopping-cart');
-    } catch (error) {
-      toast.error(error);
     }
   };
 
