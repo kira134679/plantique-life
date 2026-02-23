@@ -121,7 +121,7 @@ export default function ProductDetail() {
               </div>
             </div>
             <div className="col-lg-5">
-              <div className="d-flex flex-column gap-8 gap-md-5 gap-xl-4 gap-xxl-10">
+              <div className="d-flex flex-column h-100 gap-8 gap-md-5 gap-xl-4 gap-xxl-10">
                 {/* <!-- info --> */}
 
                 <div className="d-flex flex-column gap-1 gap-xl-3">
@@ -161,7 +161,7 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-4">
+                <div className="mt-auto d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-4">
                   <div className="d-flex align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mt-10 mb-4 mb-lg-0">
                     <Counter value={purchaseQty} min={MIN_PRODUCT_PURCHASE_QTY} onCountChange={setPurchaseQty} />
 
