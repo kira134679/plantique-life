@@ -96,7 +96,6 @@ function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId 
       const response = await uploadApi.upload(formData);
       toast.success('圖片上傳成功！');
 
-      setIsFileUploading(false);
       setUploadedUrl(response.imageUrl);
       setValue(urlFieldName, response.imageUrl); // 將網址輸入框的內容替換為 API 回傳的圖片網址
       setPreviewUrl(null);
@@ -107,6 +106,8 @@ function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId 
       }
     } catch (error) {
       toast.error(error);
+    } finally {
+      setIsFileUploading(false);
     }
   };
 
