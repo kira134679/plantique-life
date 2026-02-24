@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { Dropdown, OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
+import { memo, useEffect, useState } from 'react';
+import { Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
@@ -64,7 +64,7 @@ function ProductForm({ isEditMode, onSubmit, initialData = {}, productId = '' })
   // 即時監測 url 欄位是否有值，計算出目前有多少圖片欄位已使用（不含未上傳至後端的圖片）
   // 若圖片檔案已上傳後端，後端回傳的圖片網址會存入 url 欄位
   const imageUrls = useWatch({ control, name: ['imageUrl1', 'imageUrl2', 'imageUrl3', 'imageUrl4', 'imageUrl5'] });
-  const usedImageCount = useMemo(() => imageUrls.filter(Boolean).length, [imageUrls]);
+  const usedImageCount = imageUrls.filter(Boolean).length;
 
   // --- Local State ---
   const [isIdCopied, setIsIdCopied] = useState(false);

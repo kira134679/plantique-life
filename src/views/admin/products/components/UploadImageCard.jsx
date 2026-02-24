@@ -59,7 +59,7 @@ function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId 
     setPreviewUrl(null);
     setUploadedUrl(null);
 
-    // 重新對圖片進行驗證，因為 setValue 不會觸發 onChange 事件
+    // 重新對圖片進行驗證
     trigger([urlFieldName, fileFieldName]);
 
     // 將 file input 中殘留的值清空，避免重新選擇同一張圖片時，不會觸發 onChange

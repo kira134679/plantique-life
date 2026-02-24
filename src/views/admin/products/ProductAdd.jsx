@@ -31,7 +31,7 @@ function ProductAdd() {
   return (
     <div className="py-13">
       <h2 className="h3 mb-8">新增商品</h2>
-      <ProductForm isEdit={false} onSubmit={handleFormSubmit} />
+      <ProductForm isEditMode={false} onSubmit={handleFormSubmit} />
     </div>
   );
 }

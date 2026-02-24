@@ -36,7 +36,6 @@ export const formatToForm = product => {
 /**
  * 將表單資料轉換為後端 API 要求的 Payload 格式
  * @param {Object} formData - 來自 react-hook-form 的原始資料
- * @param {boolean} isEditMode - 是否為編輯模式
  * @returns {Object} 包含 data 屬性的後端 Payload
  */
 export const formatToPayload = formData => {
