@@ -149,15 +149,15 @@ function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId 
   return (
     <Card
       className={clsx(
-        'flex-shrink-0 upload-img-card',
+        'flex-shrink-0 overflow-hidden border-neutral-200 upload-img-card',
         urlValue && 'uploaded',
         fileValue && 'uploaded',
         errors[fileFieldName] && 'is-invalid',
       )}
     >
-      <div className="card-img-wrap position-relative overflow-hidden">
+      <div className="card-img-wrap position-relative overflow-hidden border-bottom border-1">
         <div className="position-absolute top-0 end-0 bottom-0 start-0 bg-dark z-1 rounded-bottom-0 card-img-overlay"></div>
-        <div className="ratio ratio-1x1 border-bottom border-1">
+        <div className="ratio ratio-1x1">
           {/* 圖片 */}
           <Card.Img
             variant="top"
