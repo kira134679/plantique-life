@@ -1,6 +1,9 @@
 import { Outlet } from 'react-router';
 
 // 前台頁面
+import { guestProductApi } from '@/api/index.js';
+import { getAllProducts } from '@/slice/product/guestProductSlice.js';
+import store from '@/store/index.js';
 import App from '../App';
 import About from '../views/About';
 import ArticleDetail from '../views/ArticleDetail';
@@ -29,10 +32,35 @@ const routes = [
     path: '/',
     Component: App,
     handle: { breadcrumb: () => '首頁' },
+    HydrateFallback: () => null,
+    loader: () => {
+      store.dispatch(getAllProducts());
+    },
     children: [
       { index: true, Component: Home },
-      { path: 'products', Component: ProductList, handle: { breadcrumb: () => '植感精選' } },
-      { path: 'products/:productId', Component: ProductDetail },
+      {
+        path: 'products',
+        Component: () => <Outlet />,
+        handle: { breadcrumb: () => '植感精選' },
+        children: [
+          { index: true, Component: ProductList },
+          {
+            path: ':productId',
+            // HydrateFallback is required to suppress a React Router warning.
+            // Related discussion: https://github.com/remix-run/react-router/issues/12563#issuecomment-2888614210
+            HydrateFallback: () => null,
+            loader: async ({ params }) => {
+              const { productId } = params;
+              return { productData: await guestProductApi.getProductById(productId) };
+            },
+
+            Component: ProductDetail,
+            handle: {
+              breadcrumb: ({ loaderData }) => loaderData.productData?.product?.title || null,
+            },
+          },
+        ],
+      },
       { path: 'articles/:articleId', Component: ArticleDetail },
       { path: 'articles', Component: Articles },
       { path: 'shopping-cart', Component: ShoppingCart },
