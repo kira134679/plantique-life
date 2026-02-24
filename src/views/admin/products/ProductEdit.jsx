@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router';
@@ -14,13 +14,11 @@ function ProductEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // --- Ref ---
-  const idRef = useRef(id); // 避免使用者任意更改網址而重新抓到錯誤的 id
-
   // --- Local State ---
   const [isFetching, setIsFetching] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const [fetchingError, setFetchingError] = useState(null);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   // --- Redux Hooks ---
   const dispatch = useDispatch();
@@ -29,25 +27,35 @@ function ProductEdit() {
   const handleFormSubmit = useCallback(
     async formData => {
       try {
-        await dispatch(updateProduct({ id: idRef.current, data: formData })).unwrap();
+        await dispatch(updateProduct({ id, data: formData })).unwrap();
         toast.success('商品更新成功！');
         navigate('/admin/products'); // 跳轉回商品一覽頁
       } catch (error) {
         toast.error(`商品更新失敗！錯誤說明：${error}`);
       }
     },
-    [navigate, dispatch],
+    [id, navigate, dispatch],
   );
 
   // --- Side Effects ---
-  // 元件 mount 時，從後端取得商品資料，作為表單初始值
+  // 元件 mount 與網址 id 改變時，從後端取得商品資料，更新表單初始值
   useEffect(() => {
+    setInitialData(null);
+    setIsNotFound(false);
+    setFetchingError(null);
+
+    // 因後端未明確定義 id 的生成規則，為避免誤判，這裡暫不做 id 格式驗證
+
     const fetchInitialData = async () => {
       try {
         setIsFetching(true);
         const response = await dispatch(fetchAllProducts()).unwrap();
-        const targetProduct = response.products[idRef.current];
-        if (targetProduct) setInitialData(formatToForm(targetProduct));
+        const targetProduct = response.products[id];
+        if (targetProduct) {
+          setInitialData(formatToForm(targetProduct));
+        } else {
+          setIsNotFound(true); // 從後端成功取得所有商品，但所有商品的資料庫裡沒有這個商品
+        }
       } catch (error) {
         setFetchingError(error);
       } finally {
@@ -56,14 +64,13 @@ function ProductEdit() {
     };
 
     fetchInitialData();
-  }, [dispatch]);
+  }, [id, dispatch]);
 
   // --- View State Logic ---
   const isError = !!fetchingError;
   const isLoading = isFetching && !isError;
   const isReady = !isError && !isLoading; // 已向後端發出取得所有商品請求，並獲得回覆(不論成功或失敗)
-  const isNotFound = isReady && !initialData; // 從後端成功取得所有商品，但所有商品的資料庫裡沒有這個商品
-  const showForm = isReady && !!initialData;
+  const showForm = isReady && !isNotFound && !!initialData;
 
   return (
     <div className="py-13">
@@ -89,12 +96,7 @@ function ProductEdit() {
         </div>
       )}
       {showForm && (
-        <ProductForm
-          isEditMode={true}
-          onSubmit={handleFormSubmit}
-          initialData={initialData}
-          productId={idRef.current}
-        />
+        <ProductForm isEditMode={true} onSubmit={handleFormSubmit} initialData={initialData} productId={id} />
       )}
     </div>
   );

@@ -13,7 +13,32 @@ import productSchema from '../productSchema';
 import Button from '@/components/Button';
 import UploadImageCard from './UploadImageCard';
 
-function ProductForm({ isEditMode, onSubmit, initialData = {}, productId = '' }) {
+const DEFAULT_INITIAL_DATA = {}; // 避免元件重新渲染時，重複產生不同參考位址的空物件，導致無限迴圈
+
+const emptyDefaultValues = {
+  title: '',
+  category: '',
+  status: '',
+  mainImageUrl: '',
+  imageUrl1: '',
+  imageUrl2: '',
+  imageUrl3: '',
+  imageUrl4: '',
+  imageUrl5: '',
+  mainImageFile: null,
+  imageFile1: null,
+  imageFile2: null,
+  imageFile3: null,
+  imageFile4: null,
+  imageFile5: null,
+  originPrice: '',
+  price: '',
+  unit: '',
+  content: '',
+  description: '',
+};
+
+function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA, productId = '' }) {
   // --- Logic Helpers ---
   // 依照新增模式/編輯模式產生不同的欄位 id 前綴
   const fieldIdPrefix = isEditMode ? 'update-product' : 'new-product';
@@ -28,27 +53,7 @@ function ProductForm({ isEditMode, onSubmit, initialData = {}, productId = '' })
     shouldFocusError: false,
     // 所有欄位都需要有預設值，否則 reset 時會變成 undefined 而非字串型別，無法通過 zod 驗證
     defaultValues: {
-      title: '',
-      category: '',
-      status: '',
-      mainImageUrl: '',
-      imageUrl1: '',
-      imageUrl2: '',
-      imageUrl3: '',
-      imageUrl4: '',
-      imageUrl5: '',
-      mainImageFile: null,
-      imageFile1: null,
-      imageFile2: null,
-      imageFile3: null,
-      imageFile4: null,
-      imageFile5: null,
-      originPrice: '',
-      price: '',
-      unit: '',
-      content: '',
-      description: '',
-      ...initialData, // 更新商品時，用初始值已經有的屬性去覆蓋掉空的預設值
+      ...emptyDefaultValues,
     },
   });
   const {
@@ -58,6 +63,7 @@ function ProductForm({ isEditMode, onSubmit, initialData = {}, productId = '' })
     setFocus,
     getValues,
     setError,
+    reset,
     formState: { errors, isDirty },
   } = methods;
 
@@ -115,6 +121,14 @@ function ProductForm({ isEditMode, onSubmit, initialData = {}, productId = '' })
   };
 
   // --- Side Effects ---
+  // 當傳入的 initialData 有變動時，重新定義表單初始值
+  useEffect(() => {
+    reset({
+      ...emptyDefaultValues,
+      ...initialData, // 更新商品時，用初始值已經有的屬性去覆蓋掉空的預設值
+    });
+  }, [initialData, reset]);
+
   // 元件 mount 時，即 focus 在商品名稱欄位
   useEffect(() => {
     setFocus('title');
