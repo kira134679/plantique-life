@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { Fragment, useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import toast, { ErrorIcon } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
-import { guestOrderApi } from '@/api';
+import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
 
@@ -68,6 +68,36 @@ function OrderDetail() {
       toast.error(`有 ${failedItems.length} 個產品加入購物車失敗`);
     } else {
       toast.success('產品加入購物車成功！');
+    }
+  };
+
+  // 重新付款
+  const processCreditCardPayment = async orderId => {
+    try {
+      const res = await payApi.createPayment(orderId);
+      // api 僅更新欄位 is_paid，所以不再重新呼叫訂單資訊
+      setOrderDetail(prev => ({ ...prev, is_paid: true }));
+      toast.success(res.message);
+    } catch (error) {
+      toast(
+        t => (
+          <div className="d-flex align-items-center gap-3">
+            <ErrorIcon />
+            <p>{error}</p>
+            <Button
+              type="button"
+              variant="outline-neutral"
+              shape="circle"
+              size="sm"
+              className="border-0"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              <span className="custom-btn-icon material-symbols-rounded">close</span>
+            </Button>
+          </div>
+        ),
+        { duration: Infinity },
+      );
     }
   };
 
@@ -161,17 +191,31 @@ function OrderDetail() {
           訂單編號：{orderDetail.id}
         </p>
       </div>
-      <p className="text-neutral-400 mb-3 mb-lg-4 fs-sm fs-lg-8 pt-5 pt-lg-10">
-        付款狀態：
-        <span
-          className={clsx(
-            'fs-xs fs-lg-sm px-3 py-1 ms-1',
-            orderDetail.is_paid ? 'bg-primary-100 text-primary' : 'bg-secondary-100 text-secondary',
-          )}
-        >
-          {orderDetail.is_paid ? '已付款' : '未付款'}
-        </span>
-      </p>
+      <div className="d-flex align-items-center mb-3 mb-lg-4 pt-5 pt-lg-10">
+        <p className="text-neutral-400 fs-sm fs-lg-8">
+          付款狀態：
+          <span
+            className={clsx(
+              'fs-xs fs-lg-sm px-3 py-1 ms-1',
+              orderDetail.is_paid ? 'bg-primary-100 text-primary' : 'bg-secondary-100 text-secondary',
+            )}
+          >
+            {orderDetail.is_paid ? '已付款' : '未付款'}
+          </span>
+        </p>
+        {orderDetail.user?.payment === '信用卡一次付清' && !orderDetail.is_paid && (
+          <Button
+            type="button"
+            variant="filled-primary"
+            shape="pill"
+            size="sm"
+            className="ms-4"
+            onClick={() => processCreditCardPayment(orderDetail.id)}
+          >
+            重新付款
+          </Button>
+        )}
+      </div>
       <p className="text-neutral-400 fs-sm fs-lg-8 mb-3 mb-lg-4">
         總額：
         <span className="noto-serif-tc fw-bold text-primary-700 ms-1">NT${orderDetail.total.toLocaleString()}</span>
