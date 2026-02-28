@@ -29,11 +29,11 @@ function About() {
         <div className="row flex-column flex-lg-row">
           <div className="col-lg-6">
             <img src={illusPlant} className="img-fluid" alt="" />
-            <h2 className="h3 fs-lg-2 mt-2 mt-lg-3">
+            <h2 className="h3 fs-lg-2 text-primary-900 mt-2 mt-lg-3">
               在快節奏的城市中，<span className="d-block mt-2 mt-lg-3">我們渴望一個能喘息的角落</span>
             </h2>
           </div>
-          <div className="col-lg-6 pb-8 pb-lg-15 mb-lg-5 mt-6 mt-lg-5">
+          <div className="col-lg-6 text-neutral-700 pb-8 pb-lg-15 mb-lg-5 mt-6 mt-lg-5">
             <picture>
               <source srcSet={headingDecoration} media="(min-width: 992px)" />
               <img src={headingDecorationSm} className="img-fluid d-block ms-auto ms-lg-0" alt="" />
@@ -83,19 +83,22 @@ function About() {
         <div className="row">
           <div className="col-lg-2 text-center mt-12 mt-lg-15">
             <p className="fs-8 fs-lg-7 noto-serif-tc fw-bold text-primary mb-4">Contact Us</p>
-            <h2 className="h3 fs-lg-2 vertical-lr d-inline-block mb-4">聯絡我們</h2>
+            <h2 className="h3 fs-lg-2 text-neutral-700 vertical-lr d-inline-block mb-4">聯絡我們</h2>
             <picture>
               <source srcSet={headingDecoration} media="(min-width: 992px)" />
               <img src={headingDecorationSm} className="img-fluid d-block mx-auto" alt="" />
             </picture>
           </div>
           <div className="col-lg-3 align-self-end pb-lg-15 mb-lg-15 mt-12 mt-lg-0">
-            <div className="d-block about-max-width-260px about-max-width-lg-none mx-auto ms-lg-auto about-me-lg-n6">
+            <div className="d-block text-primary-900 about-max-width-260px about-max-width-lg-none mx-auto ms-lg-auto about-me-lg-n6">
               <p className="fs-sm fs-lg-8 text-center text-lg-start mb-5 mb-lg-6">
                 如果您有品牌合作、活動策劃、媒體採訪…等需求，都歡迎與我們隨時聯絡。
               </p>
               <p className="fs-sm fs-lg-8 text-center text-lg-start">
-                請寄至 <a href="mailto:plantique.life@gmail.com">plantique.life@gmail.com</a>
+                請寄至
+                <a href="mailto:plantique.life@gmail.com" className="link-primary-900">
+                  plantique.life@gmail.com
+                </a>
                 <br />
                 我們將盡速與您聯繫。
               </p>
