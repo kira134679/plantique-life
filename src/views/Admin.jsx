@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet, ScrollRestoration } from 'react-router';
 import Header from '../layout/admin/Header';
 import SideMenu from '../layout/admin/SideMenu';
 
@@ -14,6 +14,7 @@ function Admin() {
           <Outlet />
         </div>
       </div>
+      <ScrollRestoration />
     </div>
   );
 }

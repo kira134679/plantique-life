@@ -6,7 +6,7 @@ const Pagination = ({
   currentPage,
   totalPages,
   onPageChange,
-  autoScroll = true,
+  autoScroll = false,
   pageRange = 3,
   marginPages = 1,
   className,

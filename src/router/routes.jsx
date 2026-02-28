@@ -1,27 +1,31 @@
+import { Outlet } from 'react-router';
+
+// 前台頁面
+import { guestProductApi } from '@/api/index.js';
 import { getAllProducts } from '@/slice/product/guestProductSlice.js';
 import store from '@/store/index.js';
 import App from '../App';
-import RequireAuth from '../components/RequireAuth.jsx';
+import About from '../views/About';
 import ArticleDetail from '../views/ArticleDetail';
 import Articles from '../views/Articles';
 import Home from '../views/Home';
-import Login from '../views/Login.jsx';
 import Member from '../views/Member.jsx';
 import OrderList from '../views/member/OrderList.jsx';
-import NotFound from '../views/NotFound';
 import ProductDetail from '../views/ProductDetail';
 import ProductList from '../views/ProductList';
 import ShoppingCart from '../views/ShoppingCart';
 
 // 後台管理頁面
-import { guestProductApi } from '@/api/index.js';
-import { Outlet } from 'react-router';
+import RequireAuth from '../components/RequireAuth.jsx';
 import Admin from '../views/Admin.jsx';
 import CouponEdit from '../views/admin/coupons/CouponEdit.jsx';
 import Coupons from '../views/admin/coupons/Coupons.jsx';
 import Orders from '../views/admin/Orders.jsx';
 import ProductEdit from '../views/admin/products/ProductEdit.jsx';
 import Products from '../views/admin/products/Products.jsx';
+import Login from '../views/Login.jsx';
+
+import NotFound from '../views/NotFound';
 
 const routes = [
   {
@@ -60,6 +64,7 @@ const routes = [
       { path: 'articles/:articleId', Component: ArticleDetail },
       { path: 'articles', Component: Articles },
       { path: 'shopping-cart', Component: ShoppingCart },
+      { path: 'about', Component: About },
       {
         path: 'member',
         Component: Member,
