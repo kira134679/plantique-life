@@ -109,6 +109,10 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
   // 控制是否需要驗證一次收件人欄位
   const needValidateRecipientRef = useRef(false);
 
+  // 提交按鈕 ref
+  const desktopSubmitButtonRef = useRef(null);
+  const mobileSubmitButtonRef = useRef(null);
+
   // 從 Redux 取得購物車資料
   const { carts, total, finalTotal } = useSelector(state => state.cart);
 
@@ -945,6 +949,7 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
                   返回購物車
                 </Button>
                 <Button
+                  ref={desktopSubmitButtonRef}
                   type="submit"
                   variant="filled-primary"
                   shape="pill"
@@ -959,7 +964,14 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
         </div>
         {/* 手機版按鈕 */}
         <div className="d-lg-none my-6">
-          <Button type="submit" variant="filled-primary" shape="pill" size="lg" className="w-100 text-nowrap">
+          <Button
+            ref={mobileSubmitButtonRef}
+            type="submit"
+            variant="filled-primary"
+            shape="pill"
+            size="lg"
+            className="w-100 text-nowrap"
+          >
             確認送出
           </Button>
           <Button
@@ -974,6 +986,43 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
           </Button>
         </div>
       </form>
+      {/* demo button */}
+      <Button
+        type="button"
+        className="demo-btn"
+        onClick={() => {
+          setValue('delivery', '黑貓宅配');
+          setValue('payment', '信用卡一次付清');
+          setValue('cardNumber', '1111 2222 3333 4444');
+          setValue('cardExp', '01/28');
+          setValue('cardCvc', '123');
+          setValue('purchaserName', '王小明');
+          setValue('purchaserPhone', '0912-345-678');
+          setValue('purchaserEmail', 'plantique@test.com');
+          setValue('recipientChecked', true);
+          setValue('recipientName', '王小明');
+          setValue('recipientPhone', '0912-345-678');
+          setValue('recipientEmail', 'plantique@test.com');
+          setValue('recipientAddress', '台北市信義區松仁路100');
+          setValue('invoice', '雲端載具');
+          setValue('mobileBarcode', '/ABC1234');
+          setValue('ubn', '');
+          setValue('message', '希望晚上送達，謝謝！');
+          // 重置表單
+          // IMaskInput 會觸發驗證，使用 reset 搭配 setTimeout 確保驗證完成後再重置
+          const currentValues = getValues();
+          setTimeout(() => reset(currentValues, { keepValues: true }), 0);
+          // 延遲 500ms 後 focus 到按鈕
+          // 螢幕寬度在 lg 以上時，focus 到電腦版按鈕，否則 focus 到手機版按鈕
+          setTimeout(
+            () =>
+              window.innerWidth >= 992
+                ? desktopSubmitButtonRef.current?.focus()
+                : mobileSubmitButtonRef.current?.focus(),
+            500,
+          );
+        }}
+      ></Button>
       {/* 提醒通知 Modal */}
       <Modal
         show={showConfirmModal}
