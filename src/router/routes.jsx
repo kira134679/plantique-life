@@ -25,6 +25,7 @@ import ProductEdit from '../views/admin/products/ProductEdit.jsx';
 import Products from '../views/admin/products/Products.jsx';
 import Login from '../views/Login.jsx';
 
+import ErrorBoundary from '@/views/ErrorBoundary.jsx';
 import NotFound from '../views/NotFound';
 
 const routes = [
@@ -58,6 +59,7 @@ const routes = [
             handle: {
               breadcrumb: ({ loaderData }) => loaderData.productData?.product?.title || null,
             },
+            ErrorBoundary: ErrorBoundary,
           },
         ],
       },
