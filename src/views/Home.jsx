@@ -1,3 +1,5 @@
+import { MIN_PRODUCT_PURCHASE_QTY } from '@/const/guestConst';
+import { addAndRefetchCarts } from '@/slice/cartSlice';
 import headingDecorationSm from 'assets/images/index/heading-decoration-sm.svg';
 import headingDecoration from 'assets/images/index/heading-decoration.svg';
 import textLg from 'assets/images/index/img_banner_text02_lg.svg';
@@ -11,6 +13,7 @@ import newsImg2 from 'assets/images/news/img_news_02.png';
 import newsImg3 from 'assets/images/news/img_news_03.png';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
@@ -89,6 +92,15 @@ export default function Home() {
   const dispatch = useDispatch();
   const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
   const { productList: products } = useSelector(state => state.guestProduct);
+
+  const handleAddToCart = async productId => {
+    try {
+      await dispatch(addAndRefetchCarts({ data: { product_id: productId, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
+      toast.success('已加入購物車');
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   useEffect(() => {
     dispatch(getArticles());
@@ -381,6 +393,7 @@ export default function Home() {
                       tag="質感精選"
                       originPrice={item.origin_price}
                       price={item.price}
+                      onAddToCart={() => handleAddToCart(item.id)}
                     />
                   </SwiperSlide>
                 ))}

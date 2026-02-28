@@ -20,3 +20,7 @@ img {
 ul {
   margin: 0; // bootstrap 沒有清除 margin-bottom。這裡比照 meyerweb css reset 設定
 }
+
+html {
+  scrollbar-gutter: stable;
+}
