@@ -10,6 +10,7 @@ import ArticleDetail from '../views/ArticleDetail';
 import Articles from '../views/Articles';
 import Home from '../views/Home';
 import Member from '../views/Member.jsx';
+import OrderDetail from '../views/member/OrderDetail.jsx';
 import OrderList from '../views/member/OrderList.jsx';
 import ProductDetail from '../views/ProductDetail';
 import ProductList from '../views/ProductList';
@@ -71,11 +72,21 @@ const routes = [
         handle: { breadcrumb: () => '會員中心' },
         children: [
           { index: true, Component: () => <h2>基本資訊</h2> },
-          { path: 'orders', Component: OrderList, handle: { breadcrumb: () => '訂單查詢' } },
           {
-            path: 'orders/:orderId',
-            Component: () => <h2>訂單明細</h2>,
-            handle: { breadcrumb: match => `${match.params.orderId}` },
+            path: 'orders',
+            Component: () => <Outlet />,
+            handle: { breadcrumb: () => '訂單查詢' },
+            children: [
+              {
+                index: true,
+                Component: OrderList,
+              },
+              {
+                path: ':orderId',
+                Component: OrderDetail,
+                handle: { breadcrumb: match => `${match.params.orderId}` },
+              },
+            ],
           },
           { path: 'wishlist', Component: () => <h2>願望清單</h2>, handle: { breadcrumb: () => '願望清單' } },
         ],

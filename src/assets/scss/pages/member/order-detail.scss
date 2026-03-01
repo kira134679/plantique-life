@@ -1,0 +1,21 @@
+// 兩邊有直線，文字置中
+.order-detail-spacing {
+  display: flex;
+  align-items: center;
+  text-wrap: nowrap;
+  gap: map-get($spacers, 6);
+  &::before,
+  &::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background-color: $primary-200;
+  }
+}
+
+.order-detail-product-img {
+  height: 233px;
+  @include media-breakpoint-up(lg) {
+    height: 269px;
+  }
+}

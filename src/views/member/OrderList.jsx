@@ -97,38 +97,39 @@ function OrderList() {
   }, [searchParams, fetchOrders, setSearchParams]);
 
   return (
-    <div className="py-8 py-md-0">
+    <div className="py-8 py-lg-0">
       {orders &&
         orders.map(order => (
-          <div key={order.id} className="border-bottom py-6 px-3 py-md-10 px-md-6">
-            <h3 className="fs-7 fs-md-5">
-              訂單編號：<span className="fs-8 fs-md-5">{order.id}</span>
+          <div key={order.id} className="border-bottom py-6 px-3 py-lg-10 px-lg-6">
+            <h3 className="fs-7 fs-lg-5">
+              訂單編號：<span className="fs-8 fs-lg-5">{order.id}</span>
             </h3>
-            <div className="d-flex flex-column flex-md-row justify-content-md-between mt-5 mt-md-6">
+            <div className="d-flex flex-column flex-lg-row justify-content-lg-between mt-5 mt-lg-6">
               <div>
-                <p className="text-neutral-400 mb-3 mb-md-4 fs-sm fs-md-8">
+                <p className="text-neutral-400 mb-3 mb-lg-4 fs-sm fs-lg-8">
                   付款狀態：
                   <span
                     className={clsx(
-                      'fs-xs fs-md-sm px-3 py-1 ms-1',
+                      'fs-xs fs-lg-sm px-3 py-1 ms-1',
                       order.is_paid ? 'bg-primary-100 text-primary' : 'bg-secondary-100 text-secondary',
                     )}
                   >
                     {order.is_paid ? '已付款' : '未付款'}
                   </span>
                 </p>
-                <p className="text-neutral-400 fs-sm fs-md-8 mb-3 mb-md-4">
+                <p className="text-neutral-400 fs-sm fs-lg-8 mb-3 mb-lg-4">
                   總額：
                   <span className="noto-serif-tc fw-bold text-primary-700 ms-1">NT${order.total.toLocaleString()}</span>
                 </p>
-                <p className="text-neutral-400 fs-sm fs-md-8">
+                <p className="text-neutral-400 fs-sm fs-lg-8">
                   付款方式：<span className="ms-1">{order.user.payment}</span>
                 </p>
               </div>
-              <div className="order-list-btn-container w-100 mt-5 mt-md-0">
+              <div className="order-list-btn-container w-100 mt-5 mt-lg-0">
                 <Button
                   as={Link}
                   to={`/member/orders/${order.id}`}
+                  state={{ orderDetail: order, page: searchParams.get('page'), fromOrderList: true }}
                   type="button"
                   variant="filled-primary"
                   shape="pill"
@@ -160,7 +161,7 @@ function OrderList() {
       <Pagination
         currentPage={pagination.current_page || 0}
         totalPages={pagination.total_pages || 0}
-        className="justify-content-end my-6 my-md-10"
+        className="justify-content-end my-6 my-lg-10"
         onPageChange={handlePageChange}
       />
     </div>

@@ -1,13 +1,13 @@
 .member-container {
   min-height: calc(100vh - 556px);
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     min-height: calc(100vh - 489px);
   }
 }
 
 .member-nav-container {
   border-bottom: 1px solid $neutral-200;
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     border-bottom: none;
   }
 }
@@ -20,7 +20,7 @@
     color: $primary !important;
     border-bottom: 2px solid $primary;
   }
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     &,
     &:hover,
     &.active {
