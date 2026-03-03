@@ -19,7 +19,14 @@ function FirstStep({ productImages, handleSwitchStep }) {
     productImg13,
   } = productImages;
   const dispatch = useDispatch();
-  const { carts, total, finalTotal, isLoading: cartLoading, loadingItems } = useSelector(state => state.cart);
+  const {
+    carts,
+    total,
+    finalTotal,
+    isLoading: cartLoading,
+    loadingItems,
+    isMigrating: cartMigrating,
+  } = useSelector(state => state.cart);
 
   // 優惠券輸入框
   const [coupon, setCoupon] = useState('');
@@ -115,98 +122,102 @@ function FirstStep({ productImages, handleSwitchStep }) {
             </div>
           </div>
           <ul className="cart-list list-unstyled border-top pt-6 pb-8">
-            {carts.map(cartItem => {
-              const itemStatus = loadingItems[cartItem.id] || false;
-              return (
-                <li key={cartItem.id} className="position-relative">
-                  <div className="row gx-3 gx-lg-6">
-                    <div className="col-6 col-lg-3">
-                      <img
-                        className="cart-product-img w-100 object-fit-cover"
-                        src={cartItem.product.imageUrl}
-                        alt={cartItem.product.title}
-                      />
-                    </div>
-                    <div className="col-6 col-lg-9">
-                      <div className="d-flex flex-column flex-lg-row align-items-lg-center h-100">
-                        <div className="col-lg-4 pe-lg-6">
-                          <h4 className="h6 fs-lg-5 text-neutral-700 text-nowrap mb-1 mb-lg-2">
-                            {cartItem.product.title}
-                          </h4>
-                          <div className="d-flex mb-3 mb-lg-0 align-items-end">
-                            <p className="fs-8 fs-lg-7 fw-bold lh-sm noto-serif-tc text-primary-700">
-                              {`NT$${cartItem.product.price.toLocaleString()}`}
+            {!cartMigrating &&
+              carts.map(cartItem => {
+                const itemStatus = loadingItems[cartItem.id] || false;
+                return (
+                  <li key={cartItem.id} className="position-relative">
+                    <div className="row gx-3 gx-lg-6">
+                      <div className="col-6 col-lg-3">
+                        <img
+                          className="cart-product-img w-100 object-fit-cover"
+                          src={cartItem.product.imageUrl}
+                          alt={cartItem.product.title}
+                        />
+                      </div>
+                      <div className="col-6 col-lg-9">
+                        <div className="d-flex flex-column flex-lg-row align-items-lg-center h-100">
+                          <div className="col-lg-4 pe-lg-6">
+                            <h4 className="h6 fs-lg-5 text-neutral-700 text-nowrap mb-1 mb-lg-2">
+                              {cartItem.product.title}
+                            </h4>
+                            <div className="d-flex mb-3 mb-lg-0 align-items-end">
+                              <p className="fs-8 fs-lg-7 fw-bold lh-sm noto-serif-tc text-primary-700">
+                                {`NT$${cartItem.product.price.toLocaleString()}`}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="d-flex justify-content-between col-lg-4 pe-lg-6 mb-3 mb-md-0">
+                            <p className="d-lg-none fs-sm text-neutral-400">小計</p>
+                            <p className="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700">
+                              {itemStatus === 'updating' ? (
+                                <span className="spinner-border spinner-border-sm text-secondary" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </span>
+                              ) : (
+                                `NT$${cartItem.total.toLocaleString()}`
+                              )}
                             </p>
                           </div>
-                        </div>
-                        <div className="d-flex justify-content-between col-lg-4 pe-lg-6 mb-3 mb-md-0">
-                          <p className="d-lg-none fs-sm text-neutral-400">小計</p>
-                          <p className="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700">
-                            {itemStatus === 'updating' ? (
-                              <span className="spinner-border spinner-border-sm text-secondary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                              </span>
-                            ) : (
-                              `NT$${cartItem.total.toLocaleString()}`
-                            )}
-                          </p>
-                        </div>
-                        <div className="d-flex align-items-center col-lg-4 pe-lg-6 mt-auto mt-lg-0">
-                          <Button
-                            type="button"
-                            variant="outline-neutral"
-                            shape="circle"
-                            size="sm"
-                            className="me-1"
-                            disabled={cartItem.qty <= 1 || itemStatus}
-                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
-                          >
-                            <span className="custom-btn-icon material-symbols-rounded">remove</span>
-                          </Button>
-                          <span className="cart-product-quantity fs-lg-7 fw-bold lh-sm noto-serif-tc text-black text-center me-1">
-                            {cartItem.qty}
-                          </span>
-                          <Button
-                            type="button"
-                            variant="outline-neutral"
-                            shape="circle"
-                            size="sm"
-                            className="me-1"
-                            disabled={itemStatus}
-                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
-                          >
-                            <span className="custom-btn-icon material-symbols-rounded">add</span>
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="outline-danger"
-                            shape="circle"
-                            size="sm"
-                            className={clsx('ms-auto', itemStatus === 'deleting' && 'deleting-button px-3 z-1')}
-                            disabled={itemStatus}
-                            onClick={() => handleDeleteCart(cartItem.id)}
-                          >
-                            {itemStatus === 'deleting' ? (
-                              <span className="spinner-border spinner-border-sm text-danger" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                              </span>
-                            ) : (
-                              <span className="custom-btn-icon material-symbols-rounded">delete</span>
-                            )}
-                          </Button>
+                          <div className="d-flex align-items-center col-lg-4 pe-lg-6 mt-auto mt-lg-0">
+                            <Button
+                              type="button"
+                              variant="outline-neutral"
+                              shape="circle"
+                              size="sm"
+                              className="me-1"
+                              disabled={cartItem.qty <= 1 || itemStatus}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
+                            >
+                              <span className="custom-btn-icon material-symbols-rounded">remove</span>
+                            </Button>
+                            <span className="cart-product-quantity fs-lg-7 fw-bold lh-sm noto-serif-tc text-black text-center me-1">
+                              {cartItem.qty}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="outline-neutral"
+                              shape="circle"
+                              size="sm"
+                              className="me-1"
+                              disabled={itemStatus}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
+                            >
+                              <span className="custom-btn-icon material-symbols-rounded">add</span>
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline-danger"
+                              shape="circle"
+                              size="sm"
+                              className={clsx('ms-auto', itemStatus === 'deleting' && 'deleting-button px-3 z-1')}
+                              disabled={itemStatus}
+                              onClick={() => handleDeleteCart(cartItem.id)}
+                            >
+                              {itemStatus === 'deleting' ? (
+                                <span className="spinner-border spinner-border-sm text-danger" role="status">
+                                  <span className="visually-hidden">Loading...</span>
+                                </span>
+                              ) : (
+                                <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                              )}
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  {/* item 刪除時遮罩 */}
-                  {itemStatus === 'deleting' && (
-                    <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
-                  )}
-                </li>
-              );
-            })}
-            {/* 購物車空狀態：載入中顯示 spinner，否則顯示提示文字 */}
+                    {/* item 刪除時遮罩 */}
+                    {itemStatus === 'deleting' && (
+                      <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
+                    )}
+                  </li>
+                );
+              })}
+            {/* Migration spinner */}
+            {cartMigrating && <li className="text-center text-neutral-500 py-15">正在同步您的購物車...</li>}
+            {/* 購物車空狀態：非 migration 時，依 cartLoading 顯示 spinner，否則顯示提示文字 */}
             {carts.length === 0 &&
+              !cartMigrating &&
               (cartLoading ? (
                 <li className="text-center py-15">
                   <span className="spinner-border text-primary" role="status">

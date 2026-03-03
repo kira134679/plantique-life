@@ -3,16 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 import Button from '@/components/Button';
+import { flushPendingBuyNowItem, migrateGuestCart } from '@/slice/cartSlice';
 import { guestLogin } from '@/slice/guestAuthSlice';
 import { closeModal } from '@/slice/uiSlice';
 import { useState } from 'react';
 
 function Login({ onSwitchToRegister }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -26,13 +25,29 @@ function Login({ onSwitchToRegister }) {
   const onSubmit = async data => {
     const { email, password } = data;
     try {
+      // 登入
       await dispatch(guestLogin({ email, password })).unwrap();
+
       // 處理畫面顯示
       setIsError(false);
       setErrorMessage('');
       dispatch(closeModal());
       toast.success('登入成功');
-      navigate('/'); // 會員中心未完成，先跳至首頁
+
+      // 將「立即購買」暫存商品加入 localStorage
+      dispatch(flushPendingBuyNowItem());
+
+      // localstorage 資訊加入購物車
+      const result = await dispatch(migrateGuestCart());
+      if (migrateGuestCart.rejected.match(result)) {
+        toast.error(result.payload);
+      }
+      if (migrateGuestCart.fulfilled.match(result)) {
+        const failedItemCount = result.payload;
+        if (failedItemCount) {
+          toast.error(`有 ${failedItemCount} 個產品加入購物車失敗`);
+        }
+      }
     } catch (error) {
       setIsError(true);
       setErrorMessage(error);
