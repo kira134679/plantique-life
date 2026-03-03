@@ -99,6 +99,44 @@ export const deleteCarts = createAsyncThunk('cart/deleteCarts', async (preventGl
   }
 });
 
+/**
+ * Migrates guest cart from localStorage to the backend after login/register.
+ * @returns {Promise<number>} Count of items that failed to add to cart
+ */
+export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
+  // 取得 localstorage 購物車資料
+  const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+  if (localCartData.length === 0) return 0;
+
+  // 新增多筆產品到購物車
+  const results = [];
+  for (const product of localCartData) {
+    try {
+      const response = await dispatch(
+        addToCarts({
+          data: { product_id: product.id, qty: product.qty },
+          preventGlobalLoading: true,
+        }),
+      ).unwrap();
+      results.push({ status: 'fulfilled', value: response });
+    } catch (error) {
+      results.push({ status: 'rejected', reason: error });
+    }
+  }
+  // 新增產品結果
+  const failedItems = results.filter(r => r.status === 'rejected');
+  // 移除 localstorage
+  localStorage.removeItem('guestCarts');
+
+  // 重新取得購物車資訊
+  try {
+    await dispatch(fetchCarts(true)).unwrap();
+    return failedItems.length;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 // slice
 const cartSlice = createSlice({
   name: 'cart',
@@ -108,7 +146,9 @@ const cartSlice = createSlice({
     finalTotal: 0,
     couponCode: '',
     isLoading: false, // 這是「整台購物車」的讀取狀態
+    isMigrating: false,
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
+    pendingBuyNowItem: null, // 未登入時，「立即購買」暫存商品，登入後由 Login/Register 在 migration 前加入 localstorage
     error: null,
   },
   reducers: {
@@ -139,13 +179,21 @@ const cartSlice = createSlice({
       const { cartItemId } = action.payload;
       state.carts = state.carts.filter(cart => cart.id !== cartItemId);
     },
+    setPendingBuyNowItem: (state, action) => {
+      state.pendingBuyNowItem = action.payload;
+    },
+    clearPendingBuyNowItem: state => {
+      state.pendingBuyNowItem = null;
+    },
     resetCart: state => {
       state.carts = [];
       state.total = 0;
       state.finalTotal = 0;
       state.couponCode = '';
       state.isLoading = false;
+      state.isMigrating = false;
       state.loadingItems = {};
+      state.pendingBuyNowItem = null;
       state.error = null;
     },
   },
@@ -170,6 +218,16 @@ const cartSlice = createSlice({
           }
         }
       })
+      // migrateGuestCart
+      .addCase(migrateGuestCart.pending, state => {
+        state.isMigrating = true;
+      })
+      .addCase(migrateGuestCart.fulfilled, state => {
+        state.isMigrating = false;
+      })
+      .addCase(migrateGuestCart.rejected, state => {
+        state.isMigrating = false;
+      })
       // updateAndRefetchCarts
       .addCase(updateAndRefetchCarts.pending, (state, action) => {
         const cartId = action.meta.arg.id;
@@ -192,13 +250,17 @@ const cartSlice = createSlice({
         state.loadingItems = {};
       })
       .addMatcher(isAnyOf(addToCarts.fulfilled, addAndRefetchCarts.fulfilled), state => {
-        state.isLoading = false;
+        if (!state.isMigrating) {
+          state.isLoading = false;
+        }
       })
-      // 全域 loading 開始
+      // 全域 loading 開始 (fetchCarts, addToCarts, addAndRefetchCarts, deleteCarts)
       .addMatcher(
         isAnyOf(fetchCarts.pending, addToCarts.pending, addAndRefetchCarts.pending, deleteCarts.pending),
         state => {
-          state.isLoading = true;
+          if (!state.isMigrating) {
+            state.isLoading = true;
+          }
           state.error = null;
         },
       )
@@ -206,7 +268,9 @@ const cartSlice = createSlice({
       .addMatcher(
         isAnyOf(fetchCarts.rejected, addToCarts.rejected, addAndRefetchCarts.rejected, deleteCarts.rejected),
         (state, action) => {
-          state.isLoading = false;
+          if (!state.isMigrating) {
+            state.isLoading = false;
+          }
           state.error = action.payload;
         },
       )
@@ -224,14 +288,14 @@ const cartSlice = createSlice({
   },
 });
 
-export const authAwareInitCarts = () => async (dispatch, getState) => {
+export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getState) => {
   const state = getState();
   // 取得登入狀態
   const isAuth = state.guestAuth.isAuth;
 
   if (isAuth) {
     // 已登入：呼叫後端 API 取得購物車資料
-    return await dispatch(fetchCarts(true)).unwrap();
+    return await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
   } else {
     // 未登入：從 localStorage 讀取購物車資料
     const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
@@ -290,9 +354,30 @@ export const authAwareDeleteCart = data => async (dispatch, getState) => {
   }
 };
 
+/**
+ * 將暫存的「立即購買」商品加入 local cart（觸發 middleware 同步寫入 localStorage），
+ * 確保後續 migrateGuestCart 讀取 localStorage 時能包含該商品。
+ */
+export const flushPendingBuyNowItem = () => (dispatch, getState) => {
+  const { pendingBuyNowItem } = getState().cart;
+  if (pendingBuyNowItem) {
+    const { product, qty } = pendingBuyNowItem;
+    dispatch(addLocalCartItem({ product, productId: product.id, qty }));
+    dispatch(clearPendingBuyNowItem());
+  }
+};
+
 // Export actions
-export const { setCouponCode, setLocalCarts, addLocalCartItem, updateLocalCartItem, deleteLocalCartItem, resetCart } =
-  cartSlice.actions;
+export const {
+  setCouponCode,
+  setLocalCarts,
+  addLocalCartItem,
+  updateLocalCartItem,
+  deleteLocalCartItem,
+  setPendingBuyNowItem,
+  clearPendingBuyNowItem,
+  resetCart,
+} = cartSlice.actions;
 
 // Selectors
 export const selectHasItemLoading = state => Object.values(state.cart.loadingItems).some(status => status);
