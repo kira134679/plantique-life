@@ -1,5 +1,5 @@
 import adminClient from './clients/adminClient';
-import guestClient from './clients/guestClient';
+import guestClient, { guestAuthClient } from './clients/guestClient';
 
 import { attachAuthHandler, attachLoadingHandler } from './core/interceptorHandlers';
 
@@ -11,4 +11,7 @@ export default function setupAxiosInterceptors(store) {
   attachLoadingHandler(adminClient, store);
 
   attachLoadingHandler(guestClient, store);
+
+  attachAuthHandler(guestAuthClient, { prefix: 'Bearer', tokenKey: 'guest_auth_token' });
+  attachLoadingHandler(guestAuthClient, store, false);
 }

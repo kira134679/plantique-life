@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
-import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { addToCarts, fetchCarts } from '@/slice/cartSlice';
 
 function OrderDetail() {
   const navigate = useNavigate();
@@ -54,20 +54,27 @@ function OrderDetail() {
     for (const product of products) {
       try {
         const response = await dispatch(
-          addAndRefetchCarts({ data: { product_id: product.id, qty: product.qty }, preventGlobalLoading: true }),
+          addToCarts({ data: { product_id: product.id, qty: product.qty }, preventGlobalLoading: true }),
         ).unwrap();
         results.push({ status: 'fulfilled', value: response });
       } catch (error) {
         results.push({ status: 'rejected', reason: error });
       }
     }
-    setAddToCartLoading(false);
-    // 檢查結果
+    // 顯示新增結果
     const failedItems = results.filter(r => r.status === 'rejected');
     if (failedItems.length > 0) {
       toast.error(`有 ${failedItems.length} 個產品加入購物車失敗`);
     } else {
       toast.success('產品加入購物車成功！');
+    }
+    // 重新取得購物車資訊
+    try {
+      await dispatch(fetchCarts(true)).unwrap();
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setAddToCartLoading(false);
     }
   };
 
