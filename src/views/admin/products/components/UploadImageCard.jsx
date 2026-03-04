@@ -11,7 +11,7 @@ import Button from '@/components/Button';
 
 import productImgDefault from 'assets/images/products/img_product_default.jpg';
 
-function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId }) {
+function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId, className }) {
   // --- React Hook Form ---
   const {
     control,
@@ -153,6 +153,7 @@ function UploadImageCard({ fileFieldName, urlFieldName, fileFieldId, urlFieldId 
         urlValue && 'uploaded',
         fileValue && 'uploaded',
         errors[fileFieldName] && 'is-invalid',
+        className,
       )}
     >
       <div className="card-img-wrap position-relative overflow-hidden border-bottom border-1">
