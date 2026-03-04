@@ -114,14 +114,14 @@ export default function Footer() {
           <p className="text-white me-0 mb-lg-0 me-lg-6 mb-1">© 2025 PlantiqueLife All rights reserved.</p>
           <ul className="d-flex list-unstyled">
             <li className="me-3 me-lg-6">
-              <a className="link-white" href="#">
+              <Link className="link-white" to="/privacy-policy">
                 隱私權政策
-              </a>
+              </Link>
             </li>
             <li>
-              <a className="link-white" href="#">
+              <Link className="link-white" to="/terms">
                 使用者條款
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
