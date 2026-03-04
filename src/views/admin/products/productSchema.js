@@ -1,6 +1,16 @@
 import * as z from 'zod';
 
-import { CATEGORY_OPTIONS, STATUS_OPTIONS, UNIT_OPTIONS } from './constants';
+import {
+  BUNDLE_DESCRIPTION_MAX_LENGTH,
+  BUNDLE_EN_NAME_MAX_LENGTH,
+  BUNDLE_TITLE_MAX_LENGTH,
+  CATEGORY_OPTIONS,
+  PRODUCT_DESCRIPTION_MAX_LENGTH,
+  PRODUCT_EN_NAME_MAX_LENGTH,
+  PRODUCT_TITLE_MAX_LENGTH,
+  STATUS_OPTIONS,
+  UNIT_OPTIONS,
+} from './constants';
 
 // ====================
 // --- 通用驗證規則 ---
@@ -78,13 +88,25 @@ Array.from({ length: 5 }).forEach((_, index) => {
 
 // 基礎欄位驗證
 const baseSchema = z.object({
-  title: z.string().trim().min(1, '必填欄位').max(10, '名稱不可超過 10 個字'),
+  title: z
+    .string()
+    .trim()
+    .min(1, '必填欄位')
+    .max(PRODUCT_TITLE_MAX_LENGTH, `名稱不可超過 ${PRODUCT_TITLE_MAX_LENGTH} 個字`),
+  enName: z.string().trim().max(PRODUCT_EN_NAME_MAX_LENGTH, `英文名不可超過 ${PRODUCT_EN_NAME_MAX_LENGTH} 個字`),
   category: getDropdownRule(CATEGORY_OPTIONS),
   status: getDropdownRule(STATUS_OPTIONS).transform(val => (val === '啟用' ? 1 : 0)),
   unit: getDropdownRule(UNIT_OPTIONS),
-  content: z.string(),
-  description: z.string(),
+  description: z.string().max(PRODUCT_DESCRIPTION_MAX_LENGTH, `字數上限為 ${PRODUCT_DESCRIPTION_MAX_LENGTH} 字`),
 });
+
+// 內容物驗證
+const bundleItemSchema = z.object({
+  title: z.string().trim().max(BUNDLE_TITLE_MAX_LENGTH, `名稱不可超過 ${BUNDLE_TITLE_MAX_LENGTH} 個字`),
+  enName: z.string().trim().max(BUNDLE_EN_NAME_MAX_LENGTH, `英文名不可超過 ${BUNDLE_EN_NAME_MAX_LENGTH} 個字`),
+  description: z.string().max(BUNDLE_DESCRIPTION_MAX_LENGTH, `字數上限為 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字`),
+});
+const bundleSchema = z.object({ bundle: z.array(bundleItemSchema) });
 
 // 價格驗證（包含跨欄位）
 const priceSchema = z
@@ -98,21 +120,45 @@ const priceSchema = z
 const imageSchema = z
   .object({
     mainImageUrl: imageUrlRule,
+    introImageUrl1: imageUrlRule,
+    introImageUrl2: imageUrlRule,
     ...imageUrls,
+
     mainImageFile: imageFileRule,
+    introImageFile1: imageFileRule,
+    introImageFile2: imageFileRule,
     ...imageFiles,
   })
   .superRefine((data, ctx) => {
+    // 簡化變數名稱
+    const { mainImageUrl, mainImageFile, introImageUrl1, introImageFile1 } = data;
+
+    // 確認是否有填入圖片網址或選擇圖片
+    const isImageProvided = (url, file) => {
+      const hasUrl = url !== '';
+      const hasFile = file !== null;
+      return !hasUrl && !hasFile ? false : true;
+    };
+
     // 主圖必填
-    if (data.mainImageFile === null && data.mainImageUrl === '') {
+    if (!isImageProvided(mainImageUrl, mainImageFile)) {
       ctx.addIssue({
         code: 'custom',
         message: '請輸入網址或上傳圖片',
         path: ['mainImageUrl'],
       });
     }
+
+    // 前台介紹區塊上半部的圖片必填
+    if (!isImageProvided(introImageUrl1, introImageFile1)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '請輸入網址或上傳圖片',
+        path: ['introImageUrl1'],
+      });
+    }
   });
 
-const productSchema = baseSchema.and(priceSchema).and(imageSchema);
+const productSchema = baseSchema.and(bundleSchema).and(priceSchema).and(imageSchema);
 
 export default productSchema;
