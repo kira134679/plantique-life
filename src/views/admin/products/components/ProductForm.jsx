@@ -17,6 +17,7 @@ import { formatToPayload } from '../helpers';
 import productSchema from '../productSchema';
 
 import Button from '@/components/Button';
+import BundleSection from './BundleSection';
 import UploadImageCard from './UploadImageCard';
 
 const DEFAULT_INITIAL_DATA = {}; // 避免元件重新渲染時，重複產生不同參考位址的空物件，導致無限迴圈
@@ -27,6 +28,7 @@ const emptyDefaultValues = {
   category: '',
   status: '',
   description: '',
+  bundle: [],
   mainImageUrl: '',
   imageUrl1: '',
   imageUrl2: '',
@@ -299,6 +301,8 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
             {errors.description && <div className="invalid-feedback">{errors.description.message}</div>}
           </div>
         </section>
+        {/* 內容物設定 */}
+        <BundleSection getFieldId={getFieldId} />
         {/* 圖片設定 */}
         <section className="py-6 border border-2 p-6 mb-10">
           <h3 className="h4 mb-8 text-primary-700 d-flex align-items-center">
