@@ -147,145 +147,153 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
   }, [isIdCopied]);
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
-      {/* 基本設定 */}
-      <section className="py-6">
-        <h3 className="h4 mb-6">基本設定</h3>
-        {/* 商品 ID */}
-        {isEditMode ? (
-          <div className="mb-4 w-50 min-w-14rem">
-            <label className="form-label text-neutral-700 fs-7" htmlFor="product-id">
-              商品 ID
-            </label>
-            <div className="position-relative input-group-copy">
-              <input id="product-id" className="form-control pe-8" type="text" value={productId} readOnly />
-              <button
-                type="button"
-                tabIndex="0"
-                className="position-absolute btn border-0 p-1 me-1 btn-copy"
-                onClick={handleCopyId}
-                disabled={isIdCopied}
-              >
-                <span className="material-symbols-rounded d-block fs-6">{isIdCopied ? 'check' : 'content_copy'}</span>
-              </button>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
+        {/* 基本設定 */}
+        <section className="py-6 border border-2 p-6 mb-10">
+          <h3 className="h4 mb-8 text-primary-700 text-primary-700">基本設定</h3>
+          {/* 商品 ID */}
+          {isEditMode ? (
+            <div className="mb-3 w-50 pe-3">
+              <label className="form-label text-neutral-700 fs-7" htmlFor="product-id">
+                商品 ID
+              </label>
+              <div className="position-relative input-group-copy">
+                <input id="product-id" className="form-control pe-8" type="text" value={productId} readOnly />
+                <button
+                  type="button"
+                  tabIndex="0"
+                  className="position-absolute btn border-0 p-1 me-1 btn-copy"
+                  onClick={handleCopyId}
+                  disabled={isIdCopied}
+                >
+                  <span className="material-symbols-rounded d-block fs-6">{isIdCopied ? 'check' : 'content_copy'}</span>
+                </button>
+              </div>
+            </div>
+          ) : null}
+          <div className="d-flex gap-6">
+            {/* 商品名稱 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('title')}>
+                商品名稱<span className="text-danger">*</span>
+              </label>
+              <input
+                id={getFieldId('title')}
+                className={clsx('form-control', errors.title && 'is-invalid')}
+                type="text"
+                placeholder="請輸入商品名稱"
+                {...register('title')}
+              />
+              {errors.title && <div className="invalid-feedback">{errors.title.message}</div>}
             </div>
           </div>
-        ) : null}
-        {/* 商品名稱 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('title')}>
-            商品名稱<span className="text-danger">*</span>
-          </label>
-          <input
-            id={getFieldId('title')}
-            className={clsx('form-control', errors.title && 'is-invalid')}
-            type="text"
-            placeholder="請輸入商品名稱"
-            {...register('title')}
-          />
-          {errors.title && <div className="invalid-feedback">{errors.title.message}</div>}
-        </div>
-        {/* 商品類別 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('category')}>
-            類別<span className="text-danger">*</span>
-          </label>
-          <Controller
-            name="category"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Dropdown
-                className={clsx('checkout-dropdown', errors.category && 'zod-validated is-invalid')}
-                onSelect={onChange}
-              >
-                <Dropdown.Toggle
-                  className={clsx(
-                    'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
-                    errors.category && 'is-invalid',
-                  )}
-                  id={getFieldId('category')}
-                >
-                  {value || '請選擇商品類別'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  {CATEGORY_OPTIONS.map((option, index) => (
-                    <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
-                      {option}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
-          ></Controller>
-          {errors.category && <div className="invalid-feedback">{errors.category.message}</div>}
-        </div>
-        {/* 商品狀態 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('status')}>
-            狀態<span className="text-danger">*</span>
-          </label>
-          <Controller
-            name="status"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Dropdown
-                className={clsx('checkout-dropdown', errors.status && 'zod-validated is-invalid')}
-                onSelect={onChange}
-              >
-                <Dropdown.Toggle
-                  className={clsx(
-                    'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
-                    errors.status && 'is-invalid',
-                  )}
-                  id={getFieldId('status')}
-                >
-                  {value || '請選擇商品狀態'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  {STATUS_OPTIONS.map((option, index) => (
-                    <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
-                      {option}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
-          ></Controller>
-          {errors.status && <div className="invalid-feedback">{errors.status.message}</div>}
-        </div>
-      </section>
-      {/* 圖片設定 */}
-      <section className="py-6">
-        <h3 className="h4 mb-6 d-flex align-items-center">
-          圖片設定
-          <OverlayTrigger
-            placement="right"
-            delay={{ show: 50, hide: 200 }}
-            popperConfig={{
-              strategy: 'fixed',
-              modifiers: [
-                { name: 'flip', enabled: true },
-                { name: 'preventOverflow', enabled: true },
-              ],
-            }}
-            overlay={
-              <Tooltip id="image-help-tooltip" className="custom-tooltip">
-                僅支援 .jpg, .jpeg, .png 格式，單一檔案上限為 3MB
-              </Tooltip>
-            }
-          >
-            <button type="button" className="ms-2 p-1 btn border-0 d-inline-flex h-100">
-              <span className="material-symbols-rounded text-neutral-400">help</span>
-            </button>
-          </OverlayTrigger>
-        </h3>
-        {/* 主圖設定 */}
-        <div className="mb-4">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('main-image-url')}>
-            主圖設定<span className="text-danger">*</span>
-          </label>
-          {/* 主圖卡片 */}
-          <FormProvider {...methods}>
+          <div className="d-flex gap-6">
+            {/* 商品類別 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('category')}>
+                類別<span className="text-danger">*</span>
+              </label>
+              <Controller
+                name="category"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    className={clsx('checkout-dropdown', errors.category && 'zod-validated is-invalid')}
+                    onSelect={onChange}
+                  >
+                    <Dropdown.Toggle
+                      className={clsx(
+                        'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                        errors.category && 'is-invalid',
+                      )}
+                      id={getFieldId('category')}
+                    >
+                      {value || '請選擇商品類別'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="w-100">
+                      {CATEGORY_OPTIONS.map((option, index) => (
+                        <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
+                          {option}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              ></Controller>
+              {errors.category && <div className="invalid-feedback">{errors.category.message}</div>}
+            </div>
+            {/* 商品狀態 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('status')}>
+                狀態<span className="text-danger">*</span>
+              </label>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    className={clsx('checkout-dropdown', errors.status && 'zod-validated is-invalid')}
+                    onSelect={onChange}
+                  >
+                    <Dropdown.Toggle
+                      className={clsx(
+                        'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                        errors.status && 'is-invalid',
+                      )}
+                      id={getFieldId('status')}
+                    >
+                      {value || '請選擇商品狀態'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="w-100">
+                      {STATUS_OPTIONS.map((option, index) => (
+                        <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
+                          {option}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              ></Controller>
+              {errors.status && <div className="invalid-feedback">{errors.status.message}</div>}
+            </div>
+          </div>
+        </section>
+        {/* 圖片設定 */}
+        <section className="py-6 border border-2 p-6 mb-10">
+          <h3 className="h4 mb-8 text-primary-700 d-flex align-items-center">
+            圖片設定
+            {/* Tooltip */}
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 50, hide: 200 }}
+              popperConfig={{
+                strategy: 'fixed',
+                modifiers: [
+                  { name: 'flip', enabled: true },
+                  { name: 'preventOverflow', enabled: true },
+                ],
+              }}
+              overlay={
+                <Tooltip id="image-help-tooltip" className="custom-tooltip">
+                  僅支援 .jpg, .jpeg, .png 格式，單一檔案上限為 3MB
+                </Tooltip>
+              }
+            >
+              <button type="button" className="ms-2 p-1 btn border-0 d-inline-flex h-100">
+                <span className="material-symbols-rounded text-neutral-400">help</span>
+              </button>
+            </OverlayTrigger>
+          </h3>
+          {/* 主圖設定 */}
+          <div className="mb-6">
+            <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('main-image-url')}>
+              主圖設定<span className="text-danger">*</span>
+            </label>
+            <p className="text-neutral-400 fs-sm mb-2">
+              *將顯示於前台商品列表頁中的商品卡片、商品詳細頁中的圖片輪播、後台商品列表中的商品縮圖
+            </p>
+            {/* 主圖卡片 */}
             <div className="p-1">
               <UploadImageCard
                 fileFieldName="mainImageFile"
@@ -294,17 +302,16 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
                 fileFieldId={getFieldId('main-image-file')}
               />
             </div>
-          </FormProvider>
-        </div>
-        {/* 其它圖片設定 */}
-        <fieldset className="mb-4">
-          <div className="d-flex align-items-center mb-2">
-            <legend className="text-neutral-700 fs-7 m-0 d-inline-block w-auto">其他圖片設定</legend>
-            <span className="ms-2 fs-sm bg-primary-100 px-3 py-1 ms-auto">{usedImageCount} / 5 已使用</span>
           </div>
-          {/* 副圖卡片 */}
-          <div className="d-flex gap-4 overflow-x-auto p-1">
-            <FormProvider {...methods}>
+          {/* 其它圖片設定 */}
+          <fieldset>
+            <div className="d-flex align-items-center mb-2">
+              <legend className="text-neutral-700 fs-7 m-0 d-inline-block w-auto">其他圖片設定</legend>
+              <span className="ms-2 fs-sm bg-primary-100 px-3 py-1 ms-auto">{usedImageCount} / 5 已使用</span>
+            </div>
+            <p className="text-neutral-400 fs-sm mb-2">*將顯示於前台商品詳細頁中的圖片輪播</p>
+            {/* 副圖卡片 */}
+            <div className="d-flex gap-4 overflow-x-auto p-1">
               {Array.from({ length: 5 }).map((_, index) => (
                 <UploadImageCard
                   fileFieldName={`imageFile${index + 1}`}
@@ -314,101 +321,103 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
                   key={index}
                 />
               ))}
-            </FormProvider>
+            </div>
+          </fieldset>
+        </section>
+        {/* 價格設定 */}
+        <section className="py-6 border border-2 p-6 mb-10">
+          <h3 className="h4 mb-8 text-primary-700">價格設定</h3>
+          <div className="d-flex gap-6">
+            {/* 原價 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('origin-price')}>
+                原價<span className="text-danger">*</span>
+              </label>
+              <div className={clsx('input-group', errors.originPrice && 'is-invalid')}>
+                <span className="input-group-text bg-primary-100">NT$</span>
+                <input
+                  id={getFieldId('origin-price')}
+                  className={clsx('form-control', errors.originPrice && 'is-invalid')}
+                  type="text"
+                  placeholder="請輸入原價"
+                  {...register('originPrice')}
+                />
+              </div>
+              {errors.originPrice && <div className="invalid-feedback">{errors.originPrice.message}</div>}
+            </div>
+            {/* 售價 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('price')}>
+                售價<span className="text-danger">*</span>
+              </label>
+              <div className={clsx('input-group', errors.price && 'is-invalid')}>
+                <span className="input-group-text bg-primary-100">NT$</span>
+                <input
+                  id={getFieldId('price')}
+                  className={clsx('form-control', errors.price && 'is-invalid')}
+                  type="text"
+                  placeholder="請輸入售價"
+                  {...register('price')}
+                />
+              </div>
+              {errors.price && <div className="invalid-feedback">{errors.price.message}</div>}
+            </div>
           </div>
-        </fieldset>
-      </section>
-      {/* 價格設定 */}
-      <section className="py-6">
-        <h3 className="h4 mb-6">價格設定</h3>
-        {/* 原價 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('origin-price')}>
-            原價<span className="text-danger">*</span>
-          </label>
-          <div className={clsx('input-group', errors.originPrice && 'is-invalid')}>
-            <span className="input-group-text bg-primary-100">NT$</span>
-            <input
-              id={getFieldId('origin-price')}
-              className={clsx('form-control', errors.originPrice && 'is-invalid')}
-              type="text"
-              placeholder="請輸入原價"
-              {...register('originPrice')}
-            />
-          </div>
-          {errors.originPrice && <div className="invalid-feedback">{errors.originPrice.message}</div>}
-        </div>
-        {/* 售價 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('price')}>
-            售價<span className="text-danger">*</span>
-          </label>
-          <div className={clsx('input-group', errors.price && 'is-invalid')}>
-            <span className="input-group-text bg-primary-100">NT$</span>
-            <input
-              id={getFieldId('price')}
-              className={clsx('form-control', errors.price && 'is-invalid')}
-              type="text"
-              placeholder="請輸入售價"
-              {...register('price')}
-            />
-          </div>
-          {errors.price && <div className="invalid-feedback">{errors.price.message}</div>}
-        </div>
-        {/* 單位 */}
-        <div className="mb-4 w-25 min-w-14rem">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('unit')}>
-            單位<span className="text-danger">*</span>
-          </label>
-          <Controller
-            name="unit"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Dropdown
-                className={clsx('checkout-dropdown', errors.unit && 'zod-validated is-invalid')}
-                onSelect={onChange}
-              >
-                <Dropdown.Toggle
-                  className={clsx(
-                    'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
-                    errors.unit && 'is-invalid',
-                  )}
-                  id={getFieldId('unit')}
+          {/* 單位 */}
+          <div className="w-50 pe-3">
+            <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('unit')}>
+              單位<span className="text-danger">*</span>
+            </label>
+            <Controller
+              name="unit"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Dropdown
+                  className={clsx('checkout-dropdown', errors.unit && 'zod-validated is-invalid')}
+                  onSelect={onChange}
                 >
-                  {value || '請選擇商品單位'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  {UNIT_OPTIONS.map((option, index) => (
-                    <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
-                      {option}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
-          ></Controller>
-          {errors.unit && <div className="invalid-feedback">{errors.unit.message}</div>}
+                  <Dropdown.Toggle
+                    className={clsx(
+                      'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                      errors.unit && 'is-invalid',
+                    )}
+                    id={getFieldId('unit')}
+                  >
+                    {value || '請選擇商品單位'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="w-100">
+                    {UNIT_OPTIONS.map((option, index) => (
+                      <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
+                        {option}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            ></Controller>
+            {errors.unit && <div className="invalid-feedback">{errors.unit.message}</div>}
+          </div>
+        </section>
+        {/* 表單操作 */}
+        <div className="d-flex">
+          {/* 放棄填寫 */}
+          <Button
+            as={Link}
+            to="/admin/products"
+            variant="outline-neutral"
+            shape="pill"
+            size="sm"
+            className="ms-auto me-4"
+          >
+            放棄填寫
+          </Button>
+          {/* 提交表單 */}
+          <Button type="submit" variant="filled-primary" shape="pill" size="sm" disabled={!isDirty}>
+            {isEditMode ? '儲存變更' : '新增商品'}
+          </Button>
         </div>
-      </section>
-      {/* 表單操作 */}
-      <div className="d-flex">
-        {/* 放棄填寫 */}
-        <Button
-          as={Link}
-          to="/admin/products"
-          variant="outline-neutral"
-          shape="pill"
-          size="sm"
-          className="ms-auto me-4"
-        >
-          放棄填寫
-        </Button>
-        {/* 提交表單 */}
-        <Button type="submit" variant="filled-primary" shape="pill" size="sm" disabled={!isDirty}>
-          {isEditMode ? '儲存變更' : '新增商品'}
-        </Button>
-      </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 }
 
