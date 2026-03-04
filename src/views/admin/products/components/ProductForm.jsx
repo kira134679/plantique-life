@@ -15,7 +15,7 @@ import UploadImageCard from './UploadImageCard';
 
 const DEFAULT_INITIAL_DATA = {}; // 避免元件重新渲染時，重複產生不同參考位址的空物件，導致無限迴圈
 
-const emptyDefaultValues = {
+const EMPTY_DEFAULT_VALUES = {
   title: '',
   category: '',
   status: '',
@@ -44,6 +44,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
   // --- Logic Helpers ---
   // 依照新增模式/編輯模式產生不同的欄位 id 前綴
   const fieldIdPrefix = isEditMode ? 'update-product' : 'new-product';
+
   const getFieldId = name => {
     return `${fieldIdPrefix}-${name}`;
   };
@@ -55,7 +56,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
     shouldFocusError: false,
     // 所有欄位都需要有預設值，否則 reset 時會變成 undefined 而非字串型別，無法通過 zod 驗證
     defaultValues: {
-      ...emptyDefaultValues,
+      ...EMPTY_DEFAULT_VALUES,
     },
   });
   const {
@@ -126,7 +127,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
   // 當傳入的 initialData 有變動時，重新定義表單初始值
   useEffect(() => {
     reset({
-      ...emptyDefaultValues,
+      ...EMPTY_DEFAULT_VALUES,
       ...initialData, // 更新商品時，用初始值已經有的屬性去覆蓋掉空的預設值
     });
   }, [initialData, reset]);
