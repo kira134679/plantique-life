@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -43,9 +43,12 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
   // 依照新增模式/編輯模式產生不同的欄位 id 前綴
   const fieldIdPrefix = isEditMode ? 'update-product' : 'new-product';
 
-  const getFieldId = name => {
-    return `${fieldIdPrefix}-${name}`;
-  };
+  const getFieldId = useCallback(
+    name => {
+      return `${fieldIdPrefix}-${name}`;
+    },
+    [fieldIdPrefix],
+  );
 
   // --- React Hook Form ---
   const methods = useForm({
