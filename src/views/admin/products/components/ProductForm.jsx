@@ -6,7 +6,13 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 
-import { CATEGORY_OPTIONS, IMAGE_UPLOAD_REMIND_MESSAGE, STATUS_OPTIONS, UNIT_OPTIONS } from '../constants';
+import {
+  CATEGORY_OPTIONS,
+  IMAGE_UPLOAD_REMIND_MESSAGE,
+  PRODUCT_DESCRIPTION_MAX_LENGTH,
+  STATUS_OPTIONS,
+  UNIT_OPTIONS,
+} from '../constants';
 import { formatToPayload } from '../helpers';
 import productSchema from '../productSchema';
 
@@ -17,8 +23,10 @@ const DEFAULT_INITIAL_DATA = {}; // 避免元件重新渲染時，重複產生�
 
 const emptyDefaultValues = {
   title: '',
+  enName: '',
   category: '',
   status: '',
+  description: '',
   mainImageUrl: '',
   imageUrl1: '',
   imageUrl2: '',
@@ -187,6 +195,20 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
               />
               {errors.title && <div className="invalid-feedback">{errors.title.message}</div>}
             </div>
+            {/* 商品英文名 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('en-name')}>
+                商品英文名
+              </label>
+              <input
+                id={getFieldId('en-name')}
+                className={clsx('form-control', errors.enName && 'is-invalid')}
+                type="text"
+                placeholder="請輸入商品英文名"
+                {...register('enName')}
+              />
+              {errors.enName && <div className="invalid-feedback">{errors.enName.message}</div>}
+            </div>
           </div>
           <div className="d-flex gap-6">
             {/* 商品類別 */}
@@ -257,6 +279,20 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
               ></Controller>
               {errors.status && <div className="invalid-feedback">{errors.status.message}</div>}
             </div>
+          </div>
+          {/* 商品描述 */}
+          <div>
+            <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('description')}>
+              商品描述
+            </label>
+            <textarea
+              id={getFieldId('description')}
+              className={clsx('form-control min-h-14rem', errors.description && 'is-invalid')}
+              maxLength={PRODUCT_DESCRIPTION_MAX_LENGTH}
+              placeholder={`請輸入商品描述（限制 ${PRODUCT_DESCRIPTION_MAX_LENGTH} 字以內）`}
+              {...register('description')}
+            />
+            {errors.description && <div className="invalid-feedback">{errors.description.message}</div>}
           </div>
         </section>
         {/* 圖片設定 */}
