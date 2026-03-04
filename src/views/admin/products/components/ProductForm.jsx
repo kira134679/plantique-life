@@ -6,19 +6,31 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 
-import { CATEGORY_OPTIONS, IMAGE_UPLOAD_REMIND_MESSAGE, STATUS_OPTIONS, UNIT_OPTIONS } from '../constants';
+import {
+  CATEGORY_OPTIONS,
+  IMAGE_UPLOAD_REMIND_MESSAGE,
+  PRODUCT_DESCRIPTION_MAX_LENGTH,
+  PRODUCT_EN_NAME_MAX_LENGTH,
+  PRODUCT_TITLE_MAX_LENGTH,
+  STATUS_OPTIONS,
+  UNIT_OPTIONS,
+} from '../constants';
 import { formatToPayload } from '../helpers';
 import productSchema from '../productSchema';
 
 import Button from '@/components/Button';
+import RhfInputWithCounter from './RhfInputWithCounter';
+import RhfTextareaWithCounter from './RhfTextareaWithCounter';
 import UploadImageCard from './UploadImageCard';
 
 const DEFAULT_INITIAL_DATA = {}; // 避免元件重新渲染時，重複產生不同參考位址的空物件，導致無限迴圈
 
 const EMPTY_DEFAULT_VALUES = {
   title: '',
+  enName: '',
   category: '',
   status: '',
+  description: '',
   mainImageUrl: '',
   imageUrl1: '',
   imageUrl2: '',
@@ -181,17 +193,28 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
           <div className="d-flex gap-6">
             {/* 商品名稱 */}
             <div className="mb-3 w-50">
-              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('title')}>
-                商品名稱<span className="text-danger">*</span>
-              </label>
-              <input
+              <RhfInputWithCounter
+                fieldName="title"
+                isRequired={true}
+                labelText="商品名稱"
+                maxTextLength={PRODUCT_TITLE_MAX_LENGTH}
                 id={getFieldId('title')}
-                className={clsx('form-control', errors.title && 'is-invalid')}
                 type="text"
                 placeholder="請輸入商品名稱"
                 {...register('title')}
               />
-              {errors.title && <div className="invalid-feedback">{errors.title.message}</div>}
+            </div>
+            {/* 商品英文名 */}
+            <div className="mb-3 w-50">
+              <RhfInputWithCounter
+                fieldName="enName"
+                labelText="商品英文名"
+                maxTextLength={PRODUCT_EN_NAME_MAX_LENGTH}
+                id={getFieldId('en-name')}
+                type="text"
+                placeholder="請輸入商品英文名"
+                {...register('enName')}
+              />
             </div>
           </div>
           <div className="d-flex gap-6">
@@ -267,6 +290,18 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
               ></Controller>
               {errors.status && <div className="invalid-feedback">{errors.status.message}</div>}
             </div>
+          </div>
+          {/* 商品描述 */}
+          <div>
+            <RhfTextareaWithCounter
+              fieldName="description"
+              labelText="商品描述"
+              maxTextLength={PRODUCT_DESCRIPTION_MAX_LENGTH}
+              rows={10}
+              id={getFieldId('description')}
+              placeholder={`請輸入商品描述（限制 ${PRODUCT_DESCRIPTION_MAX_LENGTH} 字以內）`}
+              {...register('description')}
+            />
           </div>
         </section>
         {/* 圖片設定 */}
