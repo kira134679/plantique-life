@@ -34,8 +34,6 @@ const EMPTY_DEFAULT_VALUES = {
   originPrice: '',
   price: '',
   unit: '',
-  content: '',
-  description: '',
 };
 
 function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, productId = '' }) {
@@ -393,32 +391,6 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
             )}
           ></Controller>
           {errors.unit && <div className="invalid-feedback">{errors.unit.message}</div>}
-        </div>
-      </section>
-      {/* 內容設定 */}
-      <section className="py-6">
-        <h3 className="h4 mb-6">內容設定</h3>
-        {/* 商品內容 */}
-        <div className="mb-4">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('content')}>
-            商品內容
-          </label>
-          <textarea
-            id={getFieldId('content')}
-            className="form-control min-h-20rem min-w-14rem"
-            {...register('content')}
-          />
-        </div>
-        {/* 商品描述 */}
-        <div className="mb-4">
-          <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('description')}>
-            商品描述
-          </label>
-          <textarea
-            id={getFieldId('description')}
-            className="form-control min-h-20rem min-w-14rem"
-            {...register('description')}
-          />
         </div>
       </section>
       {/* 表單操作 */}
