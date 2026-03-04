@@ -1,23 +1,18 @@
 import { guestCouponApi } from '@/api';
 import Button from '@/components/Button';
 import ProductCard from '@/components/ProductCard';
+import { MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT } from '@/const/guestConst';
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import { selectAllProducts } from '@/slice/product/guestProductSlice';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-function FirstStep({ productImages, handleSwitchStep }) {
-  const {
-    productAddImg02,
-    productAddImg03,
-    productAddImg04,
-    productAddImg05,
-    productImg07,
-    productImg08,
-    productImg09,
-    productImg13,
-  } = productImages;
+// 模組載入時執行一次（非 render 期間），作為 PRNG 的初始種子
+const SHUFFLE_SEED = Date.now();
+
+function FirstStep({ handleSwitchStep }) {
   const dispatch = useDispatch();
   const {
     carts,
@@ -41,6 +36,39 @@ function FirstStep({ productImages, handleSwitchStep }) {
   const hasItemLoading = useSelector(selectHasItemLoading);
   // 整體載入狀態
   const isCartProcessing = cartLoading || couponStatus.isLoading || hasItemLoading;
+
+  const allProducts = useSelector(selectAllProducts);
+  // 凍結推薦清單：計算一次後不再重算（避免後續購物車操作影響推薦結果）
+  const frozenRecommendationsRef = useRef(null);
+  const recommendProducts = useMemo(() => {
+    // 已計算過，直接回傳凍結的推薦清單
+    // eslint-disable-next-line react-hooks/refs -- 刻意在 useMemo 內讀取 ref 作為 guard，確保只計算一次
+    if (frozenRecommendationsRef.current !== null) return frozenRecommendationsRef.current;
+
+    // 等待 allProducts 與購物車初始載入或轉移都完成再計算，避免 carts 尚未就緒導致排除不完整
+    if (!allProducts.length || cartLoading || cartMigrating) return [];
+
+    // 排除購物車中已有的商品
+    const cartProductIds = new Set(carts.map(item => item.product_id));
+    const candidates = allProducts.filter(p => !cartProductIds.has(p.id));
+
+    // Fisher-Yates 洗牌（以 LCG 偽隨機數生成器取代 Math.random()，避免觸發 react-hooks/purity 規則）
+    // s 是閉包變數（Closure Variable）：rand 每次呼叫都會讀取並更新 s，使下次呼叫拿到不同的輸入，產生連續不重複的偽隨機數列
+    let s = SHUFFLE_SEED;
+    // 逗號運算子（Comma Operator）：括號內依序執行，回傳最後一個表達式的值
+    // 等同於：先更新 s，再 return (s >>> 0) / 4294967296
+    const rand = () => ((s = Math.imul(s, 1664525) + 1013904223), (s >>> 0) / 4294967296);
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    // 取前 N 筆，存入 ref 凍結
+    const result = candidates.slice(0, MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT);
+    // eslint-disable-next-line react-hooks/refs -- 刻意在 useMemo 內寫入 ref，凍結首次計算結果
+    frozenRecommendationsRef.current = result;
+    return result;
+  }, [allProducts, cartLoading, cartMigrating, carts]);
 
   async function handleUpdateCart(id, product_id, qty) {
     // 清除優惠券訊息
@@ -306,124 +334,39 @@ function FirstStep({ productImages, handleSwitchStep }) {
           </section>
         </div>
       </div>
-      {/* add cart section start */}
-      <section className="py-12 py-lg-15">
-        {/* 標題 */}
-        <div className="mb-8 mb-md-12">
-          <div className="d-flex align-items-center gap-6">
-            <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
-            <p className="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
-            <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
-          </div>
-        </div>
-
-        {/* 產品卡片 */}
-        <div className="row gx-3 gx-lg-6 gy-6">
-          <div className="col-6 col-lg-3">
-            <ProductCard
-              id={3}
-              title={'天使環生長燈'}
-              imageUrl={productAddImg03}
-              alt={'多肉植物組合盆栽'}
-              tag={'加購價'}
-              originPrice={1000}
-              price={799}
-            />
-          </div>
-          <div className="col-6 col-lg-3">
-            <ProductCard
-              id={4}
-              title={'陶瓷盆器'}
-              imageUrl={productAddImg04}
-              alt={'多肉植物組合盆栽'}
-              tag={'加購價'}
-              originPrice={350}
-              price={300}
-            />
-          </div>
-          <div className="col-6 col-lg-3">
-            <ProductCard
-              id={5}
-              title={'園藝工具組'}
-              imageUrl={productAddImg05}
-              alt={'多肉植物組合盆栽'}
-              tag={'加購價'}
-              originPrice={650}
-              price={500}
-            />
-          </div>
-          <div className="col-6 col-lg-3">
-            <ProductCard
-              id={2}
-              title={'日本赤玉土'}
-              imageUrl={productAddImg02}
-              alt={'多肉植物組合盆栽'}
-              tag={'加購價'}
-              originPrice={5900}
-              price={3500}
-            />
-          </div>
-        </div>
-      </section>
-      {/* add cart section end */}
 
       {/* recommend section start */}
-      <section className="py-12 py-lg-15">
-        {/* 標題 */}
-        <div className="mb-8 mb-md-12">
-          <div className="d-flex align-items-center gap-6">
-            <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
-            <p className="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
-            <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
+      {recommendProducts.length > 0 && (
+        <section className="py-12 py-lg-15">
+          {/* 標題 */}
+          <div className="mb-8 mb-md-12">
+            <div className="d-flex align-items-center gap-6">
+              <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
+              <p className="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
+              <span className="flex-grow-1 border-top border-1 border-primary-200"></span>
+            </div>
           </div>
-        </div>
 
-        {/* 產品卡片 */}
-        <div className="position-relative">
-          <div className="row gx-3 gx-lg-6 gy-6">
-            <div className="col-6 col-lg-3">
-              <ProductCard
-                id={7}
-                title={'雪夜之森'}
-                imageUrl={productImg07}
-                alt={'多肉植物組合盆栽'}
-                tag={'質感精選'}
-                price={2400}
-              />
-            </div>
-            <div className="col-6 col-lg-3">
-              <ProductCard
-                id={8}
-                title={'植語時光'}
-                imageUrl={productImg08}
-                alt={'多肉植物組合盆栽'}
-                tag={'質感精選'}
-                price={3000}
-              />
-            </div>
-            <div className="col-6 col-lg-3">
-              <ProductCard
-                id={13}
-                title={'荒原綠影'}
-                imageUrl={productImg13}
-                alt={'多肉植物組合盆栽'}
-                tag={'質感精選'}
-                price={2400}
-              />
-            </div>
-            <div className="col-6 col-lg-3">
-              <ProductCard
-                id={9}
-                title={'森語花信'}
-                imageUrl={productImg09}
-                alt={'多肉植物組合盆栽'}
-                tag={'質感精選'}
-                price={3500}
-              />
+          {/* 產品卡片 */}
+          <div className="position-relative">
+            <div className="row gx-3 gx-lg-6 gy-6">
+              {recommendProducts.map(product => (
+                <div className="col-6 col-lg-3" key={product.id}>
+                  <ProductCard
+                    id={product.id}
+                    title={product.title}
+                    imageUrl={product.imageUrl}
+                    alt={product.title}
+                    tag={product.category}
+                    originPrice={product.origin_price}
+                    price={product.price}
+                  />
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       {/* recommend section end */}
     </>
   );
