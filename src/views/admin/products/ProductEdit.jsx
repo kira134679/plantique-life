@@ -74,7 +74,7 @@ function ProductEdit() {
 
   return (
     <div className="py-13">
-      <h2 className="h3 mb-8">更新商品</h2>
+      <h2 className="h3 mb-10">更新商品</h2>
       {isError && (
         <div className="py-8 d-flex flex-column gap-4 align-items-center">
           <span className="material-symbols-rounded d-block fs-1 text-danger">cancel</span>
