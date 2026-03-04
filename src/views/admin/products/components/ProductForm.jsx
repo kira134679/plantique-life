@@ -32,6 +32,9 @@ const EMPTY_DEFAULT_VALUES = {
   category: '',
   status: '',
   description: '',
+  originPrice: '',
+  price: '',
+  unit: '',
   bundle: [],
   mainImageUrl: '',
   imageUrl1: '',
@@ -47,9 +50,6 @@ const EMPTY_DEFAULT_VALUES = {
   imageFile3: null,
   imageFile4: null,
   imageFile5: null,
-  originPrice: '',
-  price: '',
-  unit: '',
   introImageFile1: null,
   introImageFile2: null,
 };
@@ -316,6 +316,80 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
         </section>
         {/* 內容物設定 */}
         <BundleSection getFieldId={getFieldId} />
+        {/* 價格設定 */}
+        <section className="py-6 border border-2 p-6 mb-10">
+          <h3 className="h4 mb-8 text-primary-700">價格設定</h3>
+          <div className="d-flex gap-6">
+            {/* 原價 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('origin-price')}>
+                原價<span className="text-danger">*</span>
+              </label>
+              <div className={clsx('input-group', errors.originPrice && 'is-invalid')}>
+                <span className="input-group-text bg-primary-100">NT$</span>
+                <input
+                  id={getFieldId('origin-price')}
+                  className={clsx('form-control', errors.originPrice && 'is-invalid')}
+                  type="text"
+                  placeholder="請輸入原價"
+                  {...register('originPrice')}
+                />
+              </div>
+              {errors.originPrice && <div className="invalid-feedback">{errors.originPrice.message}</div>}
+            </div>
+            {/* 售價 */}
+            <div className="mb-3 w-50">
+              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('price')}>
+                售價<span className="text-danger">*</span>
+              </label>
+              <div className={clsx('input-group', errors.price && 'is-invalid')}>
+                <span className="input-group-text bg-primary-100">NT$</span>
+                <input
+                  id={getFieldId('price')}
+                  className={clsx('form-control', errors.price && 'is-invalid')}
+                  type="text"
+                  placeholder="請輸入售價"
+                  {...register('price')}
+                />
+              </div>
+              {errors.price && <div className="invalid-feedback">{errors.price.message}</div>}
+            </div>
+          </div>
+          {/* 單位 */}
+          <div className="w-50 pe-3">
+            <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('unit')}>
+              單位<span className="text-danger">*</span>
+            </label>
+            <Controller
+              name="unit"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Dropdown
+                  className={clsx('checkout-dropdown', errors.unit && 'zod-validated is-invalid')}
+                  onSelect={onChange}
+                >
+                  <Dropdown.Toggle
+                    className={clsx(
+                      'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                      errors.unit && 'is-invalid',
+                    )}
+                    id={getFieldId('unit')}
+                  >
+                    {value || '請選擇商品單位'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="w-100">
+                    {UNIT_OPTIONS.map((option, index) => (
+                      <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
+                        {option}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            ></Controller>
+            {errors.unit && <div className="invalid-feedback">{errors.unit.message}</div>}
+          </div>
+        </section>
         {/* 圖片設定 */}
         <section className="py-6 border border-2 p-6 mb-10">
           <h3 className="h4 mb-8 text-primary-700 d-flex align-items-center">
@@ -404,82 +478,6 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
               ))}
             </div>
           </fieldset>
-        </section>
-        {/* 價格設定 */}
-        <section className="py-6 border border-2 p-6 mb-10">
-          <h3 className="h4 mb-8 text-primary-700">價格設定</h3>
-          <div className="d-flex gap-6">
-            {/* 原價 */}
-            <div className="mb-3 w-50">
-              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('origin-price')}>
-                原價<span className="text-danger">*</span>
-              </label>
-              <div className={clsx('input-group', errors.originPrice && 'is-invalid')}>
-                <span className="input-group-text bg-primary-100">NT$</span>
-                <input
-                  id={getFieldId('origin-price')}
-                  className={clsx('form-control', errors.originPrice && 'is-invalid')}
-                  type="text"
-                  placeholder="請輸入原價"
-                  {...register('originPrice')}
-                />
-              </div>
-              {errors.originPrice && <div className="invalid-feedback">{errors.originPrice.message}</div>}
-            </div>
-            {/* 售價 */}
-            <div className="mb-3 w-50">
-              <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('price')}>
-                售價<span className="text-danger">*</span>
-              </label>
-              <div className={clsx('input-group', errors.price && 'is-invalid')}>
-                <span className="input-group-text bg-primary-100">NT$</span>
-                <input
-                  id={getFieldId('price')}
-                  className={clsx('form-control', errors.price && 'is-invalid')}
-                  type="text"
-                  placeholder="請輸入售價"
-                  {...register('price')}
-                />
-              </div>
-              {errors.price && <div className="invalid-feedback">{errors.price.message}</div>}
-            </div>
-          </div>
-          {/* 單位 */}
-          <div className="w-50 pe-3">
-            <label className="form-label text-neutral-700 fs-7" htmlFor={getFieldId('unit')}>
-              單位<span className="text-danger">*</span>
-            </label>
-            <Controller
-              name="unit"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Dropdown
-                  className={clsx('checkout-dropdown', errors.unit && 'zod-validated is-invalid')}
-                  onSelect={onChange}
-                >
-                  <Dropdown.Toggle
-                    className={clsx(
-                      'btn bg-transparent border w-100 text-start fs-sm fs-lg-8',
-                      errors.unit && 'is-invalid',
-                      value && 'text-neutral-700',
-                      !value && 'text-neutral-500',
-                    )}
-                    id={getFieldId('unit')}
-                  >
-                    {value || '請選擇商品單位'}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="w-100">
-                    {UNIT_OPTIONS.map((option, index) => (
-                      <Dropdown.Item as="button" type="button" eventKey={option} key={index}>
-                        {option}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            ></Controller>
-            {errors.unit && <div className="invalid-feedback">{errors.unit.message}</div>}
-          </div>
         </section>
         {/* 表單操作 */}
         <div className="d-flex">
