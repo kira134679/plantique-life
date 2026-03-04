@@ -38,7 +38,9 @@ const emptyDefaultValues = {
   description: '',
 };
 
-function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA, productId = '' }) {
+function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, productId = '' }) {
+  const initialData = formattedInitialData || DEFAULT_INITIAL_DATA;
+
   // --- Logic Helpers ---
   // 依照新增模式/編輯模式產生不同的欄位 id 前綴
   const fieldIdPrefix = isEditMode ? 'update-product' : 'new-product';
