@@ -19,6 +19,7 @@ import { formatToPayload } from '../helpers';
 import productSchema from '../productSchema';
 
 import Button from '@/components/Button';
+import BundleSection from './BundleSection';
 import RhfInputWithCounter from './RhfInputWithCounter';
 import RhfTextareaWithCounter from './RhfTextareaWithCounter';
 import UploadImageCard from './UploadImageCard';
@@ -31,6 +32,7 @@ const EMPTY_DEFAULT_VALUES = {
   category: '',
   status: '',
   description: '',
+  bundle: [],
   mainImageUrl: '',
   imageUrl1: '',
   imageUrl2: '',
@@ -312,6 +314,8 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
             />
           </div>
         </section>
+        {/* 內容物設定 */}
+        <BundleSection getFieldId={getFieldId} />
         {/* 圖片設定 */}
         <section className="py-6 border border-2 p-6 mb-10">
           <h3 className="h4 mb-8 text-primary-700 d-flex align-items-center">
