@@ -33,6 +33,8 @@ const emptyDefaultValues = {
   imageUrl3: '',
   imageUrl4: '',
   imageUrl5: '',
+  introImageUrl1: '',
+  introImageUrl2: '',
   mainImageFile: null,
   imageFile1: null,
   imageFile2: null,
@@ -42,6 +44,8 @@ const emptyDefaultValues = {
   originPrice: '',
   price: '',
   unit: '',
+  introImageFile1: null,
+  introImageFile2: null,
 };
 
 function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA, productId = '' }) {
@@ -339,6 +343,29 @@ function ProductForm({ isEditMode, onSubmit, initialData = DEFAULT_INITIAL_DATA,
               />
             </div>
           </div>
+          {/* 介紹圖片設定 */}
+          <fieldset className="mb-6">
+            <legend className="text-neutral-700 fs-7 m-0 d-inline-block w-auto mb-2">介紹圖片設定</legend>
+            <p className="text-neutral-400 fs-sm mb-2">*將顯示於前台商品詳細頁中的介紹區塊</p>
+            {/* 介紹圖卡片 */}
+            <div className="d-flex gap-4 align-items-stretch overflow-x-auto p-1">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="d-flex flex-column gap-2">
+                  <label htmlFor={getFieldId(`intro-image-url-${index + 1}`)}>
+                    區塊{index === 0 ? '上' : '下'}半部圖片{index === 0 && <span className="text-danger">*</span>}
+                  </label>
+                  <div className="flex-grow-1">
+                    <UploadImageCard
+                      fileFieldName={`introImageFile${index + 1}`}
+                      urlFieldName={`introImageUrl${index + 1}`}
+                      urlFieldId={getFieldId(`intro-image-url-${index + 1}`)}
+                      fileFieldId={getFieldId(`intro-image-file-${index + 1}`)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </fieldset>
           {/* 其它圖片設定 */}
           <fieldset>
             <div className="d-flex align-items-center mb-2">
