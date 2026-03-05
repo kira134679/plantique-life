@@ -1,4 +1,4 @@
-import { useMatches } from 'react-router';
+import { Link, useMatches } from 'react-router';
 
 export default function Breadcrumb() {
   const matches = useMatches();
@@ -15,7 +15,7 @@ export default function Breadcrumb() {
             className={`breadcrumb-item d-flex align-items-center ${idx === arr.length - 1 ? 'active' : ''}`}
             key={item.to}
           >
-            {idx === arr.length - 1 ? item.label : <a href={item.to}> {item.label} </a>}
+            {idx === arr.length - 1 ? item.label : <Link to={item.to}> {item.label} </Link>}
           </li>
         ))}
       </ol>

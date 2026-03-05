@@ -7,10 +7,12 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router';
 import setupAxiosInterceptors from './api/setup';
 import Loading from './components/Loading.jsx';
-import router from './router/index';
+import createAppHashRouter from './router/index';
 import store from './store';
 
 setupAxiosInterceptors(store);
+
+const router = createAppHashRouter();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

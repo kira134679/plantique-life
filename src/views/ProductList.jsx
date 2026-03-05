@@ -235,8 +235,9 @@ export default function ProductList() {
                 return (
                   <div className="col-6 mb-6" key={product.id}>
                     <ProductCard
+                      id={product.id}
                       title={product.title}
-                      image={product.imageUrl}
+                      imageUrl={product.imageUrl}
                       alt={product.title}
                       tag={product.category}
                       originPrice={product.origin_price}
@@ -336,8 +337,9 @@ export default function ProductList() {
                       return (
                         <div className="col-4 mb-6" key={product.id}>
                           <ProductCard
+                            id={product.id}
                             title={product.title}
-                            image={product.imageUrl}
+                            imageUrl={product.imageUrl}
                             alt={product.title}
                             tag={product.category}
                             originPrice={product.origin_price}

@@ -18,8 +18,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from '../components/Button';
 import ProductCard from '../components/ProductCard';
 import { getArticles } from '../slice/article/guestArticleSlice';
-import { timestampToDate } from '../utils/utils';
 import { getProducts } from '../slice/product/guestProductSlice';
+import { timestampToDate } from '../utils/utils';
 
 const events = [
   {
@@ -545,12 +545,15 @@ export default function Home() {
                 從多肉出發，讓植物成為你的日常風景，讓療癒成為一種生活態度。
               </p>
               <Button
+                as={Link}
+                to="/about"
                 type="button"
                 variant="filled-primary"
                 shape="pill"
                 size="lg"
                 rightIcon={true}
                 iconName="arrow_right_alt"
+                className="d-inline-flex"
               >
                 關於品牌
               </Button>

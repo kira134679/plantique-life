@@ -276,3 +276,6 @@ $pagination-hover-bg: $primary-50;
 
 $pagination-disabled-color: $neutral-200;
 $pagination-disabled-bg: transparent;
+
+// 關閉全域的平滑捲動（將其設為 false）
+$enable-smooth-scroll: false;
