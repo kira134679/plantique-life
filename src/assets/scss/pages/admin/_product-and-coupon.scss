@@ -75,3 +75,9 @@
     box-shadow: 0 0 0 0.25rem rgba($danger, 0.25);
   }
 }
+
+// --- RhfCounterTextarea, RhfCounterInput ---
+.is-invalid--no-image {
+  background-image: none !important;
+  padding-right: $input-btn-padding-x !important;
+}
