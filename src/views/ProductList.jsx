@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
-import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useSearchParams } from 'react-router';
 import { Autoplay, EffectFade, Pagination as SwiperPagination } from 'swiper/modules';
@@ -10,8 +9,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Breadcrumb from '@/components/Breadcrumb';
 import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
-import { MIN_PRODUCT_PURCHASE_QTY } from '@/const/guestConst';
-import { addAndRefetchCarts } from '@/slice/cartSlice';
 import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
 import { getProducts, selectCurrentPage, selectProductList, selectTotalPages } from '@/slice/product/guestProductSlice';
 
@@ -93,15 +90,6 @@ export default function ProductList() {
 
       return newSearchParams;
     });
-  };
-
-  const handleAddToCart = async productId => {
-    try {
-      await dispatch(addAndRefetchCarts({ data: { product_id: productId, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
-      toast.success('已加入購物車');
-    } catch (error) {
-      toast.error(error);
-    }
   };
 
   useEffect(() => {
@@ -254,7 +242,6 @@ export default function ProductList() {
                       tag={product.category}
                       originPrice={product.origin_price}
                       price={product.price}
-                      onAddToCart={() => handleAddToCart(product.id)}
                     />
                   </div>
                 );
@@ -357,7 +344,6 @@ export default function ProductList() {
                             tag={product.category}
                             originPrice={product.origin_price}
                             price={product.price}
-                            onAddToCart={() => handleAddToCart(product.id)}
                           />
                         </div>
                       );

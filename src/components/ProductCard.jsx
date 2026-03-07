@@ -1,11 +1,30 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router';
+
+import { MIN_PRODUCT_PURCHASE_QTY } from '@/const/guestConst';
+import { addAndRefetchCarts } from '@/slice/cartSlice';
+
 import Button from './Button';
 
-export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, onAddToCart, ...props }) {
+export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, ...props }) {
   const [isFav, setIsFav] = useState(false);
+  const dispatch = useDispatch();
 
   const isOnSale = price < originPrice;
+  const handleAddToCart = async () => {
+    if (!id) {
+      return;
+    }
+
+    try {
+      await dispatch(addAndRefetchCarts({ data: { product_id: id, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
+      toast.success('已加入購物車');
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
@@ -55,7 +74,7 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
             shape="circle"
             size="md"
             className="product-card-cart"
-            onClick={onAddToCart}
+            onClick={handleAddToCart}
           >
             <span className="material-symbols-rounded custom-btn-icon"> shopping_cart </span>
           </Button>
