@@ -1,12 +1,34 @@
+import clsx from 'clsx';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router';
+
+import { MIN_PRODUCT_PURCHASE_QTY } from '@/const/guestConst';
+import { addAndRefetchCarts } from '@/slice/cartSlice';
+
 import Button from './Button';
 
 export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, ...props }) {
   const [isFav, setIsFav] = useState(false);
+  const dispatch = useDispatch();
+
+  const isOnSale = price < originPrice;
+  const handleAddToCart = async () => {
+    if (!id) {
+      return;
+    }
+
+    try {
+      await dispatch(addAndRefetchCarts({ data: { product_id: id, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
+      toast.success('已加入購物車');
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
-    <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
+    <div className={clsx('card rounded-0 border-0 product-card', props.className)} {...props}>
       <div className="position-relative overflow-hidden product-card-img-height">
         <img
           src={imageUrl}
@@ -40,16 +62,23 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
             </h5>
             <div className="d-flex flex-column flex-xl-row align-items-baseline">
               <p className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">{`NT$${price.toLocaleString()}`}</p>
-              {originPrice && (
+              {isOnSale && (
                 <p className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
                   {`$${originPrice.toLocaleString()}`}
                 </p>
               )}
             </div>
           </div>
-          <button type="button" className="btn bg-transparent border-0 p-0 product-card-cart">
-            <span className="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
-          </button>
+          <Button
+            type="button"
+            variant="cart"
+            shape="circle"
+            size="md"
+            className="product-card-cart"
+            onClick={handleAddToCart}
+          >
+            <span className="material-symbols-rounded custom-btn-icon"> shopping_cart </span>
+          </Button>
         </div>
       </div>
     </div>
