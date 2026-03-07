@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
@@ -27,7 +28,7 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
   };
 
   return (
-    <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
+    <div className={clsx('card rounded-0 border-0 product-card', props.className)} {...props}>
       <div className="position-relative overflow-hidden product-card-img-height">
         <img
           src={imageUrl}
