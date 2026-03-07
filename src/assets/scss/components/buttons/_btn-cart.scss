@@ -21,7 +21,7 @@
   }
 }
 @include media-breakpoint-up(lg) {
-  .custom-btn-social {
+  .custom-btn-cart {
     @include button-size(
       $padding-y: map.get($spacers, 3),
       $padding-x: map.get($spacers, 3),
