@@ -22,9 +22,12 @@ export default function ProductDetail() {
   const [purchaseQty, setPurchaseQty] = useState(MIN_PRODUCT_PURCHASE_QTY);
   const allProducts = useSelector(selectAllProducts);
 
-  const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
   const intro = tryParseJson(product.description);
   const contents = tryParseJson(product.content);
+  const displayImagesUrl = [
+    product.imageUrl,
+    ...(product.imagesUrl || []), // 因後端不儲存空陣列，如果沒有圖片，後端將不會回傳 imagesUrl 欄位
+  ].filter(url => url?.length > 0);
   const relatedProducts = useMemo(() => {
     const allProductsExcludeSelf = allProducts.filter(p => p.id !== product.id);
     const otherSameCategoryProducts = allProductsExcludeSelf.filter(p => p.category === product.category);
@@ -83,7 +86,7 @@ export default function ProductDetail() {
                   className="product-swiper-container"
                   modules={[Navigation, Thumbs, Pagination]}
                   thumbs={{ swiper: thumbSwiper }}
-                  loop={true}
+                  loop={displayImagesUrl.length > 1}
                   spaceBetween={16}
                   pagination={{
                     el: '.swiper-pagination',
@@ -92,7 +95,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide key={url}>
+                      <SwiperSlide key={`${idx}-${url}`}>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
                     ))}
@@ -112,7 +115,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide key={url}>
+                      <SwiperSlide key={`${idx}-${url}`}>
                         <img
                           className="h-100 w-100 object-fit-cover"
                           src={`${url}`}
@@ -310,8 +313,11 @@ export default function ProductDetail() {
         <p className="text-neutral-400 fs-7 mb-8 mb-lg-10 section-decoration-line-both overflow-hidden">相關商品</p>
         {/* <!-- 相關商品卡片 --> */}
         <div className="row px-6px px-lg-0">
-          {relatedProducts.map(product => (
-            <div className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size" key={product.id}>
+          {relatedProducts.map((product, idx) => (
+            <div
+              className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size"
+              key={`${product.id}-${idx}`}
+            >
               <ProductCard
                 id={product.id}
                 title={product.title}
