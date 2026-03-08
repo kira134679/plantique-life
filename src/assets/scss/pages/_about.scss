@@ -1,0 +1,65 @@
+.about-banner {
+  background: url('assets/images/index/img_banner_01.png') no-repeat 50% / cover;
+  position: relative;
+  z-index: 0;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba($white, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+}
+
+.about-intro {
+  background: url('assets/images/about/img_about_01.png') no-repeat right 45% bottom 10% / cover;
+  position: relative;
+  z-index: 0;
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 100px;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba($primary-500, 0.8);
+    z-index: -1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba($white, 0.3);
+    z-index: -1;
+  }
+}
+
+.about-overlap-section {
+  transform: translateY(calc(map-get($spacers, 12) * -1));
+  @include media-breakpoint-up(lg) {
+    transform: translateY(calc(map-get($spacers, 15) * -1));
+  }
+}
+
+.about-max-width-260px {
+  max-width: 260px;
+}
+
+.about-max-width-lg-none {
+  @include media-breakpoint-up(lg) {
+    max-width: none;
+  }
+}
+
+.about-width-xxl-160px {
+  @include media-breakpoint-up(xxl) {
+    width: 160px;
+  }
+}
+
+.about-me-lg-n6 {
+  @include media-breakpoint-up(lg) {
+    margin-right: map-get($spacers, 6) * -1 !important; // important 為了覆蓋 bootstrap 的 mx-auto
+  }
+}

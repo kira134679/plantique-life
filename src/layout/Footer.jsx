@@ -60,12 +60,12 @@ export default function Footer() {
                 <p className="text-primary-200 mb-4 mb-lg-6">About Us</p>
                 <ul className="list-unstyled">
                   <li className="mb-1 mb-lg-2">
-                    <a className="link-white site-map-link" href="#">
+                    <Link className="link-white site-map-link" to="/about">
                       關於植感
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <Link className="link-white site-map-link" to={'/articles'}>
+                    <Link className="link-white site-map-link" to="/articles">
                       植藝生活
                     </Link>
                   </li>

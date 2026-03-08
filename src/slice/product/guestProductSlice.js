@@ -2,6 +2,14 @@ import { guestProductApi } from '@/api/services/product';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 
+export const getAllProducts = createAsyncThunk('guestProduct/getAllProducts', async (_, { rejectWithValue }) => {
+  try {
+    return guestProductApi.getAllProducts();
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 export const getProducts = createAsyncThunk('guestProduct/getProducts', async (params, { rejectWithValue }) => {
   try {
     return await guestProductApi.getProducts(params);
@@ -27,6 +35,7 @@ export const productSlice = createSlice({
     productList: [],
     currentPage: 0,
     totalPages: 0,
+    allProducts: [],
   },
   reducers: {},
   extraReducers: builder => {
@@ -41,9 +50,17 @@ export const productSlice = createSlice({
     builder.addCase(getProducts.rejected, (_, { payload }) => {
       toast.error(payload);
     });
+
+    builder.addCase(getAllProducts.fulfilled, (state, { payload }) => {
+      state.allProducts = payload.products;
+    });
+    builder.addCase(getAllProducts.rejected, state => {
+      state.allProducts = [];
+    });
   },
 });
 
+export const selectAllProducts = state => state.guestProduct.allProducts;
 export const selectProductList = state => state.guestProduct.productList;
 export const selectCurrentPage = state => state.guestProduct.currentPage;
 export const selectTotalPages = state => state.guestProduct.totalPages;
