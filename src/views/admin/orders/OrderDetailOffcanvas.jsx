@@ -279,7 +279,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                     <span className="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">
                       {`NT$${item.product.price.toLocaleString()}`}
                     </span>
-                    {item.product.origin_price && (
+                    {item.product.origin_price && item.product.origin_price > item.product.price && (
                       <span className="card-text fs-sm text-neutral-400 noto-serif-tc text-decoration-line-through ms-xl-2 mt-2 mt-xl-0">
                         {`$${item.product.origin_price.toLocaleString()}`}
                       </span>
