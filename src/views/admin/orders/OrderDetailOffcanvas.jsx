@@ -88,7 +88,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
               shape="circle"
               size="sm"
               className="admin-orders-button border-0 ms-auto me-2"
-              onClick={() => setEditable(!editable)}
+              onClick={() => setEditable(prev => !prev)}
             >
               <span className="custom-btn-icon material-symbols-rounded">{editable ? 'lock_open_right' : 'lock'}</span>
             </Button>
