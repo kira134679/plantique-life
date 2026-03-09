@@ -166,16 +166,44 @@ export default function ArticleDetail() {
           </div>
           <div className="row gx-3 gx-lg-6 gy-6 gy-lg-0">
             <div className="col-6 col-lg-3">
-              <ProductCard title="雪夜之森" image={productImg7} alt="product_07" tag="質感精選" price="NT$ 2,400" />
+              <ProductCard
+                id={7}
+                title="雪夜之森"
+                imageUrl={productImg7}
+                alt="product_07"
+                tag="質感精選"
+                price={2400}
+              />
             </div>
             <div className="col-6 col-lg-3">
-              <ProductCard title="植語時光" image={productImg8} alt="product_08" tag="質感精選" price="NT$ 3,000" />
+              <ProductCard
+                id={8}
+                title="植語時光"
+                imageUrl={productImg8}
+                alt="product_08"
+                tag="質感精選"
+                price={3000}
+              />
             </div>
             <div className="col-6 col-lg-3">
-              <ProductCard title="荒原綠影" image={productImg13} alt="product_13" tag="質感精選" price="NT$ 2,400" />
+              <ProductCard
+                id={13}
+                title="荒原綠影"
+                imageUrl={productImg13}
+                alt="product_13"
+                tag="質感精選"
+                price={2400}
+              />
             </div>
             <div className="col-6 col-lg-3">
-              <ProductCard title="森語花信" image={productImg9} alt="product_09" tag="質感精選" price="NT$ 3,500" />
+              <ProductCard
+                id={9}
+                title="森語花信"
+                imageUrl={productImg9}
+                alt="product_09"
+                tag="質感精選"
+                price={3500}
+              />
             </div>
           </div>
         </div>

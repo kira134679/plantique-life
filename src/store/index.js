@@ -2,8 +2,10 @@ import guestArticleReducer from '@/slice/article/guestArticleSlice';
 import authReducer from '@/slice/authSlice';
 import cartReducer from '@/slice/cartSlice';
 import loadingReducer from '@/slice/loadingSlice';
+import guestNewsReducer from '@/slice/news/guestNewsSlice';
 import adminProductReducer from '@/slice/product/adminProductSlice';
 import adminCouponReducer from '@/slice/coupon/adminCouponSlice';
+import guestProductReducer from '@/slice/product/guestProductSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore({
@@ -14,6 +16,8 @@ const store = configureStore({
     guestArticle: guestArticleReducer,
     auth: authReducer,
     adminCoupon: adminCouponReducer,
+    guestProduct: guestProductReducer,
+    guestNews: guestNewsReducer,
   },
 });
 

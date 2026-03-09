@@ -1,0 +1,5 @@
+.order-list-btn-container {
+  @include media-breakpoint-up(lg) {
+    max-width: 196px;
+  }
+}

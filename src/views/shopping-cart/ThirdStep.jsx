@@ -1,4 +1,14 @@
-function ThirdStep() {
+import Button from '@/components/Button';
+import { Link } from 'react-router';
+
+const formatDate = timestamp => {
+  const date = new Date(timestamp);
+  const pad = n => n.toString().padStart(2, '0');
+
+  return `${date.getFullYear()}/${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+};
+
+function ThirdStep({ orderInfo }) {
   return (
     <>
       <div className="completed-svg-wrapper mx-auto">
@@ -15,41 +25,43 @@ function ThirdStep() {
         <div className="text-center py-12">
           <p className="h4 fs-lg-3 text-neutral-700 mb-4">感謝您的訂購！</p>
           <p className="fs-6 fs-lg-5 text-neutral-700 mb-1">
-            您的訂單編號 <span className="text-danger" id="completed-order-number"></span>
+            您的訂單編號 <span className="text-danger">{orderInfo.orderId}</span>
           </p>
-          <p id="completed-message-default" className="fs-8 fs-lg-7 text-neutral-400">
-            商品會於出貨時會再通知您。
+          <p className="fs-8 fs-lg-7 text-neutral-400">商品會於出貨時再通知您。</p>
+          <p className="fs-8 fs-lg-7 text-neutral-400">
+            訂單確認郵件已經發送至您的電子信箱：<span>{orderInfo.email}</span>。<br />
+            您可至「我的訂單」頁面查看訂單狀態，有任何問題或意見也歡迎透過線上客服聯繫我們，或撥打客服專線：
+            <span className="text-nowrap">02-0800-0800</span>
           </p>
-          <div id="completed-message-transfer" className="d-none">
-            <p className="fs-8 fs-lg-7 text-neutral-400">
-              訂單確認郵件已經發送至您的電子信箱：<span id="completed-email"></span>。<br />
-              您可至「我的訂單」頁面查看訂單狀態，有任何問題或意見也歡迎透過線上客服聯繫我們，或撥打客服專線：
-              <span className="text-nowrap">02-0800-0800</span>
-            </p>
+          {orderInfo.isTransfer && (
             <div className="d-flex flex-column align-items-center">
               <p className="fs-7 fs-lg-6 noto-serif-tc fw-bold text-neutral-600 my-3">繳費資訊</p>
               <div className="text-start text-neutral-600">
                 <p className="fs-sm fs-lg-8 mb-1">銀行名稱 : 台灣銀行</p>
                 <p className="fs-sm fs-lg-8 mb-1">銀行代碼 : 004</p>
                 <p className="fs-sm fs-lg-8 mb-1">帳戶號碼 : 000000000000</p>
-                <p className="fs-sm fs-lg-8">繳費截止時間 : 2025-11-3 23:59:59</p>
+                <p className="fs-sm fs-lg-8">繳費截止時間 : {formatDate(orderInfo.transferDeadline)}</p>
               </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="row">
           <div className="col-lg-8 mx-lg-auto">
             <div className="d-flex flex-column-reverse flex-lg-row gap-4">
-              <button className="btn custom-btn-outline-neutral custom-btn-pill-lg flex-grow-1" type="button">
+              <Button type="button" variant="outline-neutral" shape="pill" size="lg" className="flex-grow-1">
                 查看訂單
-              </button>
-              <button
-                className="btn custom-btn-filled-primary custom-btn-pill-lg flex-grow-1"
-                id="completed-btn"
+              </Button>
+              <Button
                 type="button"
+                as={Link}
+                to="/products"
+                variant="filled-primary"
+                shape="pill"
+                size="lg"
+                className="flex-grow-1"
               >
                 繼續購物
-              </button>
+              </Button>
             </div>
           </div>
         </div>

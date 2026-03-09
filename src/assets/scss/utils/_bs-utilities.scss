@@ -21,6 +21,7 @@ $utilities: map-merge(
     'bg-opacity': map-merge(
         map-get($utilities, 'bg-opacity'),
         (
+          responsive: true,
           values: map-merge(
               map-get(map-get($utilities, 'bg-opacity'), 'values'),
               (
@@ -72,6 +73,17 @@ $utilities: map-merge(
         map-get($utilities, 'width'),
         (
           responsive: true,
+        )
+      ),
+    'white-space': map-merge(
+        map-get($utilities, 'white-space'),
+        (
+          values: map-merge(
+              map-get(map-get($utilities, 'white-space'), 'values'),
+              (
+                prewrap: pre-wrap,
+              )
+            ),
         )
       )
   )
