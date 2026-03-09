@@ -167,7 +167,7 @@ function Orders() {
     const pageNum = Number(currentPage);
 
     // 如果 pageNum 不是數值，或不是整數，或小於 1，則清除 page 參數
-    if (Number.isNaN(pageNum) || !Number.isInteger(pageNum) || pageNum < 1) {
+    if (!Number.isInteger(pageNum) || pageNum < 1) {
       setSearchParams({}, { replace: true });
       return; // 直接 return，觸發下一次 useEffect
     }
