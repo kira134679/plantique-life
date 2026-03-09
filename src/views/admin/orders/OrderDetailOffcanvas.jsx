@@ -1,7 +1,7 @@
 import { adminOrderApi } from '@/api';
 import Button from '@/components/Button';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -63,6 +63,15 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
       toast.error(error);
     }
   };
+
+  const couponInfo = useMemo(() => {
+    if (!orderDetail?.products) return null;
+    const products = Object.values(orderDetail.products);
+    const coupon = products[0]?.coupon;
+    if (!coupon) return null;
+    const discount = products.reduce((acc, product) => acc + (product.total - product.final_total), 0);
+    return { ...coupon, discount };
+  }, [orderDetail]);
 
   // 初始化表單
   useEffect(() => {
@@ -257,7 +266,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
         </section>
         <section className="mb-10">
           <h2 className="fs-6 border-bottom pb-2 mb-3">訂購商品</h2>
-          <ul className="list-unstyled">
+          <ul className="list-unstyled border-bottom pb-2 mb-3">
             <li className="row mb-4">
               <p className="col-7 text-neutral-400">商品</p>
               <p className="col-2 text-neutral-400 text-center">數量</p>
@@ -293,14 +302,31 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
               </li>
             ))}
           </ul>
+          <div className="d-flex align-items-center mb-2">
+            <span className="text-neutral-400 text-nowrap">優惠券</span>
+            {couponInfo?.title && (
+              <span className="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100 text-nowrap ms-2">
+                {couponInfo.title}
+              </span>
+            )}
+            <span className="fs-8 noto-serif-tc fw-bold text-primary ms-auto">
+              {couponInfo?.discount ? `- NT$${couponInfo.discount.toLocaleString()}` : 'NT$0'}
+            </span>
+          </div>
+          <div className="d-flex align-items-center mb-3">
+            <span className="text-neutral-400 text-nowrap">運費</span>
+            <span className="fs-8 noto-serif-tc fw-bold text-primary ms-auto">
+              NT$0<del className="fs-sm text-neutral-400 ms-1">$120</del>
+            </span>
+          </div>
           <div className="d-flex">
-            <label htmlFor="orderAmount" className="col-form-label text-nowrap">
+            <label htmlFor="orderAmount" className="col-form-label fs-7 text-nowrap">
               總金額
             </label>
             <input
               type="text"
               readOnly
-              className="form-control-plaintext fs-7 noto-serif-tc fw-bold text-primary-700 text-end"
+              className="form-control-plaintext fs-7 noto-serif-tc fw-bold text-end"
               id="orderAmount"
               value={`NT$${orderDetail.total.toLocaleString()}`}
             />
