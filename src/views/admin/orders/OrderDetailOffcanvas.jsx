@@ -353,6 +353,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                             type="radio"
                             id="isPaidFalse"
                             value="false"
+                            name="isPaid"
                             checked={!field.value}
                             className="visually-hidden admin-orders-is-paid-radio"
                             onChange={() => field.onChange(false)}
@@ -365,6 +366,7 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
                             type="radio"
                             id="isPaidTrue"
                             value="true"
+                            name="isPaid"
                             checked={field.value}
                             className="visually-hidden admin-orders-is-paid-radio"
                             onChange={() => field.onChange(true)}
