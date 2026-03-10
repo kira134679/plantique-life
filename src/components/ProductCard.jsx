@@ -22,8 +22,8 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
     try {
       await dispatch(addAndRefetchCarts({ data: { product_id: id, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
       toast.success('已加入購物車');
-    } catch (error) {
-      toast.error(error);
+    } catch {
+      toast.error('加入購物車失敗');
     }
   };
 
