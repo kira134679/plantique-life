@@ -370,8 +370,10 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
                 >
                   <Dropdown.Toggle
                     className={clsx(
-                      'btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8',
+                      'btn bg-transparent border w-100 text-start fs-sm fs-lg-8',
                       errors.unit && 'is-invalid',
+                      value && 'text-neutral-700',
+                      !value && 'text-neutral-500',
                     )}
                     id={getFieldId('unit')}
                   >
