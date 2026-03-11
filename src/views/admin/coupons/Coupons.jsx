@@ -25,9 +25,19 @@ function Coupons() {
     setDeleteId(id);
     setShow(true);
   };
-  const handleDelete = () => {
-    dispatch(deleteCoupon(deleteId));
-    setShow(false);
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    try {
+      await dispatch(deleteCoupon(deleteId)).unwrap();
+      toast.success('刪除成功');
+      dispatch(fetchCoupons({ page }));
+    } catch {
+      toast.error('刪除失敗');
+    } finally {
+      setShow(false);
+      setDeleteId(null); //清空 deleteId
+    }
   };
 
   const handleStatusChange = async (coupon, eventKey) => {
