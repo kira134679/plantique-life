@@ -27,7 +27,7 @@ function RhfInputWithCounter(
       <label className="form-label text-neutral-700 fs-7 d-flex" htmlFor={id}>
         {labelText}
         {isRequired && <span className="text-danger">*</span>}
-        <span className={clsx('fs-xs ms-auto text-neutral-500 align-self-end')}>
+        <span className="fs-xs ms-auto text-neutral-500 align-self-end">
           {actualValue.length >= 0 && `（${actualValue.length} / ${maxTextLength} 字）`}
         </span>
       </label>

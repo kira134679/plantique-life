@@ -179,7 +179,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         {/* 基本設定 */}
         <section className="py-6 border border-2 p-6 mb-10">
-          <h3 className="h4 mb-8 text-primary-700 text-primary-700">基本設定</h3>
+          <h3 className="h4 mb-8 text-primary-700">基本設定</h3>
           {/* 商品 ID */}
           {isEditMode ? (
             <div className="mb-3 w-50 pe-3">
