@@ -131,8 +131,8 @@ function CouponEdit() {
                 render={({ field: { onChange, value } }) => (
                   <Dropdown className="checkout-dropdown" onSelect={value => onChange(Number(value))}>
                     <Dropdown.Toggle
-                      className={`btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8 ${
-                        errors.is_enabled ? 'form-control is-invalid' : ''
+                      className={`btn bg-transparent w-100 text-start text-neutral-500 fs-sm fs-lg-8 ${
+                        errors.is_enabled ? 'form-control is-invalid' : 'border' // 避免 border 蓋過 is-invalid
                       }`}
                       id={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
                     >
