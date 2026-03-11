@@ -147,11 +147,11 @@ function BundleSection({ getFieldId }) {
                     <div>
                       <RhfTextareaWithCounter
                         fieldName={`bundle.${index}.description`}
-                        labelText={`${bundlePrefix}英文名`}
+                        labelText={`${bundlePrefix}描述`}
                         maxTextLength={BUNDLE_DESCRIPTION_MAX_LENGTH}
                         rows={6}
                         id={`${getFieldId('bundle-description')}-${index + 1}`}
-                        placeholder={`請輸入${bundlePrefix}內容描述（限制 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字以內）`}
+                        placeholder={`請輸入${bundlePrefix}描述（限制 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字以內）`}
                         {...register(`bundle.${index}.description`)}
                       />
                     </div>
