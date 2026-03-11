@@ -424,7 +424,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
               主圖設定<span className="text-danger">*</span>
             </label>
             <p className="text-neutral-400 fs-sm mb-2">
-              *將顯示於前台商品列表頁中的商品卡片、商品詳細頁中的圖片輪播、後台商品列表中的商品縮圖
+              將顯示於前台商品列表頁中的商品卡片、商品詳細頁中的圖片輪播、後台商品列表中的商品縮圖
             </p>
             {/* 主圖卡片 */}
             <div className="p-1">
@@ -439,7 +439,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
           {/* 介紹圖片設定 */}
           <fieldset className="mb-6">
             <legend className="text-neutral-700 fs-7 m-0 d-inline-block w-auto mb-2">介紹圖片設定</legend>
-            <p className="text-neutral-400 fs-sm mb-2">*將顯示於前台商品詳細頁中的介紹區塊</p>
+            <p className="text-neutral-400 fs-sm mb-2">將顯示於前台商品詳細頁中的介紹區塊</p>
             {/* 介紹圖卡片 */}
             <div className="d-flex gap-4 align-items-stretch overflow-x-auto p-1">
               {Array.from({ length: 2 }).map((_, index) => (
@@ -466,7 +466,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
               <legend className="text-neutral-700 fs-7 m-0 d-inline-block w-auto">其他圖片設定</legend>
               <span className="ms-2 fs-sm bg-primary-100 px-3 py-1 ms-auto">{usedImageCount} / 5 已使用</span>
             </div>
-            <p className="text-neutral-400 fs-sm mb-2">*將顯示於前台商品詳細頁中的圖片輪播</p>
+            <p className="text-neutral-400 fs-sm mb-2">將顯示於前台商品詳細頁中的圖片輪播</p>
             {/* 副圖卡片 */}
             <div className="d-flex gap-4 overflow-x-auto p-1">
               {Array.from({ length: 5 }).map((_, index) => (
