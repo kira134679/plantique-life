@@ -84,6 +84,7 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
     handleSubmit,
     setFocus,
     getValues,
+    trigger,
     setError,
     reset,
     formState: { errors, isDirty },
@@ -144,6 +145,11 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
     } catch {
       toast.error('複製失敗！');
     }
+  };
+
+  const handleOriginPriceChange = () => {
+    if (getValues('price') === '') return; // 避免還未填入 price 時，即跳出錯誤訊息
+    trigger('price'); // 當 originPrice 有變更時，同步進行 price 的驗證，避免錯誤訊息殘留
   };
 
   // --- Side Effects ---
@@ -332,7 +338,9 @@ function ProductForm({ isEditMode, onSubmit, initialData: formattedInitialData, 
                   className={clsx('form-control', errors.originPrice && 'is-invalid')}
                   type="text"
                   placeholder="請輸入原價"
-                  {...register('originPrice')}
+                  {...register('originPrice', {
+                    onChange: handleOriginPriceChange,
+                  })}
                 />
               </div>
               {errors.originPrice && <div className="invalid-feedback">{errors.originPrice.message}</div>}
