@@ -101,11 +101,22 @@ const baseSchema = z.object({
 });
 
 // 內容物驗證
-const bundleItemSchema = z.object({
-  title: z.string().trim().max(BUNDLE_TITLE_MAX_LENGTH, `名稱不可超過 ${BUNDLE_TITLE_MAX_LENGTH} 個字`),
-  enName: z.string().trim().max(BUNDLE_EN_NAME_MAX_LENGTH, `英文名不可超過 ${BUNDLE_EN_NAME_MAX_LENGTH} 個字`),
-  description: z.string().max(BUNDLE_DESCRIPTION_MAX_LENGTH, `字數上限為 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字`),
-});
+const bundleItemSchema = z
+  .object({
+    title: z.string().trim().max(BUNDLE_TITLE_MAX_LENGTH, `名稱不可超過 ${BUNDLE_TITLE_MAX_LENGTH} 個字`),
+    enName: z.string().trim().max(BUNDLE_EN_NAME_MAX_LENGTH, `英文名不可超過 ${BUNDLE_EN_NAME_MAX_LENGTH} 個字`),
+    description: z.string().max(BUNDLE_DESCRIPTION_MAX_LENGTH, `字數上限為 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字`),
+  })
+  .superRefine((data, ctx) => {
+    const { title, enName, description } = data;
+    // 已填寫內容物英文名或描述但未填寫內容物名稱
+    if (title.trim() === '' && (enName.trim() !== '' || description.trim() !== ''))
+      ctx.addIssue({
+        code: 'custom',
+        message: '若欲填寫內容物資訊，請務必輸入「名稱」以利辨識',
+        path: ['title'],
+      });
+  });
 const bundleSchema = z.object({ bundle: z.array(bundleItemSchema) });
 
 // 價格驗證（包含跨欄位）

@@ -17,7 +17,7 @@ const EMPTY_BUNDLE_DEFAULT_VALUES = { title: '', enName: '', description: '' };
 
 function BundleSection({ getFieldId }) {
   // --- React Hook Form ---
-  const { control, register } = useFormContext();
+  const { control, register, trigger } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({ control, name: 'bundle' });
 
@@ -43,6 +43,10 @@ function BundleSection({ getFieldId }) {
 
   const handleRemoveBundle = index => {
     remove(index);
+  };
+
+  const handleValidateTitle = index => {
+    trigger(`bundle.[${index}].title`);
   };
 
   // --- Side Effects ---
@@ -139,7 +143,7 @@ function BundleSection({ getFieldId }) {
                           id={`${getFieldId('bundle-en-name')}-${index + 1}`}
                           type="text"
                           placeholder={bundlePrefix && `請輸入${bundlePrefix}英文名`}
-                          {...register(`bundle.${index}.enName`)}
+                          {...register(`bundle.${index}.enName`, { onChange: () => handleValidateTitle(index) })}
                         />
                       </div>
                     </div>
@@ -152,7 +156,7 @@ function BundleSection({ getFieldId }) {
                         rows={6}
                         id={`${getFieldId('bundle-description')}-${index + 1}`}
                         placeholder={`請輸入${bundlePrefix}描述（限制 ${BUNDLE_DESCRIPTION_MAX_LENGTH} 字以內）`}
-                        {...register(`bundle.${index}.description`)}
+                        {...register(`bundle.${index}.description`, { onChange: () => handleValidateTitle(index) })}
                       />
                     </div>
                   </div>
