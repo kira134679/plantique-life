@@ -409,58 +409,42 @@ function OrderDetailOffcanvas({ orderDetail, orderDetailShow, setOrderDetailShow
               </div>
             </div>
           </div>
-          {orderDetail.user.payment === '信用卡一次付清' && (
-            <>
-              <div className="row mb-1">
-                <label htmlFor="cardNumber" className="col-2 col-form-label">
-                  信用卡卡號
-                </label>
-                <div className="col-10">
-                  <input
-                    type="text"
-                    readOnly
-                    className="form-control-plaintext"
-                    id="cardNumber"
-                    value={orderDetail.user.cardNumber}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <div className="row">
-                    <label htmlFor="cardExp" className="col-4 col-form-label">
-                      卡片有效期限
-                    </label>
-                    <div className="col-8">
-                      <input
-                        type="text"
-                        readOnly
-                        className="form-control-plaintext"
-                        id="cardExp"
-                        value={orderDetail.user.cardExp}
-                      />
+          {orderDetail.user.payment === '信用卡一次付清' &&
+            orderDetail.user?.cardLastFourNumber &&
+            orderDetail.user?.cardExp && (
+              <>
+                <div className="row mb-1">
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <p className="py-2">信用卡卡號</p>
+                      </div>
+                      <div className="col-8 d-flex">
+                        {orderDetail.user?.cardBrand && orderDetail.user.cardBrand !== 'Unknown' && (
+                          <span className="align-self-center fs-xs fw-bold text-primary-700 bg-primary-100 px-2 py-1">
+                            {orderDetail.user.cardBrand}
+                          </span>
+                        )}
+                        <p className="fw-normal py-2 ms-2">
+                          <span className="align-middle me-1">****</span>
+                          {orderDetail.user.cardLastFourNumber}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <p className="py-2">卡片有效期限</p>
+                      </div>
+                      <div className="col-8">
+                        <p className="fw-normal py-2">{orderDetail.user.cardExp}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-6">
-                  <div className="row">
-                    <label htmlFor="cardCvc" className="col-4 col-form-label">
-                      背面末三碼
-                    </label>
-                    <div className="col-8">
-                      <input
-                        type="text"
-                        readOnly
-                        className="form-control-plaintext"
-                        id="cardCvc"
-                        value={orderDetail.user.cardCvc}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </section>
         <section className="mb-10">
           <h2 className="fs-6 border-bottom pb-2 mb-3">發票類型</h2>
