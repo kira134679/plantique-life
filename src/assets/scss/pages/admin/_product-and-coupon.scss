@@ -1,4 +1,4 @@
-// Products, Coupons
+// --- Products, Coupons ---
 .w-fit {
   width: fit-content;
 }
@@ -12,18 +12,30 @@
   height: 11.25rem;
 }
 
-// ProductEdit, CouponEdit
-.min-w-14rem {
-  min-width: 14rem !important;
-}
-.min-h-20rem {
-  min-height: 20rem !important;
-}
+// --- ProductForm, CouponForm ---
 .z-5 {
   z-index: 5;
 }
 
-// 圖片上傳卡片
+.input-group-copy {
+  .btn-copy {
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+  }
+  .btn-copy:focus-visible {
+    outline: auto !important;
+  }
+}
+
+.custom-tooltip {
+  // 避免 tooltip 寬度超出 viewport 導致 X 軸閃爍
+  max-width: 15rem;
+  white-space: normal;
+  word-break: break-word;
+  will-change: transform;
+}
+
 .upload-img-card {
   width: 14rem;
 
@@ -57,4 +69,15 @@
       }
     }
   }
+
+  &.is-invalid {
+    border-color: $danger;
+    box-shadow: 0 0 0 0.25rem rgba($danger, 0.25);
+  }
+}
+
+// --- RhfCounterTextarea, RhfCounterInput ---
+.is-invalid--no-image {
+  background-image: none !important;
+  padding-right: $input-btn-padding-x !important;
 }
