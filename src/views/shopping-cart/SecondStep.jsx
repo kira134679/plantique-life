@@ -91,6 +91,19 @@ const ubnSchema = {
   ubn: z.string().min(1, '未輸入統一編號').regex(/\d{8}/, '統一編號輸入錯誤'),
 };
 
+// 取得卡片品牌
+function getCardBrand(cardNumber) {
+  const cardData = [
+    { brand: 'Visa', regex: /^4/ },
+    { brand: 'MasterCard', regex: /^5[1-5]|^2(22[1-9]|2[3-9][0-9]|[3-6][0-9]{2}|7[0-1][0-9]|720)/ },
+    { brand: 'JCB', regex: /^35(2[89]|[3-8][0-9])/ },
+    { brand: 'American Express', regex: /^3[47]/ },
+  ];
+
+  const match = cardData.find(item => item.regex.test(cardNumber));
+  return match ? match.brand : 'Unknown';
+}
+
 function SecondStep({ handleSwitchStep, setOrderInfo }) {
   const dispatch = useDispatch();
   // 用於追蹤 Modal 關閉後是否要換頁
@@ -326,9 +339,9 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
           address: orderData.recipientAddress,
           delivery: orderData.delivery,
           payment: orderData.payment,
-          cardNumber: orderData.cardNumber,
+          cardLastFourNumber: orderData.cardNumber.slice(-4),
           cardExp: orderData.cardExp,
-          cardCvc: orderData.cardCvc,
+          cardBrand: getCardBrand(orderData.cardNumber),
           purchaserName: orderData.purchaserName,
           purchaserPhone: orderData.purchaserPhone,
           purchaserEmail: orderData.purchaserEmail,
