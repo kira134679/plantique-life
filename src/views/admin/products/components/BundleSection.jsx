@@ -46,7 +46,7 @@ function BundleSection({ getFieldId }) {
   };
 
   const handleValidateTitle = index => {
-    trigger(`bundle.[${index}].title`);
+    trigger(`bundle.${index}.title`);
   };
 
   // --- Side Effects ---
