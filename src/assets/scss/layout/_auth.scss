@@ -1,0 +1,29 @@
+.auth-modal {
+  .modal-content {
+    border-radius: 0;
+  }
+}
+
+.auth-tooltip {
+  &.show {
+    opacity: 1;
+  }
+  .tooltip-arrow::before {
+    border-bottom-color: $neutral-400;
+  }
+  .tooltip-inner {
+    color: black;
+    background-color: white;
+    text-align: left;
+    padding: map-get($spacers, 4);
+    border: 2px solid $neutral-300;
+  }
+}
+
+.auth-tooltip-btn {
+  color: $neutral-400;
+  transition: color 0.2s ease-in-out;
+  &:hover {
+    color: $neutral-500;
+  }
+}

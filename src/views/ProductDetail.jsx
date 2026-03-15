@@ -5,7 +5,8 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import { MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
 import { care, notice } from '@/const/productDetailContents';
-import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
+import { authAwareAddToCart, setPendingBuyNowItem } from '@/slice/cartSlice';
 import { selectAllProducts } from '@/slice/product/guestProductSlice';
 import { useMemo, useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
@@ -57,9 +58,12 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { isAuth } = useSelector(state => state.guestAuth);
+  const { requireAuth } = usePendingAuthAction();
+
   const processAddToCart = async () => {
     try {
-      await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty: purchaseQty } })).unwrap();
+      await dispatch(authAwareAddToCart({ product, qty: purchaseQty }));
       toast.success('已加入購物車');
       return { success: true };
     } catch (error) {
@@ -73,10 +77,16 @@ export default function ProductDetail() {
   };
 
   const buyNow = async () => {
-    const { success } = await processAddToCart();
-
-    if (success) {
-      navigate('/shopping-cart');
+    if (isAuth) {
+      // 已登入：直接加入購物車並跳轉
+      const { success } = await processAddToCart();
+      if (success) {
+        navigate('/shopping-cart');
+      }
+    } else {
+      // 未登入：暫存商品資訊，登入後由 migration 一起同步
+      dispatch(setPendingBuyNowItem({ product, qty: purchaseQty }));
+      requireAuth(() => navigate('/shopping-cart'));
     }
   };
 

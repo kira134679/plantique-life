@@ -1,27 +1,42 @@
-import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
+
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+
+import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
+import {
+  authAwareDeleteCart,
+  authAwareInitCarts,
+  authAwareUpdateCart,
+  resetCart,
+  selectHasItemLoading,
+} from '@/slice/cartSlice';
+import { guestAuthCheck, guestLogout } from '@/slice/guestAuthSlice';
+import { closeModal, openModal } from '@/slice/uiSlice';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
 
   // 從 Redux 取得購物車資料
-  const { carts, loadingItems, isLoading: cartLoading } = useSelector(state => state.cart);
+  const { carts, loadingItems, isLoading: cartLoading, isMigrating: cartMigrating } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
   const hasItemLoading = useSelector(selectHasItemLoading);
   // 購物車是否正在處理中
-  const isCartProcessing = cartLoading || hasItemLoading;
+  const isCartProcessing = cartLoading || hasItemLoading || cartMigrating;
+
+  const { isAuth, isAuthChecked } = useSelector(state => state.guestAuth);
+  const { requireAuth } = usePendingAuthAction();
 
   const handleCloseMemberMenu = () => setShowMemberMenu(false);
   const handleToggleMemberMenu = () => setShowMemberMenu(!showMemberMenu);
@@ -30,37 +45,65 @@ export default function Navbar() {
   const handleToggleCartDrawer = () => setShowCartDrawer(!showCartDrawer);
 
   const toggleDesktopMemberMenu = () => setShowDesktopMemberMemu(!showDesktopMemberMenu);
+  const closeDesktopMemberMenu = () => setShowDesktopMemberMemu(false);
 
-  // 初始化購物車資料
   useEffect(() => {
-    async function initFetch() {
+    async function init() {
       try {
-        await dispatch(fetchCarts(true)).unwrap();
+        // 驗證登入狀態，不使用 unwrap()，改用 match() 處理 rejected 結果
+        // 避免未登入的情況被當作 exception 拋到 catch
+        const result = await dispatch(guestAuthCheck({ preventGlobalLoading: true }));
+        if (guestAuthCheck.rejected.match(result)) {
+          toast.error(result.payload);
+        }
+        // 初始化購物車資料
+        await dispatch(authAwareInitCarts(true));
       } catch (error) {
         toast.error(error);
       }
     }
-    initFetch();
+    init();
   }, [dispatch]);
 
   // 更新購物車數量
-  async function handleUpdateCart(id, product_id, qty) {
+  async function handleUpdateCart(cartItemId, productId, qty) {
     try {
-      const data = { product_id: product_id, qty: qty };
-      await dispatch(updateAndRefetchCarts({ id, data, preventGlobalLoading: true })).unwrap();
+      await dispatch(authAwareUpdateCart({ cartItemId, productId, qty, preventGlobalLoading: true }));
     } catch (error) {
       toast.error(error);
     }
   }
 
   // 刪除購物車項目
-  async function handleDeleteCart(id) {
+  async function handleDeleteCart(cartItemId) {
     try {
-      await dispatch(deleteAndRefetchCarts({ id, preventGlobalLoading: true })).unwrap();
+      await dispatch(authAwareDeleteCart({ cartItemId, preventGlobalLoading: true }));
       toast.success('刪除成功');
     } catch (error) {
       toast.error(error);
     }
+  }
+
+  function handleLogout() {
+    dispatch(guestLogout());
+    dispatch(resetCart());
+    toast.success('登出成功');
+    dispatch(closeModal());
+    handleCloseMemberMenu();
+    closeDesktopMemberMenu();
+  }
+
+  async function handleGoCart() {
+    const callback = async () => {
+      // 關閉所有展開內容
+      handleCloseMemberMenu();
+      closeDesktopMemberMenu();
+      handleCloseCartDrawer();
+
+      // 跳轉至購物車頁面
+      navigate('/shopping-cart');
+    };
+    requireAuth(callback);
   }
 
   return (
@@ -120,54 +163,75 @@ export default function Navbar() {
                   </div>
                 </button>
               </li>
-              <li className="d-none d-lg-block guest me-4">
-                <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
-                  登入
-                </Button>
-              </li>
-              <li className="d-none d-lg-block guest">
-                <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
-                  註冊
-                </Button>
-              </li>
+              {isAuthChecked && !isAuth && (
+                <>
+                  <li className="d-none d-lg-block guest me-4">
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap"
+                      onClick={() => dispatch(openModal('login'))}
+                    >
+                      登入
+                    </Button>
+                  </li>
+                  <li className="d-none d-lg-block guest">
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap"
+                      onClick={() => dispatch(openModal('register'))}
+                    >
+                      註冊
+                    </Button>
+                  </li>
+                </>
+              )}
               {/* <!-- 登入後 --> */}
               {/* <!-- 會員選單 --> */}
-              <li className="d-none d-lg-block position-relative member">
-                {/* <!-- 會員選單按鈕 --> */}
+              {isAuthChecked && isAuth && (
+                <li className="d-none d-lg-block position-relative member">
+                  {/* <!-- 會員選單按鈕 --> */}
 
-                <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
-                  <span className="material-symbols-rounded d-block"> person </span>
-                </Button>
+                  <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
+                    <span className="material-symbols-rounded d-block"> person </span>
+                  </Button>
 
-                {/* <!-- 會員選單內容 --> */}
+                  {/* <!-- 會員選單內容 --> */}
 
-                <Collapse in={showDesktopMemberMenu}>
-                  <ul className="position-absolute list-unstyled bg-white text-center member-menu">
-                    <ul className="list-unstyled p-6">
-                      <li className="mb-3">
-                        <Link className="member-menu-link" href="#">
-                          會員中心
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="member-menu-link" href="#">
-                          訂單查詢
-                        </Link>
-                      </li>
+                  <Collapse in={showDesktopMemberMenu}>
+                    <ul className="position-absolute list-unstyled bg-white text-center member-menu">
+                      <ul className="list-unstyled p-6">
+                        <li className="mb-3">
+                          <Link className="member-menu-link" to="/member" onClick={closeDesktopMemberMenu}>
+                            會員中心
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="member-menu-link" to="/member/orders" onClick={closeDesktopMemberMenu}>
+                            訂單查詢
+                          </Link>
+                        </li>
+                      </ul>
+                      <ul className="list-unstyled px-6 pb-6">
+                        <li className="pt-6 separator-line-top">
+                          <Button
+                            type="button"
+                            className="member-menu-link w-100 py-1 d-flex justify-content-center align-items-center"
+                            onClick={handleLogout}
+                          >
+                            登出 <span className="ms-2 material-symbols-rounded"> logout </span>
+                          </Button>
+                        </li>
+                      </ul>
                     </ul>
-                    <ul className="list-unstyled px-6 pb-6">
-                      <li className="pt-6 separator-line-top">
-                        <Link
-                          className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                          href="#"
-                        >
-                          登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                        </Link>
-                      </li>
-                    </ul>
-                  </ul>
-                </Collapse>
-              </li>
+                  </Collapse>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -212,31 +276,46 @@ export default function Navbar() {
                 </li>
               </ul>
               {/* <!-- 未登入 --> */}
-              <ul className="navbar-nav px-6 pb-6 guest">
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link" href="#">
-                    會員登入
-                  </Link>
-                </li>
-              </ul>
+              {isAuthChecked && !isAuth && (
+                <ul className="navbar-nav px-6 pb-6 guest">
+                  <li className="pt-6 separator-line-top">
+                    <Button
+                      type="button"
+                      className="custom-nav-link w-100"
+                      onClick={() => {
+                        dispatch(openModal('login'));
+                        handleCloseMemberMenu();
+                      }}
+                    >
+                      會員登入
+                    </Button>
+                  </li>
+                </ul>
+              )}
               {/* <!-- 登入後 --> */}
-              <ul className="navbar-nav px-6 pb-6 member">
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link mb-3" href="#">
-                    會員中心
-                  </Link>
-                </li>
-                <li className="pb-6">
-                  <Link className="custom-nav-link" href="#">
-                    訂單查詢
-                  </Link>
-                </li>
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#">
-                    登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                  </Link>
-                </li>
-              </ul>
+              {isAuthChecked && isAuth && (
+                <ul className="navbar-nav px-6 pb-6 member">
+                  <li className="pt-6 separator-line-top">
+                    <Link className="custom-nav-link mb-3" to="/member" onClick={handleCloseMemberMenu}>
+                      會員中心
+                    </Link>
+                  </li>
+                  <li className="pb-6">
+                    <Link className="custom-nav-link" to="/member/orders" onClick={handleCloseMemberMenu}>
+                      訂單查詢
+                    </Link>
+                  </li>
+                  <li className="pt-6 separator-line-top">
+                    <Button
+                      type="button"
+                      className="custom-nav-link w-100 py-1 d-flex justify-content-center align-items-center"
+                      onClick={handleLogout}
+                    >
+                      登出 <span className="ms-2 material-symbols-rounded"> logout </span>
+                    </Button>
+                  </li>
+                </ul>
+              )}
             </Offcanvas.Body>
           </Offcanvas>
         </div>
@@ -257,87 +336,91 @@ export default function Navbar() {
         </Offcanvas.Header>
         <Offcanvas.Body className="d-flex flex-column">
           <ul className="header-offcanvas-cart list-unstyled d-flex flex-column gap-4 mb-8">
-            {carts.map(cartItem => {
-              const itemStatus = loadingItems[cartItem.id] || null;
-              return (
-                <li key={cartItem.id} className="position-relative">
-                  <div className="card border-0 flex-row">
-                    <img
-                      src={cartItem.product.imageUrl}
-                      className="card-img-top w-25 rounded-0 object-fit-cover"
-                      alt={cartItem.product.title}
-                    />
-                    <div className="card-body d-flex flex-column p-0 ms-3">
-                      <p className="card-title fs-6 noto-serif-tc fw-bold text-neutral-700 mb-1">
-                        {cartItem.product.title}
-                      </p>
-                      <div className="d-flex align-items-center mb-1">
-                        <p className="card-text text-neutral-700 noto-serif-tc fw-bold me-1">{`NT$${cartItem.product.price.toLocaleString()}`}</p>
-                      </div>
-                      <div className="d-flex align-items-center mt-auto">
-                        <Button
-                          type="button"
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="sm"
-                          className="p-1"
-                          disabled={cartItem.qty <= 1 || itemStatus}
-                          onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">remove</span>
-                        </Button>
-                        <div className="text-center">
-                          <span className="px-2 me-1" data-action="quantity">
-                            {cartItem.qty}
-                          </span>
+            {!cartMigrating &&
+              carts.map(cartItem => {
+                const itemStatus = loadingItems[cartItem.id] || null;
+                return (
+                  <li key={cartItem.id} className="position-relative">
+                    <div className="card border-0 flex-row">
+                      <img
+                        src={cartItem.product.imageUrl}
+                        className="card-img-top w-25 rounded-0 object-fit-cover"
+                        alt={cartItem.product.title}
+                      />
+                      <div className="card-body d-flex flex-column p-0 ms-3">
+                        <p className="card-title fs-6 noto-serif-tc fw-bold text-neutral-700 mb-1">
+                          {cartItem.product.title}
+                        </p>
+                        <div className="d-flex align-items-center mb-1">
+                          <p className="card-text text-neutral-700 noto-serif-tc fw-bold me-1">{`NT$${cartItem.product.price.toLocaleString()}`}</p>
                         </div>
-                        <Button
-                          type="button"
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="sm"
-                          className="p-1"
-                          disabled={itemStatus}
-                          onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">add</span>
-                        </Button>
-                        {itemStatus === 'updating' && (
-                          <div className="ms-3">
-                            <span className="spinner-border spinner-border-sm text-primary" role="status">
-                              <span className="visually-hidden">Loading...</span>
+                        <div className="d-flex align-items-center mt-auto">
+                          <Button
+                            type="button"
+                            variant="outline-neutral"
+                            shape="circle"
+                            size="sm"
+                            className="p-1"
+                            disabled={cartItem.qty <= 1 || itemStatus}
+                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
+                          >
+                            <span className="custom-btn-icon material-symbols-rounded">remove</span>
+                          </Button>
+                          <div className="text-center">
+                            <span className="px-2 me-1" data-action="quantity">
+                              {cartItem.qty}
                             </span>
                           </div>
-                        )}
-                        <Button
-                          type="button"
-                          variant="outline-danger"
-                          shape="circle"
-                          size="sm"
-                          className={clsx('p-1 ms-auto', itemStatus === 'deleting' && 'deleting-button px-2 z-1')}
-                          disabled={itemStatus}
-                          onClick={() => handleDeleteCart(cartItem.id)}
-                        >
-                          {itemStatus === 'deleting' ? (
-                            <span className="spinner-border spinner-border-sm text-danger" role="status">
-                              <span className="visually-hidden">Loading...</span>
-                            </span>
-                          ) : (
-                            <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                          <Button
+                            type="button"
+                            variant="outline-neutral"
+                            shape="circle"
+                            size="sm"
+                            className="p-1"
+                            disabled={itemStatus}
+                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
+                          >
+                            <span className="custom-btn-icon material-symbols-rounded">add</span>
+                          </Button>
+                          {itemStatus === 'updating' && (
+                            <div className="ms-3">
+                              <span className="spinner-border spinner-border-sm text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </span>
+                            </div>
                           )}
-                        </Button>
+                          <Button
+                            type="button"
+                            variant="outline-danger"
+                            shape="circle"
+                            size="sm"
+                            className={clsx('p-1 ms-auto', itemStatus === 'deleting' && 'deleting-button px-2 z-1')}
+                            disabled={itemStatus}
+                            onClick={() => handleDeleteCart(cartItem.id)}
+                          >
+                            {itemStatus === 'deleting' ? (
+                              <span className="spinner-border spinner-border-sm text-danger" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </span>
+                            ) : (
+                              <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* item 刪除時遮罩 */}
-                  {itemStatus === 'deleting' && (
-                    <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
-                  )}
-                </li>
-              );
-            })}
-            {/* 購物車空狀態：載入中顯示 spinner，否則顯示提示文字 */}
+                    {/* item 刪除時遮罩 */}
+                    {itemStatus === 'deleting' && (
+                      <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
+                    )}
+                  </li>
+                );
+              })}
+            {/* Migration spinner */}
+            {cartMigrating && <li className="text-center text-neutral-500 py-12">正在同步您的購物車...</li>}
+            {/* 購物車空狀態：非 migration 時，依 cartLoading 顯示 spinner，否則顯示提示文字 */}
             {carts.length === 0 &&
+              !cartMigrating &&
               (cartLoading ? (
                 <li className="text-center py-12">
                   <span className="spinner-border text-primary" role="status">
@@ -350,8 +433,6 @@ export default function Navbar() {
           </ul>
           <div className="mt-auto">
             <Button
-              as={Link}
-              to="/shopping-cart"
               type="button"
               variant="filled-primary"
               shape="pill"
@@ -359,7 +440,7 @@ export default function Navbar() {
               rightIcon={true}
               iconName="arrow_right_alt"
               className={clsx('justify-content-center w-100', (carts.length === 0 || isCartProcessing) && 'disabled')}
-              onClick={handleCloseCartDrawer}
+              onClick={handleGoCart}
             >
               去結帳
             </Button>
