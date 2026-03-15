@@ -32,16 +32,6 @@ const stepInfo = [
   },
 ];
 
-// 之後由資料庫資料取得
-import productImg07 from 'assets/images/products/img_product_07.png';
-import productImg08 from 'assets/images/products/img_product_08.png';
-import productImg09 from 'assets/images/products/img_product_09.png';
-import productImg13 from 'assets/images/products/img_product_13.png';
-import productAddImg02 from 'assets/images/products/img_product_add_02.png';
-import productAddImg03 from 'assets/images/products/img_product_add_03.png';
-import productAddImg04 from 'assets/images/products/img_product_add_04.png';
-import productAddImg05 from 'assets/images/products/img_product_add_05.png';
-
 function ShoppingCart() {
   // 目前的 step 索引
   const [activeTab, setActiveTab] = useState(0);
@@ -149,19 +139,7 @@ function ShoppingCart() {
         </Nav>
         <Tab.Content className="py-12 py-lg-15">
           <Tab.Pane eventKey={stepInfo[0].step.name}>
-            <FirstStep
-              productImages={{
-                productAddImg02,
-                productAddImg03,
-                productAddImg04,
-                productAddImg05,
-                productImg07,
-                productImg08,
-                productImg09,
-                productImg13,
-              }}
-              handleSwitchStep={handleSwitchStep}
-            />
+            <FirstStep handleSwitchStep={handleSwitchStep} />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[1].step.name}>
             <SecondStep handleSwitchStep={handleSwitchStep} setOrderInfo={setOrderInfo} />
