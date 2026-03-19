@@ -7,7 +7,6 @@ import { MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT, MIN_PRODUCT_PURCHASE_QTY, payment
 import { care, notice } from '@/const/productDetailContents';
 import { addAndRefetchCarts } from '@/slice/cartSlice';
 import { selectAllProducts } from '@/slice/product/guestProductSlice';
-import { tryParseJson } from '@/utils/utils';
 import { useMemo, useState } from 'react';
 import { Nav, Tab } from 'react-bootstrap';
 import toast from 'react-hot-toast';
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router';
 import Breadcrumb from '../components/Breadcrumb';
 import ProductCard from '../components/ProductCard';
+import { BUNDLE_LABEL_MAP } from './admin/products/constants';
 
 export default function ProductDetail() {
   const { product } = useLoaderData().productData;
@@ -22,9 +22,23 @@ export default function ProductDetail() {
   const [purchaseQty, setPurchaseQty] = useState(MIN_PRODUCT_PURCHASE_QTY);
   const allProducts = useSelector(selectAllProducts);
 
-  const displayImagesUrl = [product.imageUrl, ...product.imagesUrl].filter(url => url?.length > 0);
-  const intro = tryParseJson(product.description);
-  const contents = tryParseJson(product.content);
+  const displayImagesUrl = [
+    product.imageUrl,
+    ...(product.imagesUrl || []), // 因後端不儲存空陣列，如果沒有圖片，後端將不會回傳 imagesUrl 欄位
+  ].filter(url => url?.length > 0);
+
+  const { content, description } = product || {};
+  const {
+    enName: productEnName = '',
+    description: productDescription = '',
+    imageUrl: introImageUrl1 = product.imageUrl, // 如果沒有介紹圖片1，則由主圖替代
+  } = description || {};
+  const { bundle, imageUrl: introImageUrl2 = '' } = content || {};
+
+  const bundlePrefix = BUNDLE_LABEL_MAP[product.category] || '';
+  const canHaveBundle = !!bundlePrefix;
+  const showBundleSection = canHaveBundle && Array.isArray(bundle) && bundle.length > 0;
+
   const relatedProducts = useMemo(() => {
     const allProductsExcludeSelf = allProducts.filter(p => p.id !== product.id);
     const otherSameCategoryProducts = allProductsExcludeSelf.filter(p => p.category === product.category);
@@ -83,7 +97,7 @@ export default function ProductDetail() {
                   className="product-swiper-container"
                   modules={[Navigation, Thumbs, Pagination]}
                   thumbs={{ swiper: thumbSwiper }}
-                  loop={true}
+                  loop={displayImagesUrl.length > 1}
                   spaceBetween={16}
                   pagination={{
                     el: '.swiper-pagination',
@@ -92,7 +106,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide key={url}>
+                      <SwiperSlide key={`${idx}-${url}`}>
                         <img src={`${url}`} alt={`${product.title}_${idx + 1}`} />
                       </SwiperSlide>
                     ))}
@@ -112,7 +126,7 @@ export default function ProductDetail() {
                 >
                   {hasImagesToDisplay &&
                     displayImagesUrl.map((url, idx) => (
-                      <SwiperSlide key={url}>
+                      <SwiperSlide key={`${idx}-${url}`}>
                         <img
                           className="h-100 w-100 object-fit-cover"
                           src={`${url}`}
@@ -205,8 +219,8 @@ export default function ProductDetail() {
 
       {/* <!-- 產品細節 Tab 區塊 --> */}
       <section className="py-8 py-lg-13">
-        {/* <!-- Tab 按鈕 --> */}
         <Tab.Container defaultActiveKey="introduction">
+          {/*  Tab 切換按鈕 */}
           <div className="custom-container-lg">
             <Nav as="ul" className="nav d-flex flex-nowrap gap-3 gap-lg-6 text-center border-bottom mb-6 mb-lg-12">
               <Nav.Item as="li" className="w-100">
@@ -238,46 +252,58 @@ export default function ProductDetail() {
               </Nav.Item>
             </Nav>
           </div>
+          {/* Tab 內容 */}
           <Tab.Content>
+            {/* 介紹 */}
             <Tab.Pane eventKey="introduction">
+              {/* 商品介紹區塊 */}
               <div className="container mb-lg-10">
                 <div className="row align-items-center">
                   <div className="card border-0 col-lg-6">
                     <div className="card-body px-0 py-3 p-lg-6">
-                      <h3 className="card-title h4 text-neutral-700">{intro.title}</h3>
-                      <p className="fs-sm text-primary mb-2">{intro.enName}</p>
-                      <p className="card-text text-neutral-400 text-prewrap">{intro.description}</p>
+                      <h3 className="card-title h4 text-neutral-700">{product.title}</h3>
+                      <p className="fs-sm text-primary mb-2">{productEnName}</p>
+                      <p className="card-text text-neutral-400 text-prewrap">{productDescription}</p>
                     </div>
                   </div>
-                  <img className="d-lg-block d-none col-lg-6" src={product.imageUrl} alt={`${product.title}_主圖`} />
+                  {/* 介紹圖片 1（電腦版） */}
+                  <img className="d-lg-block d-none col-lg-6" src={introImageUrl1} alt={`${product.title}_介紹圖片1`} />
                 </div>
               </div>
-              <img className="d-block d-lg-none mb-6 w-100" src={product.imageUrl} alt={`${product.title}_主圖`} />
-              {/* <!-- 組盆內容 --> */}
-              {contents.bundle?.length > 0 && (
+              {/* 介紹圖片 1（手機板） */}
+              <img className="d-block d-lg-none mb-6 w-100" src={introImageUrl1} alt={`${product.title}_介紹圖片1`} />
+              {/* 內容物介紹區塊 */}
+              {showBundleSection && (
                 <>
                   <div className="container">
-                    <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
-                    <div className="row align-items-center py-6 py-lg-40 gap-3 gap-lg-0">
-                      {contents.bundle.map((content, idx) => (
-                        <div key={idx} className="card border-0 col-xl-4">
+                    <p className="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">
+                      {bundlePrefix}內容
+                    </p>
+                    <div className="row align-items-top py-6 py-lg-40 gap-3 gap-lg-0">
+                      {/* 內容物介紹卡片 */}
+                      {bundle.map((item, idx) => (
+                        <div key={idx} className="card border-0 col-xl-2 flex-grow-1">
                           <div className="card-body px-0 py-3 p-lg-6">
-                            <h3 className="card-title h4 text-neutral-700">{content.title}</h3>
+                            <h3 className="card-title h4 text-neutral-700">{item.title}</h3>
                             <h6 className="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
-                              {content.enName}
+                              {item.enName}
                             </h6>
-                            <p className="card-text text-neutral-400 text-prewrap">{content.description}</p>
+                            <p className="card-text text-neutral-400 text-prewrap">{item.description}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="custom-container-lg">
-                    <img className="d-block w-100" src={contents.imageUrl} alt={`${product.title}_副圖`} />
-                  </div>
                 </>
               )}
+              {/* 介紹圖片 2 */}
+              {introImageUrl2 && (
+                <div className="custom-container-lg">
+                  <img className="d-block w-100" src={introImageUrl2} alt={`${product.title}_介紹圖片2`} />
+                </div>
+              )}
             </Tab.Pane>
+            {/* 照顧方式 */}
             <Tab.Pane eventKey="care">
               <div className="container">
                 <div className="d-flex flex-column gap-6 gap-lg-8">
@@ -290,6 +316,7 @@ export default function ProductDetail() {
                 </div>
               </div>
             </Tab.Pane>
+            {/* 注意事項 */}
             <Tab.Pane eventKey="notice">
               <div className="container">
                 <div className="d-flex flex-column gap-6 gap-lg-8">
@@ -310,8 +337,11 @@ export default function ProductDetail() {
         <p className="text-neutral-400 fs-7 mb-8 mb-lg-10 section-decoration-line-both overflow-hidden">相關商品</p>
         {/* <!-- 相關商品卡片 --> */}
         <div className="row px-6px px-lg-0">
-          {relatedProducts.map(product => (
-            <div className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size" key={product.id}>
+          {relatedProducts.map((product, idx) => (
+            <div
+              className="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size"
+              key={`${product.id}-${idx}`}
+            >
               <ProductCard
                 id={product.id}
                 title={product.title}

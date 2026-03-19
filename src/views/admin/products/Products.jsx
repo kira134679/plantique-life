@@ -130,7 +130,7 @@ function Products() {
         <h2 className="h3 mb-4">產品概覽</h2>
         <Button
           as={Link}
-          to="/admin/products/edit"
+          to="/admin/products/add"
           variant="filled-primary"
           shape="pill"
           size="sm"
