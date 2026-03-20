@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { createCoupon, updateCoupon } from '../../../slice/coupon/adminCouponSlice';
+import { createCoupon, fetchCoupons, updateCoupon } from '../../../slice/coupon/adminCouponSlice';
 
 import clsx from 'clsx';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -54,20 +54,35 @@ function CouponEdit() {
   };
 
   useEffect(() => {
-    if (isUpdateMode && coupons.length > 0) {
-      const coupon = coupons.find(c => c.id === id);
+    if (!isUpdateMode) return;
 
-      if (coupon) {
-        reset({
-          title: coupon.title,
-          is_enabled: coupon.is_enabled,
-          percent: coupon.percent,
-          code: coupon.code,
-          due_date: coupon.due_date,
+    //從 Redux store 尋找相同 id 的資料
+    const couponInList = coupons.find(c => c.id === id);
+
+    if (couponInList) {
+      //有資料，直接帶入表單
+      reset(couponInList);
+    } else {
+      //沒資料，重新抓取 coupons 列表
+      dispatch(fetchCoupons())
+        .unwrap()
+        .then(res => {
+          const refreshedCoupons = res.coupons || [];
+          const foundCoupon = refreshedCoupons.find(c => c.id === id);
+
+          if (foundCoupon) {
+            reset(foundCoupon);
+          } else {
+            toast.error('找不到該優惠券資料');
+            navigate('/admin/coupons');
+          }
+        })
+        .catch(() => {
+          toast.error('讀取優惠券失敗');
+          navigate('/admin/coupons');
         });
-      }
     }
-  }, [id, coupons, reset, isUpdateMode]);
+  }, [id, isUpdateMode, coupons, reset, dispatch, navigate]);
 
   return (
     <>
