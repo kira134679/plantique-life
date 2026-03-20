@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCoupon, fetchCoupons, updateCoupon } from '../../../slice/coupon/adminCouponSlice';
@@ -53,8 +53,10 @@ function CouponEdit() {
     }
   };
 
+  //宣告 isFetchingRef 來避免重複請求
+  const isFetchingRef = useRef(false);
   useEffect(() => {
-    if (!isUpdateMode) return;
+    if (!isUpdateMode || isFetchingRef.current) return;
 
     //從 Redux store 尋找相同 id 的資料
     const couponInList = coupons.find(c => c.id === id);
@@ -64,6 +66,7 @@ function CouponEdit() {
       reset(couponInList);
     } else {
       //沒資料，重新抓取 coupons 列表
+      isFetchingRef.current = true;
       dispatch(fetchCoupons())
         .unwrap()
         .then(res => {
@@ -80,6 +83,9 @@ function CouponEdit() {
         .catch(() => {
           toast.error('讀取優惠券失敗');
           navigate('/admin/coupons');
+        })
+        .finally(() => {
+          isFetchingRef.current = false;
         });
     }
   }, [id, isUpdateMode, coupons, reset, dispatch, navigate]);
