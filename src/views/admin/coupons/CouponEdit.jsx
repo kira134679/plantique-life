@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCoupon, updateCoupon } from '../../../slice/coupon/adminCouponSlice';
 
+import clsx from 'clsx';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
 import toast from 'react-hot-toast';
@@ -129,18 +130,20 @@ function CouponEdit() {
                 control={control}
                 rules={{ required: '請選擇優惠券狀態' }}
                 render={({ field: { onChange, value } }) => (
-                  <Dropdown className="checkout-dropdown" onSelect={value => onChange(Number(value))}>
+                  <Dropdown
+                    className={clsx('checkout-dropdown', errors.is_enabled && 'zod-validated is-invalid')}
+                    onSelect={value => onChange(Number(value))}
+                  >
                     <Dropdown.Toggle
-                      className={`btn bg-transparent w-100 text-start text-neutral-500 fs-sm fs-lg-8 ${
-                        errors.is_enabled ? 'form-control is-invalid' : 'border' // 避免 border 蓋過 is-invalid
-                      }`}
+                      className={clsx(
+                        'btn bg-transparent border w-100 text-start fs-lg-8',
+                        errors.is_enabled && 'is-invalid',
+                        value !== undefined && 'text-neutral-700',
+                        value === undefined && 'text-neutral-500',
+                      )}
                       id={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
                     >
-                      {value === undefined || value === null
-                        ? '請選擇優惠券狀態'
-                        : Number(value) === 1
-                          ? '啟用'
-                          : '停用'}
+                      {value === undefined || value === null ? '請選擇狀態' : Number(value) === 1 ? '啟用' : '停用'}
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="w-100">
                       <Dropdown.Item eventKey="1" as="button" type="button">
