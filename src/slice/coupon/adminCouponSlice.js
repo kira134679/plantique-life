@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { adminCouponApi } from '../../api/services/coupon';
+import { adminCouponApi } from '../../api';
 
 export const fetchCoupons = createAsyncThunk('coupon/fetchCoupons', async ({ page = 1 } = {}, { rejectWithValue }) => {
   try {
