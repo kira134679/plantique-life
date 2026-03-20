@@ -44,13 +44,6 @@ const adminCouponSlice = createSlice({
   initialState: {
     coupons: [],
     pagination: {},
-    isLoading: false,
-    errors: {
-      fetch: null,
-      create: null,
-      update: null,
-      delete: null,
-    },
   },
 
   reducers: {},
@@ -59,49 +52,9 @@ const adminCouponSlice = createSlice({
     builder
 
       // fetch
-      .addCase(fetchCoupons.pending, state => {
-        state.isLoading = true;
-      })
       .addCase(fetchCoupons.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.coupons = action.payload?.coupons || [];
         state.pagination = action.payload?.pagination || {};
-      })
-      .addCase(fetchCoupons.rejected, state => {
-        state.isLoading = false;
-      })
-
-      // create
-      .addCase(createCoupon.pending, state => {
-        state.isLoading = true;
-      })
-      .addCase(createCoupon.fulfilled, state => {
-        state.isLoading = false;
-      })
-      .addCase(createCoupon.rejected, state => {
-        state.isLoading = false;
-      })
-
-      // update
-      .addCase(updateCoupon.pending, state => {
-        state.isLoading = true;
-      })
-      .addCase(updateCoupon.fulfilled, state => {
-        state.isLoading = false;
-      })
-      .addCase(updateCoupon.rejected, state => {
-        state.isLoading = false;
-      })
-
-      // delete
-      .addCase(deleteCoupon.pending, state => {
-        state.isLoading = true;
-      })
-      .addCase(deleteCoupon.fulfilled, state => {
-        state.isLoading = false;
-      })
-      .addCase(deleteCoupon.rejected, state => {
-        state.isLoading = false;
       });
   },
 });
