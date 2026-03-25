@@ -48,7 +48,15 @@ function ThirdStep({ orderInfo }) {
         <div className="row">
           <div className="col-lg-8 mx-lg-auto">
             <div className="d-flex flex-column-reverse flex-lg-row gap-4">
-              <Button type="button" variant="outline-neutral" shape="pill" size="lg" className="flex-grow-1">
+              <Button
+                type="button"
+                as={Link}
+                to="/member/orders"
+                variant="outline-neutral"
+                shape="pill"
+                size="lg"
+                className="flex-grow-1"
+              >
                 查看訂單
               </Button>
               <Button
