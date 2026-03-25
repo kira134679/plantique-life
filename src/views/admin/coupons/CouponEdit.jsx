@@ -1,46 +1,104 @@
-import { useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { useEffect, useRef } from 'react';
+import { Link, useNavigate, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCoupon, fetchCoupons, updateCoupon } from '../../../slice/coupon/adminCouponSlice';
 
+import clsx from 'clsx';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from '../../../components/Button';
+import toast from 'react-hot-toast';
+import { Controller, useForm } from 'react-hook-form';
 
 // 套件
 import DatePicker from 'react-datepicker';
 
-// 自訂時間輸入框
-const CustomTimeInput = ({ date, onChangeCustom }) => {
-  const value = date instanceof Date && !isNaN(date) ? date.toLocaleTimeString('it-IT') : '';
-  return (
-    <input
-      type="time"
-      step="1"
-      value={value}
-      onChange={event => onChangeCustom(date, event.target.value)}
-      className="form-control form-control-sm is-invalid"
-    />
-  );
-};
-
 function CouponEdit() {
   const { id } = useParams();
   const isUpdateMode = id !== undefined;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // 選日期時間套件的資料處理
-  const [startDate, setStartDate] = useState(new Date());
-  const handleChangeTime = (date, time) => {
-    const [hh, mm, ss] = time.split(':');
-    const targetDate = date instanceof Date && !isNaN(date) ? date : new Date();
-    targetDate.setHours(Number(hh) || 0, Number(mm) || 0, Number(ss) || 0);
-    setStartDate(targetDate);
+  const { coupons } = useSelector(state => state.adminCoupon);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    control,
+  } = useForm({
+    mode: 'onChange',
+  });
+
+  const onSubmit = async data => {
+    try {
+      const payload = {
+        ...data,
+        is_enabled: Number(data.is_enabled),
+        percent: Number(data.percent),
+        due_date: data.due_date,
+      };
+
+      if (isUpdateMode) {
+        await dispatch(updateCoupon({ id, data: payload })).unwrap();
+        toast.success('修改成功');
+      } else {
+        await dispatch(createCoupon(payload)).unwrap();
+        toast.success('已新增優惠券');
+      }
+
+      navigate('/admin/coupons');
+    } catch {
+      toast.error('操作失敗');
+    }
   };
+
+  //宣告 isFetchingRef 來避免重複請求
+  const isFetchingRef = useRef(false);
+  useEffect(() => {
+    if (!isUpdateMode || isFetchingRef.current) return;
+
+    //從 Redux store 尋找相同 id 的資料
+    const couponInList = coupons.find(c => c.id === id);
+
+    if (couponInList) {
+      //有資料，直接帶入表單
+      reset(couponInList);
+    } else {
+      //沒資料，重新抓取 coupons 列表
+      isFetchingRef.current = true;
+      dispatch(fetchCoupons())
+        .unwrap()
+        .then(res => {
+          const refreshedCoupons = res.coupons || [];
+          const foundCoupon = refreshedCoupons.find(c => c.id === id);
+
+          if (foundCoupon) {
+            reset(foundCoupon);
+          } else {
+            toast.error('找不到該優惠券資料');
+            navigate('/admin/coupons');
+          }
+        })
+        .catch(() => {
+          toast.error('讀取優惠券失敗');
+          navigate('/admin/coupons');
+        })
+        .finally(() => {
+          isFetchingRef.current = false;
+        });
+    }
+  }, [id, isUpdateMode, coupons, reset, dispatch, navigate]);
 
   return (
     <>
       <div className="py-13">
         <h2 className="h3 mb-8">{isUpdateMode ? '更改優惠券' : '新增優惠券'}</h2>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <section className="py-6">
             <h3 className="h4 mb-6">基本設定</h3>
+
+            {/* code */}
             <div className="mb-6 w-50 min-w-14rem">
               <label
                 className="form-label text-neutral-700 fs-7"
@@ -50,13 +108,17 @@ function CouponEdit() {
               </label>
               <input
                 id={`${isUpdateMode ? 'update-' : 'new-'}coupon-code`}
-                className="form-control"
+                className={`form-control ${errors.code ? 'is-invalid' : ''}`}
                 type="text"
-                defaultValue={isUpdateMode ? id : null}
                 placeholder="請輸入優惠券折扣碼"
+                {...register('code', {
+                  required: '請輸入折扣碼',
+                })}
               />
-              <div className="invalid-feedback">必填欄位</div>
+              {errors.code && <div className="text-danger">{errors.code.message}</div>}
             </div>
+
+            {/* title */}
             <div className="mb-6 w-50 min-w-14rem">
               <label
                 className="form-label text-neutral-700 fs-7"
@@ -66,12 +128,17 @@ function CouponEdit() {
               </label>
               <input
                 id={`${isUpdateMode ? 'update-' : 'new-'}coupon-title`}
-                className="form-control"
+                className={`form-control ${errors.title ? 'is-invalid' : ''}`}
                 type="text"
                 placeholder="請輸入優惠券名稱"
+                {...register('title', {
+                  required: '請輸入優惠券名稱',
+                })}
               />
-              <div className="invalid-feedback">必填欄位</div>
+              {errors.title && <div className="text-danger">{errors.title.message}</div>}
             </div>
+
+            {/* status */}
             <div className="mb-6 w-25 min-w-14rem">
               <label
                 className="form-label text-neutral-700 fs-7"
@@ -79,20 +146,42 @@ function CouponEdit() {
               >
                 狀態<span className="text-danger">*</span>
               </label>
-              <Dropdown className="checkout-dropdown">
-                <Dropdown.Toggle
-                  className="btn bg-transparent border w-100 text-start text-neutral-500 fs-sm fs-lg-8"
-                  id={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
-                >
-                  請選擇優惠券狀態
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100">
-                  <Dropdown.Item href="#">啟用</Dropdown.Item>
-                  <Dropdown.Item href="#">停用</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-              <div className="invalid-feedback">必填欄位</div>
+              <Controller
+                name="is_enabled"
+                control={control}
+                rules={{ required: '請選擇優惠券狀態' }}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    className={clsx('checkout-dropdown', errors.is_enabled && 'zod-validated is-invalid')}
+                    onSelect={value => onChange(Number(value))}
+                  >
+                    <Dropdown.Toggle
+                      className={clsx(
+                        'btn bg-transparent border w-100 text-start fs-lg-8',
+                        errors.is_enabled && 'is-invalid',
+                        value !== undefined && 'text-neutral-700',
+                        value === undefined && 'text-neutral-500',
+                      )}
+                      id={`${isUpdateMode ? 'update-' : 'new-'}coupon-status`}
+                    >
+                      {value === undefined || value === null ? '請選擇狀態' : Number(value) === 1 ? '啟用' : '停用'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="w-100">
+                      <Dropdown.Item eventKey="1" as="button" type="button">
+                        啟用
+                      </Dropdown.Item>
+
+                      <Dropdown.Item eventKey="0" as="button" type="button">
+                        停用
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                )}
+              />
+              {errors.is_enabled && <p className="text-danger">{errors.is_enabled.message}</p>}
             </div>
+
+            {/* discount */}
             <div className="mb-6 w-25 min-w-14rem">
               <label
                 className="form-label text-neutral-700 fs-7"
@@ -103,14 +192,21 @@ function CouponEdit() {
               <div className="input-group">
                 <input
                   id={`${isUpdateMode ? 'update-' : 'new-'}coupon-discount`}
-                  className="form-control"
+                  className={`form-control ${errors.percent ? 'is-invalid' : ''}`}
                   type="number"
                   placeholder="請輸入折扣"
+                  {...register('percent', {
+                    required: '請輸入折扣',
+                    max: { value: 100, message: '折扣不能超過 100%' },
+                    min: { value: 1, message: '折扣至少 1%' },
+                  })}
                 />
                 <span className="input-group-text bg-primary-100">%</span>
               </div>
-              <div className="invalid-feedback">必填欄位</div>
+              {errors.percent && <div className="text-danger">{errors.percent.message}</div>}
             </div>
+
+            {/* due_date */}
             <div className="mb-6 w-25 min-w-14rem">
               <label
                 className="form-label text-neutral-700 fs-7"
@@ -118,19 +214,28 @@ function CouponEdit() {
               >
                 結束時間<span className="text-danger">*</span>
               </label>
-              <DatePicker
-                id={`${isUpdateMode ? 'update-' : 'new-'}coupon-duetime`}
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                onChangeRaw={e => e.preventDefault()}
-                onFocus={e => e.target.blur()}
-                dateFormat="yyyy/MM/dd HH:mm:ss"
-                showTimeInput
-                customTimeInput={<CustomTimeInput onChangeCustom={handleChangeTime} />}
-                className="form-control is-invalid"
-                popperClassName="z-5"
+              <Controller
+                name="due_date"
+                control={control}
+                rules={{ required: '請選擇日期' }}
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    id={`${isUpdateMode ? 'update-' : 'new-'}coupon-duetime`}
+                    // 將 timestamp 轉回 Date 物件供顯示
+                    selected={value ? new Date(value * 1000) : null}
+                    //選擇後將 Date 物件轉 timestamp 存入表單
+                    onChange={date => {
+                      if (date) {
+                        onChange(Math.floor(date.getTime() / 1000));
+                      }
+                    }}
+                    dateFormat="yyyy/MM/dd HH:mm:ss"
+                    showTimeInput
+                    className={`form-control ${errors.due_date ? 'is-invalid' : ''}`}
+                  />
+                )}
               />
-              <div className="invalid-feedback d-block">時間區間錯誤</div>
+              {errors.due_date && <p className="text-danger">{errors.due_date.message}</p>}
             </div>
           </section>
           <div className="d-flex">
@@ -142,18 +247,10 @@ function CouponEdit() {
               size="sm"
               className="ms-auto me-4"
             >
-              放棄填寫
+              {isUpdateMode ? '取消修改' : '放棄填寫'}
             </Button>
-            <Button
-              type="submit"
-              variant="filled-primary"
-              shape="pill"
-              size="sm"
-              onClick={e => {
-                e.preventDefault();
-              }}
-            >
-              儲存變更
+            <Button type="submit" variant="filled-primary" shape="pill" size="sm">
+              {isUpdateMode ? '儲存變更' : '新增優惠券'}
             </Button>
           </div>
         </form>
