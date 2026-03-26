@@ -104,7 +104,7 @@ function getCardBrand(cardNumber) {
   return match ? match.brand : 'Unknown';
 }
 
-function SecondStep({ handleSwitchStep, setOrderInfo }) {
+function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   const dispatch = useDispatch();
   // 用於追蹤 Modal 關閉後是否要換頁
   const shouldSwitchAfterClose = useRef(false);
@@ -1038,4 +1038,4 @@ function SecondStep({ handleSwitchStep, setOrderInfo }) {
   );
 }
 
-export default SecondStep;
+export default CheckoutForm;
