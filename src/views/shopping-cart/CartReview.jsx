@@ -7,7 +7,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-function FirstStep({ productImages, handleSwitchStep }) {
+function CartReview({ productImages, handleSwitchStep }) {
   const {
     productAddImg02,
     productAddImg03,
@@ -418,4 +418,4 @@ function FirstStep({ productImages, handleSwitchStep }) {
   );
 }
 
-export default FirstStep;
+export default CartReview;

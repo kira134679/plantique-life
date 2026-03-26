@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
-import FirstStep from './shopping-cart/FirstStep';
-import SecondStep from './shopping-cart/SecondStep';
-import ThirdStep from './shopping-cart/ThirdStep';
+import CartReview from './shopping-cart/CartReview';
+import CheckoutForm from './shopping-cart/CheckoutForm';
+import OrderConfirmation from './shopping-cart/OrderConfirmation';
 
 // 步驟標題、名稱
 const stepInfo = [
@@ -149,7 +149,7 @@ function ShoppingCart() {
         </Nav>
         <Tab.Content className="py-12 py-lg-15">
           <Tab.Pane eventKey={stepInfo[0].step.name}>
-            <FirstStep
+            <CartReview
               productImages={{
                 productAddImg02,
                 productAddImg03,
@@ -164,10 +164,10 @@ function ShoppingCart() {
             />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[1].step.name}>
-            <SecondStep handleSwitchStep={handleSwitchStep} setOrderInfo={setOrderInfo} />
+            <CheckoutForm handleSwitchStep={handleSwitchStep} setOrderInfo={setOrderInfo} />
           </Tab.Pane>
           <Tab.Pane eventKey={stepInfo[2].step.name}>
-            <ThirdStep orderInfo={orderInfo} />
+            <OrderConfirmation orderInfo={orderInfo} />
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>
