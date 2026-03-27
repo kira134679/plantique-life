@@ -83,11 +83,6 @@ export default function Navbar() {
                 </Link>
               </li>
               <li>
-                <Link className="custom-nav-link" to="#">
-                  最新消息
-                </Link>
-              </li>
-              <li>
                 <Link className="custom-nav-link" to="/products">
                   植感商品
                 </Link>
@@ -193,11 +188,6 @@ export default function Navbar() {
                 <li>
                   <Link className="custom-nav-link" to="/about" onClick={handleCloseMemberMenu}>
                     關於品牌
-                  </Link>
-                </li>
-                <li>
-                  <Link className="custom-nav-link" href="#">
-                    最新消息
                   </Link>
                 </li>
                 <li>
