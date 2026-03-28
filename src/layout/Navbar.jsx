@@ -16,6 +16,9 @@ export default function Navbar() {
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
 
+  const { isAuth, authChecked } = useSelector(state => state.auth);
+  const isLogin = authChecked && isAuth;
+
   // 從 Redux 取得購物車資料
   const { carts, loadingItems, isLoading: cartLoading } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
@@ -115,54 +118,52 @@ export default function Navbar() {
                   </div>
                 </button>
               </li>
-              <li className="d-none d-lg-block guest me-4">
-                <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
-                  登入
-                </Button>
-              </li>
-              <li className="d-none d-lg-block guest">
-                <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
-                  註冊
-                </Button>
-              </li>
-              {/* <!-- 登入後 --> */}
-              {/* <!-- 會員選單 --> */}
-              <li className="d-none d-lg-block position-relative member">
-                {/* <!-- 會員選單按鈕 --> */}
-
-                <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
-                  <span className="material-symbols-rounded d-block"> person </span>
-                </Button>
-
-                {/* <!-- 會員選單內容 --> */}
-
-                <Collapse in={showDesktopMemberMenu}>
-                  <ul className="position-absolute list-unstyled bg-white text-center member-menu">
-                    <ul className="list-unstyled p-6">
-                      <li className="mb-3">
-                        <Link className="member-menu-link" href="#">
-                          會員中心
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="member-menu-link" href="#">
-                          訂單查詢
-                        </Link>
-                      </li>
+              {!isLogin ? (
+                <>
+                  <li className="d-none d-lg-block guest me-4">
+                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                      登入
+                    </Button>
+                  </li>
+                  <li className="d-none d-lg-block guest">
+                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                      註冊
+                    </Button>
+                  </li>
+                </>
+              ) : (
+                <li className="d-none d-lg-block position-relative member">
+                  <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
+                    <span className="material-symbols-rounded d-block"> person </span>
+                  </Button>
+                  <Collapse in={showDesktopMemberMenu}>
+                    <ul className="position-absolute list-unstyled bg-white text-center member-menu">
+                      <ul className="list-unstyled p-6">
+                        <li className="mb-3">
+                          <Link className="member-menu-link" to="/member">
+                            會員中心
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="member-menu-link" to="/member/orders">
+                            訂單查詢
+                          </Link>
+                        </li>
+                      </ul>
+                      <ul className="list-unstyled px-6 pb-6">
+                        <li className="pt-6 separator-line-top">
+                          <Link
+                            className="member-menu-link py-1 d-flex justify-content-center align-items-center"
+                            href="#"
+                          >
+                            登出 <span className="ms-2 material-symbols-rounded"> logout </span>
+                          </Link>
+                        </li>
+                      </ul>
                     </ul>
-                    <ul className="list-unstyled px-6 pb-6">
-                      <li className="pt-6 separator-line-top">
-                        <Link
-                          className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                          href="#"
-                        >
-                          登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                        </Link>
-                      </li>
-                    </ul>
-                  </ul>
-                </Collapse>
-              </li>
+                  </Collapse>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -201,32 +202,38 @@ export default function Navbar() {
                   </Link>
                 </li>
               </ul>
-              {/* <!-- 未登入 --> */}
-              <ul className="navbar-nav px-6 pb-6 guest">
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link" href="#">
-                    會員登入
-                  </Link>
-                </li>
-              </ul>
-              {/* <!-- 登入後 --> */}
-              <ul className="navbar-nav px-6 pb-6 member">
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link mb-3" href="#">
-                    會員中心
-                  </Link>
-                </li>
-                <li className="pb-6">
-                  <Link className="custom-nav-link" href="#">
-                    訂單查詢
-                  </Link>
-                </li>
-                <li className="pt-6 separator-line-top">
-                  <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#">
-                    登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                  </Link>
-                </li>
-              </ul>
+              {!isLogin ? (
+                <ul className="navbar-nav px-6 pb-6 gap-3 guest">
+                  <li className="pt-6 separator-line-top">
+                    <Link className="custom-nav-link" to="#">
+                      會員登入
+                    </Link>
+                  </li>
+                  <li className="pb-6">
+                    <Link className="custom-nav-link" to="#">
+                      會員註冊
+                    </Link>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="navbar-nav px-6 pb-6 member">
+                  <li className="pt-6 separator-line-top">
+                    <Link className="custom-nav-link mb-3" to="/member">
+                      會員中心
+                    </Link>
+                  </li>
+                  <li className="pb-6">
+                    <Link className="custom-nav-link" to="/member/orders">
+                      訂單查詢
+                    </Link>
+                  </li>
+                  <li className="pt-6 separator-line-top">
+                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#">
+                      登出 <span className="ms-2 material-symbols-rounded"> logout </span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </Offcanvas.Body>
           </Offcanvas>
         </div>
