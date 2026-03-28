@@ -2,19 +2,23 @@ import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefet
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigation } from 'react-router';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const location = useLocation();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
+
+  const prevLocationRef = useRef(location.key);
 
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
@@ -66,6 +70,20 @@ export default function Navbar() {
     }
   }
 
+  useEffect(() => {
+    const closeAllMenus = () => {
+      handleCloseMemberMenu();
+      handleCloseCartDrawer();
+      setShowDesktopMemberMemu(false);
+    };
+
+    if (navigation.state !== 'idle' || prevLocationRef.current !== location.key) {
+      closeAllMenus();
+    }
+
+    prevLocationRef.current = location.key;
+  }, [navigation.state, location.key]);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg sticky-top py-2 py-lg-4 bg-white z-index-1046">
@@ -74,7 +92,7 @@ export default function Navbar() {
           <Link className="d-none d-lg-block w-lg-30" to="/">
             <img src={logoLg} alt="Plantique Life 植感生活" />
           </Link>
-          <Link className="d-lg-none" to="/" onClick={handleCloseMemberMenu}>
+          <Link className="d-lg-none" to="/">
             <img src={logoSm} alt="Plantique Life 植感生活" />
           </Link>
           {/* <!-- 網頁版導覽列連結  --> */}
@@ -154,7 +172,7 @@ export default function Navbar() {
                         <li className="pt-6 separator-line-top">
                           <Link
                             className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                            href="#"
+                            to="#"
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                           </Link>
@@ -187,17 +205,17 @@ export default function Navbar() {
             <Offcanvas.Body className="d-lg-none text-center bg-white p-0">
               <ul className="navbar-nav p-6 gap-3">
                 <li>
-                  <Link className="custom-nav-link" to="/about" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/about">
                     關於品牌
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/products" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/products">
                     植感商品
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/articles" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/articles">
                     植藝專欄
                   </Link>
                 </li>
@@ -228,7 +246,7 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#">
+                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" to="#">
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                     </Link>
                   </li>
