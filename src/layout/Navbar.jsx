@@ -1,4 +1,5 @@
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import useMediaQuery from '@/utils/useMediaQuery';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
@@ -6,15 +7,18 @@ import { useEffect, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
+
+  const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
@@ -27,12 +31,31 @@ export default function Navbar() {
   const isCartProcessing = cartLoading || hasItemLoading;
 
   const handleCloseMemberMenu = () => setShowMemberMenu(false);
-  const handleToggleMemberMenu = () => setShowMemberMenu(!showMemberMenu);
+  const handleToggleMemberMenu = () => setShowMemberMenu(prev => !prev);
 
   const handleCloseCartDrawer = () => setShowCartDrawer(false);
-  const handleToggleCartDrawer = () => setShowCartDrawer(!showCartDrawer);
+  const handleToggleCartDrawer = () => setShowCartDrawer(prev => !prev);
 
-  const toggleDesktopMemberMenu = () => setShowDesktopMemberMemu(!showDesktopMemberMenu);
+  const handleCloseDesktopMemberMenu = () => setShowDesktopMemberMemu(false);
+  const toggleDesktopMemberMenu = () => setShowDesktopMemberMemu(prev => !prev);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    handleCloseMemberMenu();
+    handleCloseCartDrawer();
+    handleCloseDesktopMemberMenu();
+  }, [location.key]);
+
+  useEffect(() => {
+    if (showMemberMenu && isDesktopSize) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      handleCloseMemberMenu();
+    }
+
+    if (showDesktopMemberMenu && !isDesktopSize) {
+      handleCloseDesktopMemberMenu();
+    }
+  }, [isDesktopSize, showMemberMenu, showDesktopMemberMenu]);
 
   // 初始化購物車資料
   useEffect(() => {
@@ -74,7 +97,7 @@ export default function Navbar() {
           <Link className="d-none d-lg-block w-lg-30" to="/">
             <img src={logoLg} alt="Plantique Life 植感生活" />
           </Link>
-          <Link className="d-lg-none" to="/" onClick={handleCloseMemberMenu}>
+          <Link className="d-lg-none" to="/">
             <img src={logoSm} alt="Plantique Life 植感生活" />
           </Link>
           {/* <!-- 網頁版導覽列連結  --> */}
@@ -154,7 +177,7 @@ export default function Navbar() {
                         <li className="pt-6 separator-line-top">
                           <Link
                             className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                            href="#"
+                            to="#"
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                           </Link>
@@ -187,17 +210,17 @@ export default function Navbar() {
             <Offcanvas.Body className="d-lg-none text-center bg-white p-0">
               <ul className="navbar-nav p-6 gap-3">
                 <li>
-                  <Link className="custom-nav-link" to="/about" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/about">
                     關於品牌
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/products" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/products">
                     植感商品
                   </Link>
                 </li>
                 <li>
-                  <Link className="custom-nav-link" to="/articles" onClick={handleCloseMemberMenu}>
+                  <Link className="custom-nav-link" to="/articles">
                     植藝專欄
                   </Link>
                 </li>
@@ -228,7 +251,7 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#">
+                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" to="#">
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                     </Link>
                   </li>
