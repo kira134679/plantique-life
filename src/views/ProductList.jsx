@@ -11,6 +11,7 @@ import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
 import { getProducts, selectCurrentPage, selectProductList, selectTotalPages } from '@/slice/product/guestProductSlice';
+import useMediaQuery from '@/utils/useMediaQuery';
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -78,6 +79,8 @@ export default function ProductList() {
   const mobileDropdownLabel = getMobileDropdownLabel(category, productType);
   const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
 
+  const isDesktopSize = useMediaQuery('(min-width: 992px)');
+
   const onPageChange = targetPage => {
     setSearchParams(prev => {
       const newSearchParams = new URLSearchParams(prev);
@@ -91,6 +94,13 @@ export default function ProductList() {
       return newSearchParams;
     });
   };
+
+  useEffect(() => {
+    if (mobileDropdownShow && isDesktopSize) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMobileDropdownShow(false);
+    }
+  }, [mobileDropdownShow, isDesktopSize]);
 
   useEffect(() => {
     dispatch(getNews());
