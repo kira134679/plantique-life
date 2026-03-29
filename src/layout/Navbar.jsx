@@ -1,22 +1,24 @@
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import useMediaQuery from '@/utils/useMediaQuery';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigation } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const location = useLocation();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
+
+  const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
   const prevLocationRef = useRef(location.key);
 
@@ -31,12 +33,45 @@ export default function Navbar() {
   const isCartProcessing = cartLoading || hasItemLoading;
 
   const handleCloseMemberMenu = () => setShowMemberMenu(false);
-  const handleToggleMemberMenu = () => setShowMemberMenu(!showMemberMenu);
+  const handleToggleMemberMenu = () => setShowMemberMenu(prev => !prev);
 
   const handleCloseCartDrawer = () => setShowCartDrawer(false);
-  const handleToggleCartDrawer = () => setShowCartDrawer(!showCartDrawer);
+  const handleToggleCartDrawer = () => setShowCartDrawer(prev => !prev);
 
-  const toggleDesktopMemberMenu = () => setShowDesktopMemberMemu(!showDesktopMemberMenu);
+  const handleCloseDesktopMemberMenu = () => setShowDesktopMemberMemu(false);
+  const toggleDesktopMemberMenu = () => setShowDesktopMemberMemu(prev => !prev);
+
+  const onDesktopSizeLeave = useEffectEvent(() => {
+    handleCloseDesktopMemberMenu();
+  });
+
+  const onDesktopSizeEnter = useEffectEvent(() => {
+    handleCloseMemberMenu();
+  });
+
+  const onNavigate = useEffectEvent(() => {
+    handleCloseMemberMenu();
+    handleCloseCartDrawer();
+    handleCloseDesktopMemberMenu();
+  });
+
+  useEffect(() => {
+    if (prevLocationRef.current !== location.key) {
+      onNavigate();
+    }
+
+    prevLocationRef.current = location.key;
+  }, [location.key]);
+
+  useEffect(() => {
+    if (showMemberMenu && isDesktopSize) {
+      onDesktopSizeEnter();
+    }
+
+    if (showDesktopMemberMenu && !isDesktopSize) {
+      onDesktopSizeLeave();
+    }
+  }, [isDesktopSize, showMemberMenu, showDesktopMemberMenu]);
 
   // 初始化購物車資料
   useEffect(() => {
@@ -69,20 +104,6 @@ export default function Navbar() {
       toast.error(error);
     }
   }
-
-  useEffect(() => {
-    const closeAllMenus = () => {
-      handleCloseMemberMenu();
-      handleCloseCartDrawer();
-      setShowDesktopMemberMemu(false);
-    };
-
-    if (navigation.state !== 'idle' || prevLocationRef.current !== location.key) {
-      closeAllMenus();
-    }
-
-    prevLocationRef.current = location.key;
-  }, [navigation.state, location.key]);
 
   return (
     <>
