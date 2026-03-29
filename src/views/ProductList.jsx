@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { Accordion, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useSearchParams } from 'react-router';
@@ -11,6 +11,7 @@ import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
 import { getProducts, selectCurrentPage, selectProductList, selectTotalPages } from '@/slice/product/guestProductSlice';
+import useMediaQuery from '@/utils/useMediaQuery';
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -78,6 +79,8 @@ export default function ProductList() {
   const mobileDropdownLabel = getMobileDropdownLabel(category, productType);
   const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
 
+  const isDesktopSize = useMediaQuery('(min-width: 992px)');
+
   const onPageChange = targetPage => {
     setSearchParams(prev => {
       const newSearchParams = new URLSearchParams(prev);
@@ -91,6 +94,16 @@ export default function ProductList() {
       return newSearchParams;
     });
   };
+
+  const onDesktopSizeEnter = useEffectEvent(() => {
+    setMobileDropdownShow(false);
+  });
+
+  useEffect(() => {
+    if (mobileDropdownShow && isDesktopSize) {
+      onDesktopSizeEnter();
+    }
+  }, [mobileDropdownShow, isDesktopSize]);
 
   useEffect(() => {
     dispatch(getNews());
