@@ -132,13 +132,6 @@
   }
 }
 
-.member.hidden {
-  display: none !important;
-}
-.guest.hidden {
-  display: none !important;
-}
-
 .header-offcanvas {
   .offcanvas-header::before {
     // 高度為1px的底線，但左右間隔16px

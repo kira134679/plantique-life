@@ -158,19 +158,19 @@ export default function Navbar() {
               </li>
               {!isLogin ? (
                 <>
-                  <li className="d-none d-lg-block guest me-4">
+                  <li className="d-none d-lg-block me-4">
                     <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
                       登入
                     </Button>
                   </li>
-                  <li className="d-none d-lg-block guest">
+                  <li className="d-none d-lg-block">
                     <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
                       註冊
                     </Button>
                   </li>
                 </>
               ) : (
-                <li className="d-none d-lg-block position-relative member" ref={desktopMemberMenuRef}>
+                <li className="d-none d-lg-block position-relative" ref={desktopMemberMenuRef}>
                   <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
                     <span className="material-symbols-rounded d-block"> person </span>
                   </Button>
@@ -241,7 +241,7 @@ export default function Navbar() {
                 </li>
               </ul>
               {!isLogin ? (
-                <ul className="navbar-nav px-6 pb-6 gap-3 guest">
+                <ul className="navbar-nav px-6 pb-6 gap-3">
                   <li className="pt-6 separator-line-top">
                     <Link className="custom-nav-link" to="#">
                       會員登入
@@ -254,7 +254,7 @@ export default function Navbar() {
                   </li>
                 </ul>
               ) : (
-                <ul className="navbar-nav px-6 pb-6 member">
+                <ul className="navbar-nav px-6 pb-6">
                   <li className="pt-6 separator-line-top">
                     <Link className="custom-nav-link mb-3" to="/member">
                       會員中心
