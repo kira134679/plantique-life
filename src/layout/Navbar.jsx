@@ -3,7 +3,7 @@ import useMediaQuery from '@/utils/useMediaQuery';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ export default function Navbar() {
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
   const [showDesktopMemberMenu, setShowDesktopMemberMemu] = useState(false);
+  const desktopMemberMenuRef = useRef(null);
 
   const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
@@ -45,6 +46,20 @@ export default function Navbar() {
     handleCloseCartDrawer();
     handleCloseDesktopMemberMenu();
   }, [location.key]);
+
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (desktopMemberMenuRef.current && !desktopMemberMenuRef.current.contains(e.target)) {
+        handleCloseDesktopMemberMenu();
+      }
+    };
+
+    document.addEventListener('pointerdown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('pointerdown', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (showMemberMenu && isDesktopSize) {
@@ -155,7 +170,7 @@ export default function Navbar() {
                   </li>
                 </>
               ) : (
-                <li className="d-none d-lg-block position-relative member">
+                <li className="d-none d-lg-block position-relative member" ref={desktopMemberMenuRef}>
                   <Button type="button" className="member-menu-toggle-btn" onClick={toggleDesktopMemberMenu}>
                     <span className="material-symbols-rounded d-block"> person </span>
                   </Button>
