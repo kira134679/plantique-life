@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 export const getArticles = createAsyncThunk('guestArticle/getArticles', async (_, { rejectWithValue }) => {
   try {
-    return await guestArticleApi.getArticles({ preventGlobalLoading: true });
+    return await guestArticleApi.getArticles({ preventGlobalLoading: false });
   } catch (error) {
     return rejectWithValue(error);
   }
