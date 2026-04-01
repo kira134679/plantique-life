@@ -80,9 +80,11 @@
   border-width: 0;
   border-radius: 50%;
   background-color: transparent;
-  &:hover,
-  &:active {
+  &:hover {
     background-color: $primary-50;
+  }
+  &:active {
+    background-color: $primary-100 !important;
   }
 }
 .member-menu-link {
@@ -91,6 +93,12 @@
   display: block;
   padding-top: 0.343rem;
   padding-bottom: 0.343rem;
+  &:hover {
+    background-color: $primary-50;
+  }
+  &:active {
+    background-color: $primary-100;
+  }
 }
 
 .custom-nav-toggle-btn {
@@ -116,13 +124,12 @@
   .offcanvas-body {
     pointer-events: auto;
   }
-}
-
-.member.hidden {
-  display: none !important;
-}
-.guest.hidden {
-  display: none !important;
+  .custom-nav-link:hover {
+    background-color: $primary-50;
+  }
+  .custom-nav-link:active {
+    background-color: $primary-100;
+  }
 }
 
 .header-offcanvas {
