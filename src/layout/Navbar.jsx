@@ -164,7 +164,14 @@ export default function Navbar() {
                     </Button>
                   </li>
                   <li className="d-none d-lg-block">
-                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap cursor-not-allowed"
+                      disabled
+                    >
                       註冊
                     </Button>
                   </li>
@@ -248,7 +255,12 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pb-6">
-                    <Link className="custom-nav-link" to="#">
+                    <Link
+                      className="custom-nav-link cursor-not-allowed"
+                      to="#"
+                      aria-disabled="true"
+                      onClick={e => e.preventDefault()}
+                    >
                       會員註冊
                     </Link>
                   </li>
