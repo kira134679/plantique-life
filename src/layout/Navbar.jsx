@@ -170,7 +170,15 @@ export default function Navbar() {
               {!isLogin ? (
                 <>
                   <li className="d-none d-lg-block me-4">
-                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                    <Button
+                      as={Link}
+                      to="/login"
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap"
+                    >
                       登入
                     </Button>
                   </li>
@@ -255,7 +263,7 @@ export default function Navbar() {
               {!isLogin ? (
                 <ul className="navbar-nav px-6 pb-6 gap-3">
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link" to="#">
+                    <Link className="custom-nav-link" to="/login">
                       會員登入
                     </Link>
                   </li>
