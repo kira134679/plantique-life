@@ -138,7 +138,7 @@ export default function Home() {
               </div>
             </div>
             <div className="d-none d-sm-block col-md-10">
-              <img src={textLg} alt="" />
+              <img src={textLg} alt="PLANTIQUE LIFE 字樣" />
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function Home() {
             {/* <!-- 標題 --> */}
             <div className="col-lg-2">
               <div className="d-flex flex-lg-column justify-content-center align-items-center gap-6 gap-lg-0">
-                <img src={headingDecorationSm} alt="decorate-sm" className="d-lg-none d-block" />
+                <img src={headingDecorationSm} alt="" className="d-lg-none d-block" />
                 <div className="text-center d-flex flex-column justify-content-center align-items-center">
                   <h6 className="fs-8 fs-lg-7 text-primary mb-1 mb-lg-4">News</h6>
                   <h2 className="fs-3 fs-lg-2 m-0 text-neutral-700 news-title mb-8 mb-lg-4">
@@ -164,8 +164,8 @@ export default function Home() {
                     <span>息</span>
                   </h2>
                 </div>
-                <img src={headingDecoration} alt="decoration-lg" className="d-xl-block d-none" />
-                <img src={headingDecorationSm} alt="decoration-sm" className="d-xl-none d-block" />
+                <img src={headingDecoration} alt="" className="d-xl-block d-none" />
+                <img src={headingDecorationSm} alt="" className="d-xl-none d-block" />
               </div>
             </div>
 
@@ -254,14 +254,14 @@ export default function Home() {
       <section className="py-12 py-lg-15">
         <div className="container mb-8 mb-lg-12">
           <hgroup className="d-flex justify-content-center align-items-end align-items-lg-center gap-6 gap-lg-10">
-            <img src={headingDecoration} alt="heading-decoration" className="heading-decoration" />
+            <img src={headingDecoration} alt="" className="heading-decoration" />
             <div className="text-center">
               <small className="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
                 Category
               </small>
               <h2 className="fs-3 fs-lg-2 text-neutral-700">主題挑選</h2>
             </div>
-            <img src={headingDecoration} alt="decorate" className="heading-decoration" />
+            <img src={headingDecoration} alt="" className="heading-decoration" />
           </hgroup>
         </div>
         <div className="px-0 px-lg-15">
@@ -422,7 +422,7 @@ export default function Home() {
             <div className="d-flex justify-content-center">
               <picture className="align-self-end me-6">
                 <source srcSet={headingDecoration} media="(min-width: 768px)" />
-                <img src={headingDecorationSm} className="img-fluid" alt="heading-decoration" />
+                <img src={headingDecorationSm} className="img-fluid" alt="" />
               </picture>
               <div className="d-flex flex-column align-items-center">
                 <h3 className="text-primary fs-8 fs-lg-7 mb-1 mb-lg-2">Column</h3>
@@ -432,7 +432,7 @@ export default function Home() {
               </div>
               <picture className="align-self-end ms-6">
                 <source srcSet={headingDecoration} media="(min-width: 768px)" />
-                <img src={headingDecorationSm} className="img-fluid" alt="heading-decoration" />
+                <img src={headingDecorationSm} className="img-fluid" alt="" />
               </picture>
             </div>
             <div className="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0">

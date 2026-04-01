@@ -1,13 +1,13 @@
-import headingDecoration from '../assets/images/index/heading-decoration.svg';
 import headingDecorationSm from '../assets/images/index/heading-decoration-sm.svg';
+import headingDecoration from '../assets/images/index/heading-decoration.svg';
 
-import Button from '../components/Button';
-import { useEffect, useMemo, useRef } from 'react';
-import { Link } from 'react-router';
-import { timestampToDate } from '@/utils/utils';
-import { useDispatch, useSelector } from 'react-redux';
 import { getArticles } from '@/slice/article/guestArticleSlice';
+import { timestampToDate } from '@/utils/utils';
+import { useEffect, useMemo, useRef } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router';
+import Button from '../components/Button';
 
 const ArticleCard = ({ article }) => (
   <div className="col-lg-4 column-item">
@@ -93,7 +93,7 @@ function Articles() {
                 </div>
                 <picture className="align-self-end me-6">
                   <source srcSet={headingDecoration} media="(min-width: 768px)" />
-                  <img src={headingDecorationSm} className="img-fluid" alt="heading-decoration" />
+                  <img src={headingDecorationSm} className="img-fluid" alt="" />
                 </picture>
               </div>
             </div>
