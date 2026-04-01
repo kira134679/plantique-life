@@ -7,12 +7,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
+import { logout } from '@/slice/authSlice';
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
@@ -23,6 +25,15 @@ export default function Navbar() {
 
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
+  const handlelogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      toast.success('已登出');
+      navigate('/');
+    } catch {
+      toast.error('登出失敗');
+    }
+  };
 
   // 從 Redux 取得購物車資料
   const { carts, loadingItems, isLoading: cartLoading } = useSelector(state => state.cart);
@@ -193,6 +204,7 @@ export default function Navbar() {
                           <Link
                             className="member-menu-link py-1 d-flex justify-content-center align-items-center"
                             to="#"
+                            onClick={handlelogout}
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                           </Link>
@@ -266,7 +278,11 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" to="#">
+                    <Link
+                      className="custom-nav-link py-1 d-flex justify-content-center align-items-center"
+                      to="#"
+                      onClick={handlelogout}
+                    >
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                     </Link>
                   </li>
