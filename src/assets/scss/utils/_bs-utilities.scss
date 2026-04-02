@@ -85,6 +85,11 @@ $utilities: map-merge(
               )
             ),
         )
-      )
+      ),
+    'cursor': (
+      property: cursor,
+      class: cursor,
+      values: not-allowed,
+    )
   )
 );

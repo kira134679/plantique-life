@@ -92,7 +92,7 @@ function Articles() {
                 </div>
                 <picture className="align-self-end me-6">
                   <source srcSet={headingDecoration} media="(min-width: 768px)" />
-                  <img src={headingDecorationSm} className="img-fluid" alt="heading-decoration" />
+                  <img src={headingDecorationSm} className="img-fluid" alt="" />
                 </picture>
               </div>
             </div>

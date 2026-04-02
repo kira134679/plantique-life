@@ -27,6 +27,7 @@ import ProductEdit from '../views/admin/products/ProductEdit.jsx';
 import Products from '../views/admin/products/Products.jsx';
 import Login from '../views/Login.jsx';
 
+import { checkAuth } from '@/slice/authSlice.js';
 import NotFound from '../views/NotFound';
 
 const routes = [
@@ -35,8 +36,9 @@ const routes = [
     Component: App,
     handle: { breadcrumb: () => '首頁' },
     HydrateFallback: () => null,
-    loader: () => {
+    loader: async () => {
       store.dispatch(getAllProducts());
+      return store.dispatch(checkAuth());
     },
     children: [
       { index: true, Component: Home },

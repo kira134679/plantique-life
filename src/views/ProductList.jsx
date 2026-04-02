@@ -11,6 +11,7 @@ import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { getNews, selectNewsList } from '@/slice/news/guestNewsSlice';
 import { getProducts, selectCurrentPage, selectProductList, selectTotalPages } from '@/slice/product/guestProductSlice';
+import useMediaQuery from '@/utils/useMediaQuery';
 
 const menuItem = [
   { label: '全部', category: null, productType: null, path: '/products' },
@@ -78,6 +79,8 @@ export default function ProductList() {
   const mobileDropdownLabel = getMobileDropdownLabel(category, productType);
   const [mobileDropdownShow, setMobileDropdownShow] = useState(false);
 
+  const isDesktopSize = useMediaQuery('(min-width: 992px)');
+
   const onPageChange = targetPage => {
     setSearchParams(prev => {
       const newSearchParams = new URLSearchParams(prev);
@@ -91,6 +94,13 @@ export default function ProductList() {
       return newSearchParams;
     });
   };
+
+  useEffect(() => {
+    if (mobileDropdownShow && isDesktopSize) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMobileDropdownShow(false);
+    }
+  }, [mobileDropdownShow, isDesktopSize]);
 
   useEffect(() => {
     dispatch(getNews());
@@ -222,8 +232,15 @@ export default function ProductList() {
             {/* <!-- 手機版toggle --> */}
             <div className="col-6">
               <div className="d-flex text-center justify-content-around py-2">
-                <span className="d-block w-50 fs-sm fw-medium text-primary">最新</span>
-                <span className="d-block w-50 fs-sm fw-medium text-primary-400 border-start">熱門</span>
+                <span className="d-block w-50 fs-sm fw-medium text-primary-400 cursor-not-allowed" aria-disabled="true">
+                  最新
+                </span>
+                <span
+                  className="d-block w-50 fs-sm fw-medium text-primary-400 cursor-not-allowed border-start"
+                  aria-disabled="true"
+                >
+                  熱門
+                </span>
               </div>
             </div>
           </div>
@@ -314,8 +331,18 @@ export default function ProductList() {
               <div className="col-9">
                 <div className="d-flex gap-6 mb-6">
                   <div className="d-flex text-center justify-content-around w-100 py-3">
-                    <span className="d-block w-50 fs-8 fw-medium text-primary">最新商品</span>
-                    <span className="d-block w-50 fs-8 fw-medium text-primary-400 border-start">熱門商品</span>
+                    <span
+                      className="d-block w-50 fs-8 fw-medium text-primary-400 cursor-not-allowed"
+                      aria-disabled="true"
+                    >
+                      最新商品
+                    </span>
+                    <span
+                      className="d-block w-50 fs-8 fw-medium text-primary-400 cursor-not-allowed border-start"
+                      aria-disabled="true"
+                    >
+                      熱門商品
+                    </span>
                   </div>
                   <form className="position-relative w-100">
                     <span className="material-symbols-rounded align-bottom position-absolute top-50 start-0 translate-middle-y ps-4 text-primary">
