@@ -183,7 +183,14 @@ export default function Navbar() {
                     </Button>
                   </li>
                   <li className="d-none d-lg-block">
-                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap cursor-not-allowed"
+                      disabled
+                    >
                       註冊
                     </Button>
                   </li>
@@ -197,12 +204,12 @@ export default function Navbar() {
                     <ul className="position-absolute list-unstyled bg-white text-center member-menu">
                       <ul className="list-unstyled p-6">
                         <li className="mb-3">
-                          <Link className="member-menu-link" to="/member">
+                          <Link className="member-menu-link" to="/admin">
                             會員中心
                           </Link>
                         </li>
                         <li>
-                          <Link className="member-menu-link" to="/member/orders">
+                          <Link className="member-menu-link" to="/admin/orders">
                             訂單查詢
                           </Link>
                         </li>
@@ -268,7 +275,12 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pb-6">
-                    <Link className="custom-nav-link" to="#">
+                    <Link
+                      className="custom-nav-link cursor-not-allowed"
+                      to="#"
+                      aria-disabled="true"
+                      onClick={e => e.preventDefault()}
+                    >
                       會員註冊
                     </Link>
                   </li>
@@ -276,12 +288,12 @@ export default function Navbar() {
               ) : (
                 <ul className="navbar-nav px-6 pb-6">
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link mb-3" to="/member">
+                    <Link className="custom-nav-link mb-3" to="/admin">
                       會員中心
                     </Link>
                   </li>
                   <li className="pb-6">
-                    <Link className="custom-nav-link" to="/member/orders">
+                    <Link className="custom-nav-link" to="/admin/orders">
                       訂單查詢
                     </Link>
                   </li>
