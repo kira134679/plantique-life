@@ -216,13 +216,12 @@ export default function Navbar() {
                       </ul>
                       <ul className="list-unstyled px-6 pb-6">
                         <li className="pt-6 separator-line-top">
-                          <Link
-                            className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                            to="#"
+                          <Button
+                            className="member-menu-link py-1 d-flex justify-content-center align-items-center w-100"
                             onClick={handlelogout}
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                          </Link>
+                          </Button>
                         </li>
                       </ul>
                     </ul>
@@ -298,13 +297,12 @@ export default function Navbar() {
                     </Link>
                   </li>
                   <li className="pt-6 separator-line-top">
-                    <Link
-                      className="custom-nav-link py-1 d-flex justify-content-center align-items-center"
-                      to="#"
+                    <Button
+                      className="custom-nav-link py-1 d-flex justify-content-center align-items-center w-100"
                       onClick={handlelogout}
                     >
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                    </Link>
+                    </Button>
                   </li>
                 </ul>
               )}
