@@ -21,9 +21,9 @@ export default function ArticleDetail() {
         <div className="column-detail-banner"></div>
         <section className="py-8">
           <div className="d-flex align-items-center mb-4">
-            <img className="me-3" src={headingDecorationSm} alt="heading-decoration" />
+            <img className="me-3" src={headingDecorationSm} alt="" />
             <p className="fs-5 fs-lg-2 text-primary noto-serif-tc">養護專欄</p>
-            <img className="ms-3" src={headingDecorationSm} alt="heading-decoration" />
+            <img className="ms-3" src={headingDecorationSm} alt="" />
           </div>
           <h1 className="h3 fs-lg-1 text-neutral-700 mb-12 pb-lg-4">
             多肉植物澆水指南：<span className="d-block mb-1"></span>澆多少？<span className="d-block d-lg-none"></span>
@@ -41,7 +41,7 @@ export default function ArticleDetail() {
           </div>
         </section>
         <section className="py-8 py-lg-12">
-          <img className="column-detail-column-7 w-100 object-fit-cover" src={articleImg7} alt="column_07" />
+          <img className="column-detail-column-7 w-100 object-fit-cover" src={articleImg7} alt="三盆多肉植物擺設" />
           <h2 className="fs-7 fs-lg-5 noto-serif-tc fw-bold text-primary mt-4 mt-lg-6">
             多肉植物以「可愛、好養」著稱，<span className="d-block d-lg-none"></span>
             但最常讓新手困惑的問題，往往就是——到底要多久澆一次水？ 每次要澆多少？

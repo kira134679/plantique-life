@@ -28,7 +28,7 @@ function About() {
       <section className="about-intro container-md gx-12 mt-12 mt-lg-15 py-12 p-lg-15">
         <div className="row flex-column flex-lg-row">
           <div className="col-lg-6">
-            <img src={illusPlant} className="img-fluid" alt="" />
+            <img src={illusPlant} className="img-fluid" alt="盆栽插圖" />
             <h2 className="h3 fs-lg-2 text-primary-900 mt-2 mt-lg-3">
               在快節奏的城市中，<span className="d-block mt-2 mt-lg-3">我們渴望一個能喘息的角落</span>
             </h2>
@@ -61,7 +61,7 @@ function About() {
             <img
               src={imgAbout02}
               className="img-fluid about-max-width-260px about-max-width-lg-none w-lg-100 d-block mx-auto"
-              alt=""
+              alt="綠葉植物特寫"
             />
           </div>
           <div className="col-lg-6 align-content-lg-end">
@@ -105,11 +105,11 @@ function About() {
             </div>
           </div>
           <div className="col-lg-6 ms-lg-auto">
-            <img src={imgAbout03} className="img-fluid d-none d-lg-block mx-auto" alt="" />
+            <img src={imgAbout03} className="img-fluid d-none d-lg-block mx-auto" alt="白色盆器中的多肉植物" />
           </div>
         </div>
       </section>
-      <img src={imgAbout03} className="img-fluid d-block d-lg-none mt-12 mx-auto" alt="" />
+      <img src={imgAbout03} className="img-fluid d-block d-lg-none mt-12 mx-auto" alt="白色盆器中的多肉植物" />
     </>
   );
 }
