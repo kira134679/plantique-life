@@ -42,6 +42,7 @@ export const authSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(logout.fulfilled, state => {
       state.isAuth = false;
+      state.authChecked = true;
     });
 
     builder.addMatcher(isAnyOf(login.fulfilled, checkAuth.fulfilled), (state, { payload }) => {
