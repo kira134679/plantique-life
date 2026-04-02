@@ -5,8 +5,22 @@ import headingDecorationSm from 'assets/images/index/heading-decoration-sm.svg';
 import headingDecoration from 'assets/images/index/heading-decoration.svg';
 import imgTitle from 'assets/images/index/img_title_lg.svg';
 import logo from 'assets/images/logo-primary-en-sm.svg';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { hideLoading, showLoading } from '../slice/loadingSlice';
 
 function About() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(showLoading());
+    const timer = setTimeout(() => dispatch(hideLoading()), 200);
+    return () => {
+      clearTimeout(timer);
+      dispatch(hideLoading());
+    };
+  }, [dispatch]);
+
   return (
     <>
       <header className="about-banner">
