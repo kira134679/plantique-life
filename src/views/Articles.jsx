@@ -4,7 +4,6 @@ import headingDecoration from '../assets/images/index/heading-decoration.svg';
 import { getArticles } from '@/slice/article/guestArticleSlice';
 import { timestampToDate } from '@/utils/utils';
 import { useEffect, useMemo, useRef } from 'react';
-import { Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import Button from '../components/Button';
@@ -55,7 +54,7 @@ const EmptyState = ({ tag }) => (
 
 function Articles() {
   const dispatch = useDispatch();
-  const { articleList, isLoading: isArticlesLoading } = useSelector(state => state.guestArticle);
+  const { articleList } = useSelector(state => state.guestArticle);
 
   const curingRef = useRef(null);
   const succulentRef = useRef(null);
@@ -133,72 +132,64 @@ function Articles() {
       {/*maintenance section start*/}
       <section className="column-section">
         <div className="container">
-          {isArticlesLoading ? (
-            <div className="my-15 d-flex justify-content-center">
-              <Spinner animation="border" role="status" variant="primary">
-                <span className="visually-hidden ">Loading...</span>
-              </Spinner>
+          <div className="mb-12 mb-md-15">
+            {/* curing section start */}
+            <div ref={curingRef} className="mb-8 mb-md-12 column-anchor">
+              {/*title*/}
+              <div className="mb-6">
+                <h2 className="fs-md-2 text-neutral-700">
+                  <span className="fs-7 text-primary align-top me-1">#</span>養護指南
+                </h2>
+              </div>
+              {/*card*/}
+              <div className="row gy-6">
+                {displayArticles.curing.length > 0 ? (
+                  displayArticles.curing.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="養護指南" />
+                )}
+              </div>
             </div>
-          ) : (
-            <div className="mb-12 mb-md-15">
-              {/* curing section start */}
-              <div ref={curingRef} className="mb-8 mb-md-12 column-anchor">
-                {/*title*/}
-                <div className="mb-6">
-                  <h2 className="fs-md-2 text-neutral-700">
-                    <span className="fs-7 text-primary align-top me-1">#</span>養護指南
-                  </h2>
-                </div>
-                {/*card*/}
-                <div className="row gy-6">
-                  {displayArticles.curing.length > 0 ? (
-                    displayArticles.curing.map(article => <ArticleCard key={article.id} article={article} />)
-                  ) : (
-                    <EmptyState tag="養護指南" />
-                  )}
-                </div>
-              </div>
-              {/* curing section end */}
+            {/* curing section end */}
 
-              {/*succulent section start*/}
-              <div ref={succulentRef} className="mb-8 mb-md-12 column-anchor">
-                {/*title*/}
-                <div className="mb-6">
-                  <h2 className="fs-md-2 text-neutral-700">
-                    <span className="fs-7 text-primary align-top me-1">#</span>多肉圖鑑
-                  </h2>
-                </div>
-                {/*card*/}
-                <div className="row gy-6">
-                  {displayArticles.succulent.length > 0 ? (
-                    displayArticles.succulent.map(article => <ArticleCard key={article.id} article={article} />)
-                  ) : (
-                    <EmptyState tag="多肉圖鑑" />
-                  )}
-                </div>
+            {/*succulent section start*/}
+            <div ref={succulentRef} className="mb-8 mb-md-12 column-anchor">
+              {/*title*/}
+              <div className="mb-6">
+                <h2 className="fs-md-2 text-neutral-700">
+                  <span className="fs-7 text-primary align-top me-1">#</span>多肉圖鑑
+                </h2>
               </div>
-              {/*succulent section end*/}
-
-              {/*life section start*/}
-              <div ref={lifeRef} className="column-anchor">
-                {/*title*/}
-                <div className="mb-6">
-                  <h2 className="fs-md-2 text-neutral-700">
-                    <span className="fs-7 text-primary align-top me-1">#</span>生活提案
-                  </h2>
-                </div>
-                {/*card*/}
-                <div className="row gy-6">
-                  {displayArticles.life.length > 0 ? (
-                    displayArticles.life.map(article => <ArticleCard key={article.id} article={article} />)
-                  ) : (
-                    <EmptyState tag="生活提案" />
-                  )}
-                </div>
+              {/*card*/}
+              <div className="row gy-6">
+                {displayArticles.succulent.length > 0 ? (
+                  displayArticles.succulent.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="多肉圖鑑" />
+                )}
               </div>
-              {/*life section end*/}
             </div>
-          )}
+            {/*succulent section end*/}
+
+            {/*life section start*/}
+            <div ref={lifeRef} className="column-anchor">
+              {/*title*/}
+              <div className="mb-6">
+                <h2 className="fs-md-2 text-neutral-700">
+                  <span className="fs-7 text-primary align-top me-1">#</span>生活提案
+                </h2>
+              </div>
+              {/*card*/}
+              <div className="row gy-6">
+                {displayArticles.life.length > 0 ? (
+                  displayArticles.life.map(article => <ArticleCard key={article.id} article={article} />)
+                ) : (
+                  <EmptyState tag="生活提案" />
+                )}
+              </div>
+            </div>
+            {/*life section end*/}
+          </div>
         </div>
       </section>
       {/*maintenance section end*/}
