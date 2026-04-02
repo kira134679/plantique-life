@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
 import { logout } from '@/slice/authSlice';
+import axios from 'axios';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -27,9 +28,18 @@ export default function Navbar() {
   const isLogin = authChecked && isAuth;
   const handlelogout = async () => {
     try {
-      await dispatch(logout()).unwrap();
-      toast.success('已登出');
-      navigate('/');
+      // 1. 清除本地憑證
+      document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      axios.defaults.headers.common.Authorization = '';
+
+      // 2. 先跳轉到首頁
+      navigate('/', { replace: true });
+
+      // 3. 延遲執行 Redux 狀態變更
+      setTimeout(() => {
+        dispatch(logout());
+        toast.success('已登出');
+      }, 500);
     } catch {
       toast.error('登出失敗');
     }
