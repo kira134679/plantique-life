@@ -1,7 +1,7 @@
 import logoImg from 'assets/images/logo-primary-en-zh-lg.svg';
 import { Link, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { logout } from '@/slice/authSlice';
+import { logout, resetAuth } from '@/slice/authSlice';
 import toast from 'react-hot-toast';
 import Button from '@/components/Button';
 import axios from 'axios';
@@ -10,24 +10,16 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handlelogout = async () => {
-    try {
-      // 1. 清除本地憑證
-      document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      axios.defaults.headers.common.Authorization = '';
-
-      // 2. 先跳轉到首頁
-      navigate('/', { replace: true });
-
-      // 3. 延遲執行 Redux 狀態變更
-      setTimeout(() => {
-        dispatch(logout());
-        toast.success('已登出');
-      }, 500);
-    } catch {
-      toast.error('登出失敗');
-    }
+  const handleLogout = async () => {
+    await dispatch(logout());
+    toast.success('已登出');
+    //只要點擊登出就清除cookie
+    document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    axios.defaults.headers.common.Authorization = '';
+    dispatch(resetAuth());
+    navigate('/', { replace: true });
   };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center p-4">
@@ -44,7 +36,7 @@ function Header() {
             className="ms-2 btn text-neutral-400 border-0 admin-header-logout"
             size="sm"
             type="button"
-            onClick={handlelogout}
+            onClick={handleLogout}
           >
             登出
           </Button>

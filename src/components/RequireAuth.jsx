@@ -8,8 +8,10 @@ export default function RequireAuth() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
+    if (!authChecked) {
+      dispatch(checkAuth());
+    }
+  }, [dispatch, authChecked]);
 
   if (!authChecked) return null; // 避免非同步的時間差，導致非預期的渲染結果
 

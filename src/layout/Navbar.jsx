@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
-import { logout } from '@/slice/authSlice';
+import { logout, resetAuth } from '@/slice/authSlice';
 import axios from 'axios';
 
 export default function Navbar() {
@@ -26,23 +26,14 @@ export default function Navbar() {
 
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
-  const handlelogout = async () => {
-    try {
-      // 1. 清除本地憑證
-      document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      axios.defaults.headers.common.Authorization = '';
-
-      // 2. 先跳轉到首頁
-      navigate('/', { replace: true });
-
-      // 3. 延遲執行 Redux 狀態變更
-      setTimeout(() => {
-        dispatch(logout());
-        toast.success('已登出');
-      }, 500);
-    } catch {
-      toast.error('登出失敗');
-    }
+  const handleLogout = async () => {
+    await dispatch(logout());
+    toast.success('已登出');
+    //只要點擊登出就清除cookie
+    document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    axios.defaults.headers.common.Authorization = '';
+    dispatch(resetAuth());
+    navigate('/', { replace: true });
   };
 
   // 從 Redux 取得購物車資料
@@ -228,7 +219,7 @@ export default function Navbar() {
                         <li className="pt-6 separator-line-top">
                           <Button
                             className="member-menu-link py-1 d-flex justify-content-center align-items-center w-100"
-                            onClick={handlelogout}
+                            onClick={handleLogout}
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                           </Button>
@@ -309,7 +300,7 @@ export default function Navbar() {
                   <li className="pt-6 separator-line-top">
                     <Button
                       className="custom-nav-link py-1 d-flex justify-content-center align-items-center w-100"
-                      onClick={handlelogout}
+                      onClick={handleLogout}
                     >
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
                     </Button>
