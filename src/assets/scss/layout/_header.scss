@@ -46,6 +46,11 @@
   }
 }
 
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .cart-toggle-btn {
   color: $neutral-700;
   padding: map.get($spacers, 2);
@@ -124,10 +129,10 @@
   .offcanvas-body {
     pointer-events: auto;
   }
-  .custom-nav-link:hover {
+  .custom-nav-link:hover:not(.disabled-link) {
     background-color: $primary-50;
   }
-  .custom-nav-link:active {
+  .custom-nav-link:active:not(.disabled-link) {
     background-color: $primary-100;
   }
 }

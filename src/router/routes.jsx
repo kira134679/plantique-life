@@ -38,7 +38,11 @@ const routes = [
     HydrateFallback: () => null,
     loader: async () => {
       store.dispatch(getAllProducts());
-      return store.dispatch(checkAuth());
+      const { authChecked } = store.getState().auth;
+      if (!authChecked) {
+        store.dispatch(checkAuth());
+      }
+      return null;
     },
     children: [
       { index: true, Component: Home },

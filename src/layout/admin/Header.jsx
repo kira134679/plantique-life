@@ -1,7 +1,26 @@
+import Button from '@/components/Button';
+import { logout } from '@/slice/authSlice';
 import logoImg from 'assets/images/logo-primary-en-zh-lg.svg';
-import { Link } from 'react-router';
+import Cookie from 'js-cookie';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router';
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      Cookie.remove('auth_token');
+      toast.success('已登出');
+      navigate('/', { replace: true });
+    } catch {
+      toast.error('登出失敗');
+    }
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center p-4">
@@ -14,6 +33,14 @@ function Header() {
             <p className="fs-sm">admin</p>
             <p>王小明</p>
           </div>
+          <Button
+            className="ms-2 btn text-neutral-400 border-0 admin-header-logout"
+            size="sm"
+            type="button"
+            onClick={handleLogout}
+          >
+            登出
+          </Button>
         </div>
       </div>
     </>

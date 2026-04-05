@@ -1,18 +1,21 @@
+import { logout } from '@/slice/authSlice';
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
+import Cookie from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
@@ -23,6 +26,16 @@ export default function Navbar() {
 
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      Cookie.remove('auth_token');
+      toast.success('已登出');
+      navigate('/', { replace: true });
+    } catch {
+      toast.error('登出失敗');
+    }
+  };
 
   // 從 Redux 取得購物車資料
   const { carts, loadingItems, isLoading: cartLoading } = useSelector(state => state.cart);
@@ -159,12 +172,27 @@ export default function Navbar() {
               {!isLogin ? (
                 <>
                   <li className="d-none d-lg-block me-4">
-                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                    <Button
+                      as={Link}
+                      to="/login"
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap"
+                    >
                       登入
                     </Button>
                   </li>
                   <li className="d-none d-lg-block">
-                    <Button type="button" variant="filled-primary" shape="pill" size="sm" className="text-nowrap">
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="pill"
+                      size="sm"
+                      className="text-nowrap"
+                      disabled
+                    >
                       註冊
                     </Button>
                   </li>
@@ -178,24 +206,24 @@ export default function Navbar() {
                     <ul className="position-absolute list-unstyled bg-white text-center member-menu">
                       <ul className="list-unstyled p-6">
                         <li className="mb-3">
-                          <Link className="member-menu-link" to="/member">
+                          <Link className="member-menu-link" to="/admin">
                             會員中心
                           </Link>
                         </li>
                         <li>
-                          <Link className="member-menu-link" to="/member/orders">
+                          <Link className="member-menu-link" to="/admin/orders">
                             訂單查詢
                           </Link>
                         </li>
                       </ul>
                       <ul className="list-unstyled px-6 pb-6">
                         <li className="pt-6 separator-line-top">
-                          <Link
-                            className="member-menu-link py-1 d-flex justify-content-center align-items-center"
-                            to="#"
+                          <Button
+                            className="member-menu-link py-1 d-flex justify-content-center align-items-center w-100"
+                            onClick={handleLogout}
                           >
                             登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                          </Link>
+                          </Button>
                         </li>
                       </ul>
                     </ul>
@@ -243,12 +271,17 @@ export default function Navbar() {
               {!isLogin ? (
                 <ul className="navbar-nav px-6 pb-6 gap-3">
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link" to="#">
+                    <Link className="custom-nav-link" to="/login">
                       會員登入
                     </Link>
                   </li>
                   <li className="pb-6">
-                    <Link className="custom-nav-link" to="#">
+                    <Link
+                      className="custom-nav-link disabled-link"
+                      to="#"
+                      aria-disabled="true"
+                      onClick={e => e.preventDefault()}
+                    >
                       會員註冊
                     </Link>
                   </li>
@@ -256,19 +289,22 @@ export default function Navbar() {
               ) : (
                 <ul className="navbar-nav px-6 pb-6">
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link mb-3" to="/member">
+                    <Link className="custom-nav-link mb-3" to="/admin">
                       會員中心
                     </Link>
                   </li>
                   <li className="pb-6">
-                    <Link className="custom-nav-link" to="/member/orders">
+                    <Link className="custom-nav-link" to="/admin/orders">
                       訂單查詢
                     </Link>
                   </li>
                   <li className="pt-6 separator-line-top">
-                    <Link className="custom-nav-link py-1 d-flex justify-content-center align-items-center" to="#">
+                    <Button
+                      className="custom-nav-link py-1 d-flex justify-content-center align-items-center w-100"
+                      onClick={handleLogout}
+                    >
                       登出 <span className="ms-2 material-symbols-rounded"> logout </span>
-                    </Link>
+                    </Button>
                   </li>
                 </ul>
               )}
