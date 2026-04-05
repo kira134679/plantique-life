@@ -1,23 +1,25 @@
 import logoImg from 'assets/images/logo-primary-en-zh-lg.svg';
 import { Link, useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { logout, resetAuth } from '@/slice/authSlice';
+import { logout } from '@/slice/authSlice';
 import toast from 'react-hot-toast';
 import Button from '@/components/Button';
-import axios from 'axios';
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await dispatch(logout());
-    toast.success('已登出');
-    //只要點擊登出就清除cookie
-    document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    axios.defaults.headers.common.Authorization = '';
-    dispatch(resetAuth());
-    navigate('/', { replace: true });
+    try {
+      await dispatch(logout()).unwrap();
+      //清除cookie
+      document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      toast.success('已登出');
+    } catch {
+      toast.error('登出失敗');
+    } finally {
+      navigate('/', { replace: true });
+    }
   };
 
   return (

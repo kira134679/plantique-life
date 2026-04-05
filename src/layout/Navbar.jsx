@@ -9,8 +9,7 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
-import { logout, resetAuth } from '@/slice/authSlice';
-import axios from 'axios';
+import { logout } from '@/slice/authSlice';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -27,13 +26,16 @@ export default function Navbar() {
   const { isAuth, authChecked } = useSelector(state => state.auth);
   const isLogin = authChecked && isAuth;
   const handleLogout = async () => {
-    await dispatch(logout());
-    toast.success('已登出');
-    //只要點擊登出就清除cookie
-    document.cookie = 'hextoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    axios.defaults.headers.common.Authorization = '';
-    dispatch(resetAuth());
-    navigate('/', { replace: true });
+    try {
+      await dispatch(logout()).unwrap();
+      //清除cookie
+      document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      toast.success('已登出');
+    } catch {
+      toast.error('登出失敗');
+    } finally {
+      navigate('/', { replace: true });
+    }
   };
 
   // 從 Redux 取得購物車資料
