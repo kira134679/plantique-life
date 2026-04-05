@@ -30,6 +30,7 @@ export const authSlice = createSlice({
   initialState: {
     isAuth: false,
     authChecked: false,
+    isLoggingOut: false,
   },
   reducers: {
     setIsAuth(state, { payload }) {
@@ -40,9 +41,18 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(logout.pending, state => {
+      state.isLoggingOut = true;
+    });
+
     builder.addCase(logout.fulfilled, state => {
       state.isAuth = false;
-      state.authChecked = false;
+      state.authChecked = true;
+      state.isLoggingOut = false;
+    });
+
+    builder.addCase(logout.rejected, state => {
+      state.isLoggingOut = false;
     });
 
     builder.addMatcher(isAnyOf(login.fulfilled, checkAuth.fulfilled), (state, { payload }) => {
@@ -58,4 +68,4 @@ export const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { setIsAuth, setAuthChecked, resetAuth } = authSlice.actions;
+export const { setIsAuth, setAuthChecked } = authSlice.actions;

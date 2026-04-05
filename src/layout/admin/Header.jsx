@@ -1,9 +1,10 @@
-import logoImg from 'assets/images/logo-primary-en-zh-lg.svg';
-import { Link, useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { logout } from '@/slice/authSlice';
-import toast from 'react-hot-toast';
 import Button from '@/components/Button';
+import { logout } from '@/slice/authSlice';
+import logoImg from 'assets/images/logo-primary-en-zh-lg.svg';
+import Cookie from 'js-cookie';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router';
 
 function Header() {
   const dispatch = useDispatch();
@@ -12,13 +13,11 @@ function Header() {
   const handleLogout = async () => {
     try {
       await dispatch(logout()).unwrap();
-      //清除cookie
-      document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      Cookie.remove('auth_token');
       toast.success('已登出');
+      navigate('/', { replace: true });
     } catch {
       toast.error('登出失敗');
-    } finally {
-      navigate('/', { replace: true });
     }
   };
 

@@ -1,15 +1,16 @@
+import { logout } from '@/slice/authSlice';
 import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
 import logoSm from 'assets/images/logo-primary-en-sm.svg';
 import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 import clsx from 'clsx';
+import Cookie from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 import Button from '../components/Button';
-import { logout } from '@/slice/authSlice';
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -28,13 +29,11 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await dispatch(logout()).unwrap();
-      //清除cookie
-      document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      Cookie.remove('auth_token');
       toast.success('已登出');
+      navigate('/', { replace: true });
     } catch {
       toast.error('登出失敗');
-    } finally {
-      navigate('/', { replace: true });
     }
   };
 
@@ -191,7 +190,7 @@ export default function Navbar() {
                       variant="filled-primary"
                       shape="pill"
                       size="sm"
-                      className="text-nowrap cursor-not-allowed"
+                      className="text-nowrap"
                       disabled
                     >
                       註冊
@@ -278,7 +277,7 @@ export default function Navbar() {
                   </li>
                   <li className="pb-6">
                     <Link
-                      className="custom-nav-link cursor-not-allowed"
+                      className="custom-nav-link disabled-link"
                       to="#"
                       aria-disabled="true"
                       onClick={e => e.preventDefault()}
