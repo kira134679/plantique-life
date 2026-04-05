@@ -190,7 +190,7 @@ export default function Navbar() {
                       variant="filled-primary"
                       shape="pill"
                       size="sm"
-                      className="text-nowrap cursor-not-allowed"
+                      className="text-nowrap"
                       disabled
                     >
                       註冊
@@ -277,7 +277,7 @@ export default function Navbar() {
                   </li>
                   <li className="pb-6">
                     <Link
-                      className="custom-nav-link cursor-not-allowed"
+                      className="custom-nav-link disabled-link"
                       to="#"
                       aria-disabled="true"
                       onClick={e => e.preventDefault()}
