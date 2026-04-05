@@ -38,15 +38,11 @@ export const authSlice = createSlice({
     setAuthChecked(state, { payload }) {
       state.authChecked = payload;
     },
-    resetAuth(state) {
-      state.isAuth = false;
-      state.authChecked = false;
-    },
   },
   extraReducers: builder => {
-    builder.addMatcher(isAnyOf(logout.fulfilled, logout.rejected), state => {
+    builder.addCase(logout.fulfilled, state => {
       state.isAuth = false;
-      state.authChecked = true;
+      state.authChecked = false;
     });
 
     builder.addMatcher(isAnyOf(login.fulfilled, checkAuth.fulfilled), (state, { payload }) => {
